@@ -10,6 +10,7 @@ package api
 // (root or a task-port entitlement / SIP allowance).
 
 /*
+#include <sys/types.h>
 #include <mach/mach.h>
 #include <mach/mach_vm.h>
 #include <mach/mach_init.h>

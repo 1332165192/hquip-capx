@@ -1,5 +1,9 @@
 # Changes prepared for the public source release (2026-10-14)
 
+GitHub follow-up: add missing macOS C type headers, use an explicitly unavailable
+scanner fixture for gRPC negative tests and verify real self-process opening,
+and retry transient pinned Wails downloads without disabling TLS/checksum checks.
+
 - Upgrade Go to 1.26.9 and patch x/net, x/text, x/crypto, quic-go and compress dependencies.
 - Stop logging full instance tokens. Export source without user identity, keys, capture history, screenshots, caches or executables.
 - Root-constrain package reads and writes using os.Root, reject unsafe member names, bound package/preview reads and prevent overwrites. Align REST and generic MCP active-mode gates.

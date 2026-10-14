@@ -18,6 +18,7 @@ package api
 //	CGO_ENABLED=1 go build -tags machwatch ./...
 
 /*
+#include <sys/types.h>
 #include <mach/mach.h>
 #include <mach/task.h>
 #include <mach/thread_act.h>

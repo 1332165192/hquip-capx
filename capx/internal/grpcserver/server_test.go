@@ -5,6 +5,7 @@ package grpcserver
 import (
 	"context"
 	"net"
+	"os"
 	"testing"
 	"time"
 
@@ -22,8 +23,12 @@ import (
 )
 
 func newTestServer(t *testing.T, token string) (*Server, *grpc.ClientConn) {
+	return newTestServerWithScanner(t, token, memscan.New())
+}
+
+func newTestServerWithScanner(t *testing.T, token string, scanner memscan.Scanner) (*Server, *grpc.ClientConn) {
 	t.Helper()
-	s, err := New(store.New(100), sniffer.New(), memscan.New(), token)
+	s, err := New(store.New(100), sniffer.New(), scanner, token)
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
@@ -88,13 +93,44 @@ func TestGRPCStartCaptureAndListFlows(t *testing.T) {
 }
 
 func TestGRPCMemOpenUnavailable(t *testing.T) {
-	s, conn := newTestServer(t, "")
+	s, conn := newTestServerWithScanner(t, "", unavailableTestScanner{})
 	req := s.msg("MemOpen", true)
 	setUint(req, "pid", 1234)
 	_, err := s.invoke(t, conn, "MemOpen", req)
 	if status.Code(err) != codes.Unimplemented {
-		t.Fatalf("MemOpen without FFI engine: got %v, want Unimplemented", err)
+		t.Fatalf("MemOpen with unavailable scanner: got %v, want Unimplemented", err)
 	}
+}
+
+type unavailableTestScanner struct{}
+
+func (unavailableTestScanner) Available() bool                      { return false }
+func (unavailableTestScanner) Open(uint32) (memscan.Session, error) { return nil, memscan.ErrNotBuilt }
+
+func TestGRPCMemOpenOwnProcess(t *testing.T) {
+	s, conn := newTestServer(t, "")
+	if !s.scanner.Available() {
+		t.Skip("this platform has no memory scanner")
+	}
+	req := s.msg("MemOpen", true)
+	setUint(req, "pid", uint64(os.Getpid()))
+	resp, err := s.invoke(t, conn, "MemOpen", req)
+	if err != nil {
+		t.Fatal("open self-owned process:", err)
+	}
+	id := getStr(resp, "session")
+	if id == "" {
+		t.Fatal("memory session missing")
+	}
+	t.Cleanup(func() {
+		s.mu.Lock()
+		sess := s.memSess[id]
+		delete(s.memSess, id)
+		s.mu.Unlock()
+		if sess != nil {
+			_ = sess.Close()
+		}
+	})
 }
 
 func TestGRPCAuth(t *testing.T) {

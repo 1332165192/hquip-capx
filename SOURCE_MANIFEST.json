@@ -10,8 +10,8 @@
     },
     {
       "path": ".github/workflows/build.yml",
-      "size": 5433,
-      "sha256": "dd8dac58beb9b240fca63cb394c1db5da3cf666eea238754d8c78d0c038e0c2b"
+      "size": 5407,
+      "sha256": "d6ecbdc8cec72d2f4d3afc126a2437b804c14d3be01a52fbae0b9e9f7ae8fdb1"
     },
     {
       "path": ".github/workflows/ci.yml",
@@ -180,8 +180,8 @@
     },
     {
       "path": "capx/internal/api/mem_alloc_darwin.go",
-      "size": 2394,
-      "sha256": "2b416d492479270557956718a97091c0f0db626e45db2c90e7c21f378895f6af"
+      "size": 2417,
+      "sha256": "72254756ba00ccca5522fdc0c7a0cd5a683cc7755cb1454c22d1eb0cf0c1a720"
     },
     {
       "path": "capx/internal/api/mem_alloc_linux_amd64.go",
@@ -345,8 +345,8 @@
     },
     {
       "path": "capx/internal/api/mem_watch_darwin.go",
-      "size": 9100,
-      "sha256": "f94576f056f81b621089bd367b5697cc4b53f91a9b6739ff1bb209ee2e850f84"
+      "size": 9123,
+      "sha256": "74961f0879b69595a08d8734e1a2ba2d760e59c1338d00d3d41d4b61af08711d"
     },
     {
       "path": "capx/internal/api/mem_watch_linux_amd64.go",
@@ -725,8 +725,8 @@
     },
     {
       "path": "capx/internal/grpcserver/server_test.go",
-      "size": 3362,
-      "sha256": "42bc3ff7c9189a2d74788ed684ca629d89c610801a6815fec17db1181e794895"
+      "size": 4384,
+      "sha256": "0aecbdcbb84c05ff6b25d2db3a5d25e4b147556bdf81cdb1826a734192862f8e"
     },
     {
       "path": "capx/internal/h2boot/h2boot.go",
@@ -2365,8 +2365,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "size": 1821,
-      "sha256": "f9ecd34ac1b909a9ad23a778adaa75a69f44bac6414b8edde7dbc4b6020f09a6"
+      "size": 2064,
+      "sha256": "e2f828f8eb85b36934857fd7898cc0943dedbafc416f39001ac6c5b9e1a6dd05"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -2422,6 +2422,11 @@
       "path": "scripts/check-source.py",
       "size": 2008,
       "sha256": "00e75efa4eb10cff06667a2cffac02a3c478f69ddcab7574e2de60bbb09e6760"
+    },
+    {
+      "path": "scripts/install-wails.py",
+      "size": 1501,
+      "sha256": "4788fb4022a51d7b76ea1df0ed3d526a70922bee44c1ea92ac78436fc822caa4"
     },
     {
       "path": "SECURITY.md",
