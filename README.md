@@ -1,6 +1,6 @@
 # capx
 
-本地 HTTP/HTTPS 抓包、接口分析与自动化测试工具。提供 Web 控制台、REST API、MCP、Android 操作和 Windows 微信窗口操作。本仓库是经过筛选的公开源码；MIT 许可证适用于此公开仓库的原创代码，第三方代码保留各自许可证，见 [NOTICE](NOTICE.md)。
+本地 HTTP/HTTPS 抓包、接口分析与自动化测试工具。提供 Web 控制台、REST API、MCP、Android/iOS 操作和 Windows 微信窗口操作。本仓库是经过筛选的公开源码；MIT 许可证适用于此公开仓库的原创代码，第三方代码保留各自许可证，见 [NOTICE](NOTICE.md)。
 
 capx 将流量查看、请求重放、手机测试入口和 AI 工具接入放在同一工作台中，适用于接口调试、流量分析和已授权的自动化测试。
 
@@ -26,9 +26,10 @@ capx 将流量查看、请求重放、手机测试入口和 AI 工具接入放�
 
 - **排查接口500错误**：筛选失败请求，查看参数与响应，发送到重放器验证修改后的请求。
 - **测试自己的 Android App**：连接并授权 ADB，选择手机，配置抓包与测试 CA，再结合截图定位界面操作。
+- **测试 iPhone App**：在 App 抓包页选择 iOS，连接已运行的 WDA，读取截图后点击、输入中文或滑动；HTTPS 抓包另行配置 Wi-Fi 代理和 CA。
 - **用 AI 分析流量**：通过 MCP 请求 AI“筛选失败接口，比较请求参数和响应差异，整理排查步骤”。主动执行操作需显式授权。
 
-更多说明见 [项目介绍](docs/INTRODUCTION.md)。iOS 点击/输入尚未统一集成，小程序调试需要外部 CDP；证书固定、业务层加密需要按具体 App 验证。
+更多说明见 [项目介绍](docs/INTRODUCTION.md)。iOS 点击/输入已接入统一页面和 MCP，需要已运行的 WDA；小程序 CDP 地址可在页面直接配置。证书固定、业务层加密需要按具体 App 验证。
 
 ## 快速开始
 
@@ -71,25 +72,27 @@ Linux/macOS：在 `capx` 目录运行 `bash scripts/build-unix.sh`，然后 `./d
 | HTTP/HTTPS、HTTP/2 代理、历史、重放、WebSocket、MCP | 已集成；默认 Go 测试覆盖本地可控服务 |
 | Android USB 抓包、截图、点击、输入、启动 App | 已集成，需要 ADB 授权；应用是否信任 CA 取决于应用配置 |
 | iOS Wi-Fi HTTP/HTTPS 抓包 | 已集成电脑端代理；手机需手动配置代理、安装 CA 并完全信任 |
-| iOS 点击、输入、WDA 自动化 | 尚未统一接入 `/api/mobile/*`，公开版不包含签名包、配对身份或私有实机脚本 |
+| iOS 点击、输入、WDA 自动化 | 已接入 `/api/mobile/*?platform=ios` 和 MCP；需自行启动已签名 WDA 并转发到电脑；不包含签名包或配对身份 |
 | Windows 微信与小程序窗口操作 | 使用自行安装的官方微信，可配合 Windows Sandbox；不内置微信客户端 |
 | 已发布小程序 F12、CDP 自动化 | 连接操作者提供的标准 CDP WebSocket；不内置版本 Hook、偏移表或私有调试协议 |
 | 所有 App/小程序接口解密 | 无此保证；证书固定、业务层加密、QUIC 等需按应用与环境验证 |
 | 原生 pcap / Rust 扫描 / DLL Hook | 可选构建；见 [构建说明](docs/BUILD.md)，不包含预编译驱动或 DLL |
 
-小程序调试：先启动独立安装的调试提供方，取得目标的标准 CDP 地址，设置环境变量再启动 capx：
+小程序调试：先启动独立安装的调试提供方，取得目标的标准 CDP 地址，在「小程序调试」页面填写并点击连接，无需重启。也可在启动前预配置环境变量：
 
 ```powershell
 $env:CAPX_CDP_WS = 'ws://127.0.0.1:9222/devtools/page/target-id'
 ```
 
-在小程序页面启动 CDP 连接。只有目标实际支持相应 CDP 命令时，页面快照、截图和点击才可用；提供方仍负责让微信目标具备调试能力。capx 不会自动安装或分发提供方。
+在小程序页面启动 CDP 连接。切换目标前先停止旧连接。只有目标实际支持相应 CDP 命令时，页面快照、截图和点击才可用；提供方仍负责让微信目标具备调试能力。capx 不会自动安装或分发提供方。
 
 手机 Wi-Fi 模式：选择电脑当前网卡 IPv4，填写手机 Wi-Fi IPv4 白名单；手机代理填电脑 IP 和代理端口。手机与电脑必须互通。Android USB `adb reverse` 把手机端口转发到电脑，因此该模式允许手机使用 `127.0.0.1`。
 
 上游 HTTPS 默认检查证书与域名；私有测试服务或企业 CA 使用 `CAPX_UPSTREAM_CA_FILE` 指向 PEM CA 文件后重启。不要公开 CA 私钥或实例状态。
 
 DNSLog 默认服务地址为 `https://dns.baishax.xyz`，每位使用者需配置自己的 API Key。作者的密钥、用户目录配置和已有 payload 不随源码发布；Windows 持久密钥使用当前用户 DPAPI。
+
+iOS 操作设置和 MCP 示例见 [手机自动化说明](docs/MOBILE_AUTOMATION.md)。默认测试使用可控 WDA 服务验证协议、坐标与授权；本次未重复实机验证。
 
 ## 测试与贡献
 

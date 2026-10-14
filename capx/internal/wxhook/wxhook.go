@@ -68,7 +68,12 @@ func New(h *hook.Manager) *Manager {
 }
 
 // CDPStart connects to the configured external CDP endpoint.
-func (m *Manager) CDPStart() (map[string]any, error) { return m.cdp.Start() }
+func (m *Manager) CDPStart(endpoint ...string) (map[string]any, error) {
+	if len(endpoint) > 0 {
+		return m.cdp.StartEndpoint(endpoint[0])
+	}
+	return m.cdp.Start()
+}
 
 // CDPStop stops the DevTools CDP bridge.
 func (m *Manager) CDPStop() error { return m.cdp.Stop() }

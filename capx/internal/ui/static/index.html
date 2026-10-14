@@ -1238,11 +1238,21 @@ Content-Length: 16
           <p class="hint mobile-footnote">手机外网请求由当前电脑 Capx 发出，沿用 Capx 的上游代理配置。手机无法连接时，请检查电脑防火墙是否允许该 TCP 端口。HTTPS 使用本工作区的 CA 证书。</p>
         </div>
         <div class="card mobile-card">
-          <div class="mobile-card-heading"><h2>Android USB 抓包与操作</h2><span id="mob_state" class="mobile-badge" role="status">等待设备</span></div>
-          <label class="field-label" for="mob_device">Android 设备</label>
+          <div class="mobile-card-heading"><h2>手机抓包与操作</h2><span id="mob_state" class="mobile-badge" role="status">等待设备</span></div>
+          <label class="field-label" for="mob_platform">手机平台</label>
+          <select id="mob_platform"><option value="android">Android · ADB</option><option value="ios">iOS · WDA</option></select>
+          <div id="mob_ios_controls" class="hidden">
+            <label class="field-label" for="mob_wda_endpoint">WDA 电脑转发地址</label>
+            <input id="mob_wda_endpoint" value="http://127.0.0.1:8100" spellcheck="false" autocomplete="off"/>
+            <label class="field-label" for="mob_wda_session">已有会话 ID（可选）</label>
+            <input id="mob_wda_session" placeholder="留空复用当前会话，没有会话时创建" autocomplete="off"/>
+            <div class="mobile-actions"><button class="btn" id="mob_wda_connect">连接 WDA</button><button class="btn sec" id="mob_wda_disconnect" disabled>断开操作连接</button></div>
+            <p class="hint">需先启动已签名 WDA 的 XCTest，并转发 USB 控制端口。连接后支持截图、点击、中文输入、滑动和启动 App。抓包使用上方 Wi-Fi 入口。</p>
+          </div>
+          <label class="field-label" for="mob_device">手机设备</label>
           <div class="mobile-field-row"><select id="mob_device" aria-describedby="mob_device_hint"><option value="">选择设备</option></select><button class="btn sec" id="mob_refresh" type="button">刷新设备</button></div>
           <p id="mob_device_hint" class="hint">连接手机并开启 USB 调试，然后在手机上允许调试。</p>
-          <label class="field-label" for="mob_proxy_addr">电脑 USB 转发目标</label>
+          <div id="mob_android_capture"><label class="field-label" for="mob_proxy_addr">电脑 USB 转发目标</label>
           <input id="mob_proxy_addr" value="127.0.0.1:18080" spellcheck="false" autocomplete="off" aria-describedby="mob_proxy_hint"/>
           <p class="hint" id="mob_proxy_hint">这里的 127.0.0.1 通过 adb reverse 转发到电脑；手动填写 Wi-Fi 代理时使用上方的局域网入口。</p>
           <div class="mobile-actions"><button class="btn" id="mob_start" disabled>开始抓包</button><button class="btn sec" id="mob_stop" disabled>停止并恢复代理</button></div>
@@ -1251,7 +1261,7 @@ Content-Length: 16
             <div><dt>手机代理</dt><dd id="mob_proxy">未检查</dd></div>
             <div><dt>USB 转发</dt><dd id="mob_reverse">未检查</dd></div>
           </dl>
-          <div id="mob_message" class="mobile-notice" role="status" aria-live="polite">选择设备后开始抓包，流量会出现在当前工作区的 HTTP 历史中。</div>
+          </div><div id="mob_message" class="mobile-notice" role="status" aria-live="polite">选择设备后开始抓包，流量会出现在当前工作区的 HTTP 历史中。</div>
           <p class="hint mobile-footnote">链路已连接表示代理配置就绪。是否取得 HTTPS 明文，还取决于 App 是否使用代理并信任证书。</p>
         </div>
         <div class="card mobile-card">
@@ -1271,13 +1281,13 @@ Content-Length: 16
         <div class="mobile-card-heading"><h2>手机屏幕</h2><button class="btn sec" id="mob_screenshot" disabled>刷新截图</button></div>
         <div class="mobile-screen-area">
           <div id="mob_screen_empty" class="mobile-screen-empty"><svg class="ui-icon"><use href="#i-phone"/></svg><strong>查看当前手机画面</strong><span>连接设备后，点击「刷新截图」</span></div>
-          <button id="mob_screen_tap" class="mobile-screen-button hidden" type="button" disabled aria-label="点击手机截图执行坐标点击"><img id="mob_screen" alt="所选 Android 设备的屏幕截图" draggable="false"/></button>
+          <button id="mob_screen_tap" class="mobile-screen-button hidden" type="button" disabled aria-label="点击手机截图执行坐标点击"><img id="mob_screen" alt="所选手机设备的屏幕截图" draggable="false"/></button>
         </div>
         <div class="mobile-screen-meta"><span id="mob_screen_size" class="hint">尚未读取屏幕</span><label><input type="checkbox" id="mob_tap_enabled"/> 点击截图操作手机</label></div>
         <div class="mobile-actions mobile-device-actions"><button class="btn sec" id="mob_back" disabled>返回</button><button class="btn sec" id="mob_home" disabled>桌面</button><button class="btn sec" id="mob_up" disabled>向上滑</button><button class="btn sec" id="mob_down" disabled>向下滑</button></div>
         <label class="field-label" for="mob_text">输入到手机当前光标处</label>
         <div class="mobile-field-row"><input id="mob_text" placeholder="英文字母、数字和符号" autocomplete="off" spellcheck="false"/><button class="btn sec" id="mob_input" disabled>输入文字</button></div>
-        <p class="hint">请先将手机输入法切到英文模式，再点击输入框。当前输入通道暂不支持中文。</p>
+        <p id="mob_input_note" class="hint">Android 需先切到英文输入模式，仅支持 ASCII；iOS WDA 支持中文。请先点击手机输入框。</p>
       </div>
       <div class="card mobile-card mobile-elements-card">
         <div class="mobile-card-heading"><div><h2>页面元素</h2><p id="mob_elements_note" class="hint">按需读取当前页面，可按元素定位操作。</p></div><button class="btn sec" id="mob_snapshot" disabled>读取元素</button></div>
@@ -1379,7 +1389,7 @@ Content-Length: 16
     </div>
     <div class="card">
       <h3>微信小程序 · 外部调试提供方 <span class="tag">CDP</span></h3>
-      <div class="hint" style="margin:-2px 0 12px">公开版通过外部 CDP 服务连接目标。请先启动你自行安装的调试提供方，设置 CAPX_CDP_WS 后启动 Capx，再使用下方 CDP 连接。</div>
+      <div class="hint" style="margin:-2px 0 12px">公开版通过外部 CDP 服务连接目标。请先启动你自行安装的调试提供方，在下方填写目标的 CDP WebSocket 地址并连接，也可通过 CAPX_CDP_WS 预配置。</div>
       <div class="row" style="margin-bottom:10px">
         <span class="pill" id="wxh_state">…</span>
         <span style="flex:1"></span>
@@ -1396,7 +1406,7 @@ Content-Length: 16
       <h3>完整 DevTools(CDP 桥) <span class="tag">浏览器 F12</span></h3>
       <div class="hint" style="margin:-2px 0 12px">连接自行安装的标准 CDP 调试服务；目标需要先支持调试。连接成功后，可使用下面的 DevTools 链接或自动化操作。</div>
       <div class="row" style="margin-bottom:10px">
-        <span class="pill" id="wxc_state">未启动</span>
+        <input id="wxc_endpoint" placeholder="ws://127.0.0.1:9222/devtools/page/目标ID" aria-label="外部 CDP WebSocket 地址" style="flex:1" spellcheck="false"/><span class="pill" id="wxc_state">未启动</span>
         <span style="flex:1"></span>
         <button class="btn sm" id="wxc_start">连接外部 CDP</button>
         <button class="btn sm sec" id="wxc_stop">停止</button>
@@ -2329,7 +2339,7 @@ async function loadWxCDP(){
   }catch(e){if(st){st.className='pill warn';st.textContent='状态失败：'+(e.message||e);}}
 }
 function bindWxCDP(){
-  const s=$('#wxc_start'); if(s)s.onclick=async()=>{const r=await jpost('/api/wxhook/cdp/start',{});if(r&&r.error)alert('启动失败: '+r.error);loadWxCDP();};
+  const s=$('#wxc_start'); if(s)s.onclick=async()=>{const r=await jpost('/api/wxhook/cdp/start',{endpoint:$('#wxc_endpoint').value.trim()});if(r&&r.error)alert('启动失败: '+r.error);loadWxCDP();};
   const sp=$('#wxc_stop'); if(sp)sp.onclick=async()=>{await jpost('/api/wxhook/cdp/stop',{});loadWxCDP();};
   const rf2=$('#wxc_refresh'); if(rf2)rf2.onclick=loadWxCDP;
   const cp=$('#wxc_copy'); if(cp)cp.onclick=()=>{const u=$('#wxc_url'); if(u&&u.value&&navigator.clipboard)navigator.clipboard.writeText(u.value);};

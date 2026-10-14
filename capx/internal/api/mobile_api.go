@@ -13,8 +13,69 @@ func (s *Server) mobileForRequest(r *http.Request) *mobile.Controller {
 	return s.mobile.ForDevice(r.URL.Query().Get("serial"))
 }
 
+type mobileUIController interface {
+	SnapshotWithInfo() (mobile.SnapshotInfo, error)
+	Screenshot() ([]byte, error)
+	Tap(int, int) error
+	Click(mobile.Locator) (mobile.Element, error)
+	Input(string) error
+	Swipe(int, int, int, int, int) error
+	Key(string) error
+	Back() error
+	Home() error
+	LaunchApp(string) error
+	ForegroundApp() (string, error)
+}
+
+func mobileIsIOS(r *http.Request) bool { return r.URL.Query().Get("platform") == "ios" }
+
+func (s *Server) mobileUIForRequest(r *http.Request) mobileUIController {
+	if mobileIsIOS(r) {
+		return s.ios
+	}
+	return s.mobileForRequest(r)
+}
+
+func (s *Server) mobileIOSConnect(w http.ResponseWriter, r *http.Request) {
+	if s.ios == nil {
+		writeErr(w, http.StatusNotImplemented, "iOS controller unavailable")
+		return
+	}
+	var req struct {
+		Endpoint string `json:"endpoint"`
+		Session  string `json:"session_id"`
+	}
+	if json.NewDecoder(r.Body).Decode(&req) != nil {
+		writeErr(w, http.StatusBadRequest, "invalid body")
+		return
+	}
+	status, err := s.ios.Connect(req.Endpoint, req.Session)
+	if err != nil {
+		writeErr(w, http.StatusConflict, err.Error())
+		return
+	}
+	writeJSON(w, http.StatusOK, status)
+}
+
+func (s *Server) mobileIOSDisconnect(w http.ResponseWriter, r *http.Request) {
+	if s.ios == nil {
+		writeErr(w, http.StatusNotImplemented, "iOS controller unavailable")
+		return
+	}
+	s.ios.Disconnect()
+	writeJSON(w, http.StatusOK, map[string]string{"status": "disconnected"})
+}
+
+func mobileAndroidOnly(w http.ResponseWriter, r *http.Request) bool {
+	if mobileIsIOS(r) {
+		writeErr(w, http.StatusConflict, "iPhone 抓包请使用 Wi-Fi 代理入口，并在手机设置中安装 CA、开启完全信任；WDA 不配置网络代理")
+		return false
+	}
+	return true
+}
+
 func (s *Server) mobileCA(w http.ResponseWriter, r *http.Request) {
-	if !s.mobileReady(w) {
+	if !s.mobileReady(w, r) || !mobileAndroidOnly(w, r) {
 		return
 	}
 	if s.proxy == nil {
@@ -30,7 +91,24 @@ func (s *Server) mobileCA(w http.ResponseWriter, r *http.Request) {
 }
 
 // mobileEnabled guards every handler; the Android controller is optional.
-func (s *Server) mobileReady(w http.ResponseWriter) bool {
+func (s *Server) mobileReady(w http.ResponseWriter, r *http.Request) bool {
+	platform := r.URL.Query().Get("platform")
+	if platform != "" && platform != "android" && platform != "ios" {
+		writeErr(w, http.StatusBadRequest, "platform must be android or ios")
+		return false
+	}
+	if mobileIsIOS(r) {
+		if s.ios == nil {
+			writeErr(w, http.StatusNotImplemented, "iOS controller unavailable")
+			return false
+		}
+		serial := r.URL.Query().Get("serial")
+		if serial != "" && serial != mobile.IOSSerial {
+			writeErr(w, http.StatusBadRequest, "unknown iOS device")
+			return false
+		}
+		return true
+	}
 	if s.mobile == nil {
 		writeErr(w, http.StatusNotImplemented, "mobile (Android) capture is unavailable")
 		return false
@@ -39,10 +117,16 @@ func (s *Server) mobileReady(w http.ResponseWriter) bool {
 }
 
 func (s *Server) mobileDevices(w http.ResponseWriter, r *http.Request) {
-	if !s.mobileReady(w) {
+	if !s.mobileReady(w, r) {
 		return
 	}
-	devs, err := s.mobile.Devices()
+	var devs []mobile.Device
+	var err error
+	if mobileIsIOS(r) {
+		devs, err = s.ios.Devices()
+	} else {
+		devs, err = s.mobile.Devices()
+	}
 	if err != nil {
 		writeErr(w, http.StatusConflict, err.Error())
 		return
@@ -51,7 +135,18 @@ func (s *Server) mobileDevices(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) mobileStatus(w http.ResponseWriter, r *http.Request) {
-	if !s.mobileReady(w) {
+	if !s.mobileReady(w, r) {
+		return
+	}
+	if mobileIsIOS(r) {
+		status, err := s.ios.Status()
+		if err != nil {
+			writeErr(w, http.StatusConflict, err.Error())
+			return
+		}
+		running, _ := s.mobileProxyPort()
+		status["proxy_running"] = running
+		writeJSON(w, http.StatusOK, status)
 		return
 	}
 	status, err := s.mobileForRequest(r).Status()
@@ -75,7 +170,7 @@ func (s *Server) mobileProxyPort() (bool, int) {
 }
 
 func (s *Server) mobileUse(w http.ResponseWriter, r *http.Request) {
-	if !s.mobileReady(w) {
+	if !s.mobileReady(w, r) {
 		return
 	}
 	var req struct {
@@ -85,12 +180,19 @@ func (s *Server) mobileUse(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, http.StatusBadRequest, "invalid body")
 		return
 	}
-	s.mobile.Use(req.Serial)
+	if mobileIsIOS(r) {
+		if req.Serial != "" && req.Serial != mobile.IOSSerial {
+			writeErr(w, http.StatusBadRequest, "unknown iOS device")
+			return
+		}
+	} else {
+		s.mobile.Use(req.Serial)
+	}
 	writeJSON(w, http.StatusOK, map[string]string{"serial": strings.TrimSpace(req.Serial)})
 }
 
 func (s *Server) mobileCaptureStart(w http.ResponseWriter, r *http.Request) {
-	if !s.mobileReady(w) {
+	if !s.mobileReady(w, r) || !mobileAndroidOnly(w, r) {
 		return
 	}
 	var req struct {
@@ -134,7 +236,7 @@ func (s *Server) mobileCaptureStart(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) mobileCaptureStop(w http.ResponseWriter, r *http.Request) {
-	if !s.mobileReady(w) {
+	if !s.mobileReady(w, r) || !mobileAndroidOnly(w, r) {
 		return
 	}
 	var req struct {
@@ -156,10 +258,10 @@ func (s *Server) mobileCaptureStop(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) mobileSnapshot(w http.ResponseWriter, r *http.Request) {
-	if !s.mobileReady(w) {
+	if !s.mobileReady(w, r) {
 		return
 	}
-	snapshot, err := s.mobileForRequest(r).SnapshotWithInfo()
+	snapshot, err := s.mobileUIForRequest(r).SnapshotWithInfo()
 	if err != nil {
 		writeErr(w, http.StatusConflict, err.Error())
 		return
@@ -168,10 +270,22 @@ func (s *Server) mobileSnapshot(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) mobileScreenshot(w http.ResponseWriter, r *http.Request) {
-	if !s.mobileReady(w) {
+	if !s.mobileReady(w, r) {
 		return
 	}
-	png, err := s.mobileForRequest(r).Screenshot()
+	var png []byte
+	var err error
+	if mobileIsIOS(r) {
+		var size mobile.ScreenSize
+		png, size, err = s.ios.ScreenshotWithSize()
+		if err == nil {
+			w.Header().Set("X-Capx-Screen-Width", strconv.FormatFloat(size.Width, 'f', -1, 64))
+			w.Header().Set("X-Capx-Screen-Height", strconv.FormatFloat(size.Height, 'f', -1, 64))
+			w.Header().Set("X-Capx-Coordinate-Space", "points")
+		}
+	} else {
+		png, err = s.mobileForRequest(r).Screenshot()
+	}
 	if err != nil {
 		writeErr(w, http.StatusConflict, err.Error())
 		return
@@ -182,7 +296,7 @@ func (s *Server) mobileScreenshot(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) mobileTap(w http.ResponseWriter, r *http.Request) {
-	if !s.mobileReady(w) {
+	if !s.mobileReady(w, r) {
 		return
 	}
 	var req struct {
@@ -204,7 +318,7 @@ func (s *Server) mobileTap(w http.ResponseWriter, r *http.Request) {
 			writeErr(w, http.StatusBadRequest, "invalid coordinates")
 			return
 		}
-		if err := s.mobileForRequest(r).Tap(*req.X, *req.Y); err != nil {
+		if err := s.mobileUIForRequest(r).Tap(*req.X, *req.Y); err != nil {
 			writeErr(w, http.StatusConflict, err.Error())
 			return
 		}
@@ -215,7 +329,7 @@ func (s *Server) mobileTap(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, http.StatusBadRequest, "locator required")
 		return
 	}
-	el, err := s.mobileForRequest(r).Click(req.Locator)
+	el, err := s.mobileUIForRequest(r).Click(req.Locator)
 	if err != nil {
 		writeErr(w, http.StatusConflict, err.Error())
 		return
@@ -224,7 +338,7 @@ func (s *Server) mobileTap(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) mobileInput(w http.ResponseWriter, r *http.Request) {
-	if !s.mobileReady(w) {
+	if !s.mobileReady(w, r) {
 		return
 	}
 	var req struct {
@@ -234,7 +348,7 @@ func (s *Server) mobileInput(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, http.StatusBadRequest, "invalid body")
 		return
 	}
-	if err := s.mobileForRequest(r).Input(req.Value); err != nil {
+	if err := s.mobileUIForRequest(r).Input(req.Value); err != nil {
 		writeErr(w, http.StatusConflict, err.Error())
 		return
 	}
@@ -242,7 +356,7 @@ func (s *Server) mobileInput(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) mobileSwipe(w http.ResponseWriter, r *http.Request) {
-	if !s.mobileReady(w) {
+	if !s.mobileReady(w, r) {
 		return
 	}
 	var req struct {
@@ -256,7 +370,7 @@ func (s *Server) mobileSwipe(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, http.StatusBadRequest, "invalid body")
 		return
 	}
-	if err := s.mobileForRequest(r).Swipe(req.X1, req.Y1, req.X2, req.Y2, req.DurationMS); err != nil {
+	if err := s.mobileUIForRequest(r).Swipe(req.X1, req.Y1, req.X2, req.Y2, req.DurationMS); err != nil {
 		writeErr(w, http.StatusConflict, err.Error())
 		return
 	}
@@ -264,7 +378,7 @@ func (s *Server) mobileSwipe(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) mobileKey(w http.ResponseWriter, r *http.Request) {
-	if !s.mobileReady(w) {
+	if !s.mobileReady(w, r) {
 		return
 	}
 	var req struct {
@@ -274,7 +388,7 @@ func (s *Server) mobileKey(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, http.StatusBadRequest, "invalid body")
 		return
 	}
-	if err := s.mobileForRequest(r).Key(req.Keycode); err != nil {
+	if err := s.mobileUIForRequest(r).Key(req.Keycode); err != nil {
 		writeErr(w, http.StatusConflict, err.Error())
 		return
 	}
@@ -282,10 +396,10 @@ func (s *Server) mobileKey(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) mobileBack(w http.ResponseWriter, r *http.Request) {
-	if !s.mobileReady(w) {
+	if !s.mobileReady(w, r) {
 		return
 	}
-	if err := s.mobileForRequest(r).Back(); err != nil {
+	if err := s.mobileUIForRequest(r).Back(); err != nil {
 		writeErr(w, http.StatusConflict, err.Error())
 		return
 	}
@@ -293,7 +407,7 @@ func (s *Server) mobileBack(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) mobileLaunch(w http.ResponseWriter, r *http.Request) {
-	if !s.mobileReady(w) {
+	if !s.mobileReady(w, r) {
 		return
 	}
 	var req struct {
@@ -303,7 +417,7 @@ func (s *Server) mobileLaunch(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, http.StatusBadRequest, "invalid body")
 		return
 	}
-	if err := s.mobileForRequest(r).LaunchApp(req.Package); err != nil {
+	if err := s.mobileUIForRequest(r).LaunchApp(req.Package); err != nil {
 		writeErr(w, http.StatusConflict, err.Error())
 		return
 	}
@@ -311,13 +425,24 @@ func (s *Server) mobileLaunch(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) mobileForeground(w http.ResponseWriter, r *http.Request) {
-	if !s.mobileReady(w) {
+	if !s.mobileReady(w, r) {
 		return
 	}
-	pkg, err := s.mobileForRequest(r).ForegroundApp()
+	pkg, err := s.mobileUIForRequest(r).ForegroundApp()
 	if err != nil {
 		writeErr(w, http.StatusConflict, err.Error())
 		return
 	}
 	writeJSON(w, http.StatusOK, map[string]string{"package": pkg})
+}
+
+func (s *Server) mobileHome(w http.ResponseWriter, r *http.Request) {
+	if !s.mobileReady(w, r) {
+		return
+	}
+	if err := s.mobileUIForRequest(r).Home(); err != nil {
+		writeErr(w, http.StatusConflict, err.Error())
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]string{"home": "ok"})
 }

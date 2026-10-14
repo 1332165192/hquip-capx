@@ -297,7 +297,16 @@ func (s *Server) wxhookCDPStart(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, http.StatusNotImplemented, "wxhook disabled")
 		return
 	}
-	res, err := s.wxhook.CDPStart()
+	var req struct {
+		Endpoint string `json:"endpoint"`
+	}
+	if r.Body != nil && r.ContentLength != 0 {
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			writeErr(w, http.StatusBadRequest, "invalid body")
+			return
+		}
+	}
+	res, err := s.wxhook.CDPStart(req.Endpoint)
 	if err != nil {
 		writeErr(w, http.StatusConflict, err.Error())
 		return

@@ -47,14 +47,18 @@ type textContent struct {
 }
 
 type imageContent struct {
-	Type     string `json:"type"`
-	Data     string `json:"data"`
-	MIMEType string `json:"mimeType"`
+	Type        string         `json:"type"`
+	Data        string         `json:"data"`
+	MIMEType    string         `json:"mimeType"`
+	Coordinates map[string]any `json:"-"`
 }
 
 // Screenshots must be MCP images so a vision-capable client can read pixels.
 func valueResult(value any) map[string]any {
 	if picture, ok := value.(imageContent); ok {
+		if picture.Coordinates != nil {
+			return map[string]any{"content": []any{picture, textContent{Type: "text", Text: jsonText(picture.Coordinates)}}, "isError": false}
+		}
 		return map[string]any{"content": []imageContent{picture}, "isError": false}
 	}
 	// Snapshot responses can optionally contain an embedded screenshot. Keep

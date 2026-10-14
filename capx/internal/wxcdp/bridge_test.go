@@ -70,3 +70,29 @@ func TestExternalCallsAndStopCancelPending(t *testing.T) {
 		t.Fatal("status running after stop")
 	}
 }
+
+func TestUIEndpointOverridesEnvironmentWithoutSwitchingActiveTarget(t *testing.T) {
+	server := httptest.NewServer(websocket.Handler(func(conn *websocket.Conn) {
+		defer conn.Close()
+		var raw string
+		for websocket.Message.Receive(conn, &raw) == nil {
+		}
+	}))
+	defer server.Close()
+	t.Setenv("CAPX_CDP_WS", "ws://127.0.0.1:1/unavailable")
+	b := New(nil)
+	defer b.Stop()
+	endpoint := strings.Replace(server.URL, "http://", "ws://", 1)
+	if _, err := b.StartEndpoint(endpoint); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := b.StartEndpoint("ws://127.0.0.1:2/another"); err == nil {
+		t.Fatal("silently kept the old target for a different requested endpoint")
+	}
+	if b.Status()["ws"] != endpoint {
+		t.Fatal("failed switch changed the active target")
+	}
+	if _, err := b.Start(); err != nil {
+		t.Fatal("an existing connection should survive a missing environment endpoint", err)
+	}
+}

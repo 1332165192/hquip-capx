@@ -1,3 +1,11 @@
+# Mobile automation fixes (2026-10-15)
+
+- Connect an existing operator-authorized WDA session from the App capture page and MCP. Add iOS screenshots, element lookup, tap, Unicode input, swipe, app launch, foreground lookup and home to the shared mobile API.
+- Convert Retina screenshot pixels to UIKit points in the page; include coordinate metadata with MCP image results and reject out-of-screen coordinates.
+- Require the backend active policy for Android and iOS device mutations, in addition to the MCP active gate.
+- Accept the external CDP endpoint from the page/API without restarting the daemon. Reject target changes while a connection is active.
+- Add WDA protocol, session expiry, redirect, platform routing and authorization regressions. WDA installation/signing, iOS CA trust and per-app decryption remain environment requirements.
+
 # Changes prepared for the public source release (2026-10-14)
 
 GitHub follow-up: add missing macOS C type headers, use an explicitly unavailable

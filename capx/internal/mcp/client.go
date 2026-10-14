@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -60,15 +61,20 @@ func envTruthy(v string) bool {
 }
 
 func (c *apiClient) do(method, path string, query url.Values, body any) (int, []byte, error) {
+	code, data, _, err := c.doWithHeaders(method, path, query, body)
+	return code, data, err
+}
+
+func (c *apiClient) doWithHeaders(method, path string, query url.Values, body any) (int, []byte, http.Header, error) {
 	token := c.token
 	if c.tokenFile != "" {
 		data, err := os.ReadFile(c.tokenFile)
 		if err != nil {
-			return 0, nil, fmt.Errorf("read CAPX_TOKEN_FILE: %w", err)
+			return 0, nil, nil, fmt.Errorf("read CAPX_TOKEN_FILE: %w", err)
 		}
 		token = strings.TrimSpace(string(data))
 		if token == "" || strings.ContainsAny(token, "\r\n\x00") {
-			return 0, nil, fmt.Errorf("CAPX_TOKEN_FILE contains an empty or invalid token")
+			return 0, nil, nil, fmt.Errorf("CAPX_TOKEN_FILE contains an empty or invalid token")
 		}
 	}
 	u := c.base + path
@@ -83,13 +89,13 @@ func (c *apiClient) do(method, path string, query url.Values, body any) (int, []
 	if body != nil {
 		b, err := json.Marshal(body)
 		if err != nil {
-			return 0, nil, err
+			return 0, nil, nil, err
 		}
 		rdr = bytes.NewReader(b)
 	}
 	req, err := http.NewRequest(method, u, rdr)
 	if err != nil {
-		return 0, nil, err
+		return 0, nil, nil, err
 	}
 	if timeout != 30*time.Second {
 		ctx, cancel := context.WithTimeout(req.Context(), timeout)
@@ -108,21 +114,21 @@ func (c *apiClient) do(method, path string, query url.Values, body any) (int, []
 	}
 	resp, err := c.http.Do(req)
 	if err != nil {
-		return 0, nil, fmt.Errorf("capx API %s: %w (is captured running at %s?)", u, err, c.base)
+		return 0, nil, nil, fmt.Errorf("capx API %s: %w (is captured running at %s?)", u, err, c.base)
 	}
 	defer resp.Body.Close()
 	b, err := io.ReadAll(io.LimitReader(resp.Body, (8<<20)+1))
 	if err != nil {
-		return resp.StatusCode, nil, err
+		return resp.StatusCode, nil, nil, err
 	}
 	if len(b) > 8<<20 {
-		return resp.StatusCode, nil, fmt.Errorf("capx API response exceeds 8 MiB")
+		return resp.StatusCode, nil, nil, fmt.Errorf("capx API response exceeds 8 MiB")
 	}
-	return resp.StatusCode, b, nil
+	return resp.StatusCode, b, resp.Header, nil
 }
 
 func (c *apiClient) getJSON(path string, query url.Values) (any, error) {
-	code, b, err := c.do(http.MethodGet, path, query, nil)
+	code, b, headers, err := c.doWithHeaders(http.MethodGet, path, query, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +136,15 @@ func (c *apiClient) getJSON(path string, query url.Values) (any, error) {
 		return nil, fmt.Errorf("GET %s: HTTP %d: %s", path, code, strings.TrimSpace(string(b)))
 	}
 	if http.DetectContentType(b) == "image/png" {
-		return imageContent{Type: "image", MIMEType: "image/png", Data: base64.StdEncoding.EncodeToString(b)}, nil
+		picture := imageContent{Type: "image", MIMEType: "image/png", Data: base64.StdEncoding.EncodeToString(b)}
+		if headers.Get("X-Capx-Coordinate-Space") == "points" {
+			width, e1 := strconv.ParseFloat(headers.Get("X-Capx-Screen-Width"), 64)
+			height, e2 := strconv.ParseFloat(headers.Get("X-Capx-Screen-Height"), 64)
+			if e1 == nil && e2 == nil && width > 0 && height > 0 {
+				picture.Coordinates = map[string]any{"coordinate_space": "points", "screen": map[string]float64{"width": width, "height": height}, "note": "iOS 点击和滑动使用 points；请按图片宽高比例换算截图像素"}
+			}
+		}
+		return picture, nil
 	}
 	var v any
 	if err := json.Unmarshal(b, &v); err != nil {

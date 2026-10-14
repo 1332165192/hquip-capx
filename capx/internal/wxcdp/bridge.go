@@ -50,14 +50,28 @@ func normalizeEndpoint(raw string) (string, error) {
 }
 
 func (b *Bridge) Start() (map[string]any, error) {
+	return b.StartEndpoint("")
+}
+
+// StartEndpoint accepts a UI/API address, falling back to CAPX_CDP_WS.
+func (b *Bridge) StartEndpoint(raw string) (map[string]any, error) {
 	b.mu.Lock()
 	defer b.mu.Unlock()
-	if b.conn != nil {
+	if b.conn != nil && strings.TrimSpace(raw) == "" {
 		return b.statusLocked(), nil
 	}
-	endpoint, err := normalizeEndpoint(os.Getenv("CAPX_CDP_WS"))
+	if strings.TrimSpace(raw) == "" {
+		raw = os.Getenv("CAPX_CDP_WS")
+	}
+	endpoint, err := normalizeEndpoint(raw)
 	if err != nil {
 		return nil, err
+	}
+	if b.conn != nil {
+		if b.endpoint != endpoint {
+			return nil, errors.New("stop the current CDP connection before changing targets")
+		}
+		return b.statusLocked(), nil
 	}
 	config, err := websocket.NewConfig(endpoint, "http://127.0.0.1/")
 	if err != nil {

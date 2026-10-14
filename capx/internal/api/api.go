@@ -58,6 +58,7 @@ type Server struct {
 	wxctrl    *wxauto.Controller
 	wxdesk    wxDesktop
 	mobile    *mobile.Controller
+	ios       *mobile.IOSController
 	mobileVPN *mobilevpn.Gateway
 	hae       *hae.Engine
 	guard     *guard
@@ -140,10 +141,11 @@ func (s *Server) SetWxhook(m *wxhook.Manager) {
 	s.wxauto = wxauto.NewAutomation(s.wxctrl, s.st.SnapshotHTTPTx)
 }
 
-// SetMobile wires the Android device controller used by the /api/mobile/*
-// app-side capture and UI-automation endpoints. Passing nil disables them.
+// SetMobile wires Android capture and initializes the iOS WDA controller for
+// the shared /api/mobile/* endpoints. Passing nil disables Android only.
 func (s *Server) SetMobile(m *mobile.Controller) {
 	s.mobile = m
+	s.ios = mobile.NewIOS()
 }
 
 func (s *Server) SetMobileVPN(v *mobilevpn.Gateway) {
@@ -390,6 +392,8 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/wxdesk/screenshot", s.wxdeskScreenshot)
 	mux.HandleFunc("POST /api/wxdesk/{action}", s.wxdeskAction)
 	mux.HandleFunc("GET /api/mobile/devices", s.mobileDevices)
+	mux.HandleFunc("POST /api/mobile/ios/connect", s.mobileIOSConnect)
+	mux.HandleFunc("POST /api/mobile/ios/disconnect", s.mobileIOSDisconnect)
 	mux.HandleFunc("GET /api/mobile/status", s.mobileStatus)
 	mux.HandleFunc("POST /api/mobile/use", s.mobileUse)
 	mux.HandleFunc("POST /api/mobile/capture/start", s.mobileCaptureStart)
@@ -402,6 +406,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /api/mobile/swipe", s.mobileSwipe)
 	mux.HandleFunc("POST /api/mobile/key", s.mobileKey)
 	mux.HandleFunc("POST /api/mobile/back", s.mobileBack)
+	mux.HandleFunc("POST /api/mobile/home", s.mobileHome)
 	mux.HandleFunc("POST /api/mobile/launch", s.mobileLaunch)
 	mux.HandleFunc("GET /api/mobile/foreground", s.mobileForeground)
 	// Security policy + audit: toggle active mode, inspect the audit ring.

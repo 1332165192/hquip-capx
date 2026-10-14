@@ -77,6 +77,55 @@ func TestScreenshotsReachAIAsMCPImages(t *testing.T) {
 	}
 }
 
+func TestIOSMobileToolsPreservePlatformAndUnicode(t *testing.T) {
+	api := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Query().Get("platform") != "ios" || r.URL.Query().Get("serial") != "ios-wda" {
+			t.Errorf("wrong phone platform: %s", r.URL.RawQuery)
+		}
+		var body map[string]any
+		_ = json.NewDecoder(r.Body).Decode(&body)
+		if body["value"] != "小米" || body["platform"] != nil || body["serial"] != nil {
+			t.Errorf("lost text or target leaked into body: %v", body)
+		}
+		_, _ = w.Write([]byte(`{"input":"ok"}`))
+	}))
+	defer api.Close()
+	s := &Server{api: &apiClient{base: api.URL, http: api.Client(), active: true}}
+	for _, args := range []map[string]any{
+		{"platform": "ios", "serial": "ios-wda", "body": map[string]any{"value": "小米"}},
+		{"platform": "ios", "serial": "ios-wda", "value": "小米"},
+	} {
+		if result := invokeAutomationTool(t, s, "capx_mobile_input", args); result["isError"] != false {
+			t.Fatal(result)
+		}
+	}
+	s.api.active = false
+	if result := invokeAutomationTool(t, s, "capx_mobile_ios_connect", map[string]any{"endpoint": "http://127.0.0.1:8100"}); result["isError"] != true {
+		t.Fatal("inactive MCP accepted a WDA connection", result)
+	}
+}
+
+func TestIOSScreenshotIncludesCoordinateMetadataForAI(t *testing.T) {
+	picture := automationPNG(t)
+	api := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Query().Get("platform") != "ios" {
+			t.Error("lost iOS platform")
+		}
+		w.Header().Set("Content-Type", "image/png")
+		w.Header().Set("X-Capx-Coordinate-Space", "points")
+		w.Header().Set("X-Capx-Screen-Width", "414")
+		w.Header().Set("X-Capx-Screen-Height", "896")
+		_, _ = w.Write(picture)
+	}))
+	defer api.Close()
+	s := &Server{api: &apiClient{base: api.URL, http: api.Client()}}
+	result := invokeAutomationTool(t, s, "capx_mobile_screenshot", map[string]any{"platform": "ios", "serial": "ios-wda"})
+	blocks := result["content"].([]any)
+	if len(blocks) != 2 || blocks[0].(map[string]any)["type"] != "image" || !strings.Contains(blocks[1].(map[string]any)["text"].(string), `"coordinate_space": "points"`) {
+		t.Fatal("AI did not receive screenshot coordinates", result)
+	}
+}
+
 func TestSnapshotReturnsElementsAndImageWithoutBase64Text(t *testing.T) {
 	picture := automationPNG(t)
 	api := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

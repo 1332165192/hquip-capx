@@ -1,6 +1,6 @@
 {
   "format": "capx-source-manifest-v1",
-  "date": "2026-10-14",
+  "date": "2026-10-15",
   "build_policy": "source-only repository; compile on GitHub Actions",
   "files": [
     {
@@ -24,9 +24,499 @@
       "sha256": "8dcc4ef02907c398382d4e1fb716b9b5e3b05d8901789c2589f0a9f346aa5dc5"
     },
     {
+      "path": "CHANGELOG.md",
+      "size": 2911,
+      "sha256": "34f3d1c84662e45be2bbf25bd48f6b6ded41264128b512d0b66ee9468bc13fcc"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "size": 826,
+      "sha256": "120b8e7f64fa95774e655dc87b274d5612393d06e2da332c5413336941fd0c51"
+    },
+    {
+      "path": "LICENSE",
+      "size": 1074,
+      "sha256": "34cdc3ee668e6191777ab5a935a9334173981f9adf262ee706d1640a82a17409"
+    },
+    {
+      "path": "NOTICE.md",
+      "size": 2740,
+      "sha256": "a1a9f3f17cb14c735a445ca8bd3b341b3af29bfeaedbabff333f8968c7743947"
+    },
+    {
+      "path": "README.md",
+      "size": 6761,
+      "sha256": "3d91b23f543bbe14f27861343b98ff79341db33305daedaeef3f7a95f8275582"
+    },
+    {
+      "path": "RELEASE_VALIDATION.md",
+      "size": 3778,
+      "sha256": "70ec5e14c7d54c240dae3e4e60fe87fe6a4712a24f5a80f0ee63f226628ff171"
+    },
+    {
+      "path": "SECURITY.md",
+      "size": 1170,
+      "sha256": "6679c9f7f7995250cb176151fc2f00d497343ec856e121a87bd585330d1300e3"
+    },
+    {
+      "path": "capx-desktop/README.md",
+      "size": 109,
+      "sha256": "9a2a244ae9e34d4320b328a939c922782b38ddaba8b96d39b78950a3db09e116"
+    },
+    {
+      "path": "capx-desktop/app.go",
+      "size": 26081,
+      "sha256": "b8877d327762227f55dd1cd9a629a9be62a220c018dde716f880ecfec88d5160"
+    },
+    {
+      "path": "capx-desktop/app_runtime_test.go",
+      "size": 8106,
+      "sha256": "5a23e653d3a542ec151031a80410599cf4f74f9e6cbd4a8ad3cb2526a68c103a"
+    },
+    {
+      "path": "capx-desktop/backend_candidates.go",
+      "size": 873,
+      "sha256": "a467588d3338b1b7a0ee73839e66b848d5c9446203007de5f439dde93248ce2b"
+    },
+    {
+      "path": "capx-desktop/backend_candidates_test.go",
+      "size": 822,
+      "sha256": "bd6c8e6fcd070070c5d575f46c5dc5e3a2130e25d04ebf8e417f0006ebfe18fd"
+    },
+    {
+      "path": "capx-desktop/build.ps1",
+      "size": 572,
+      "sha256": "95bb706b692b4e23c2c5d890ed12efc18c24ae12d9b4b8c2b3618e5b1a65cb95"
+    },
+    {
+      "path": "capx-desktop/build/windows/icon.ico",
+      "size": 17597,
+      "sha256": "068b8bdacbe170ece1ce63d79c9bac03e0a62b48d4f576337a3f085a41d1ef58"
+    },
+    {
+      "path": "capx-desktop/build/windows/info.json",
+      "size": 356,
+      "sha256": "4de62dae9a86aa4c6048e304ba2a3f22bd2989d270561a92489c1456629661cf"
+    },
+    {
+      "path": "capx-desktop/build/windows/wails.exe.manifest",
+      "size": 1036,
+      "sha256": "c63cb75ce48fb1354c95264f6fc43a7686a9b85a82a71efa9722ae4ce6561dc0"
+    },
+    {
+      "path": "capx-desktop/console_bridge.go",
+      "size": 3145,
+      "sha256": "415a1648957d8ae81423fb001c0abc94f211ad9314bedf3f30d61930d667cc5d"
+    },
+    {
+      "path": "capx-desktop/console_bridge_test.go",
+      "size": 2259,
+      "sha256": "23bf8b48e08b4bbe4be2777da28271ef0465cf5d675e303693457057e45c85f9"
+    },
+    {
+      "path": "capx-desktop/frontend/README.md",
+      "size": 2799,
+      "sha256": "850992bf724cbc40e17a67f6c213615d001791b38dbd301ea8903271c7d9588a"
+    },
+    {
+      "path": "capx-desktop/frontend/dist/app.js",
+      "size": 32955,
+      "sha256": "eef281c18e80c1f5288630ffe1faba77f9a425883aa9a26762333a6af6793c44"
+    },
+    {
+      "path": "capx-desktop/frontend/dist/crypto-js.min.js",
+      "size": 60819,
+      "sha256": "769a555de553babc35a3338f344dd7aa16260c93cea2c7db290707c90484e7cc"
+    },
+    {
+      "path": "capx-desktop/frontend/dist/desktop.css",
+      "size": 22233,
+      "sha256": "e150c27a6ea511291bd7144982824a694b04a26b0dcb6a2891c44b0b5d3ed86d"
+    },
+    {
+      "path": "capx-desktop/frontend/dist/index.html",
+      "size": 14782,
+      "sha256": "e9b297328daa4743d672e950b14f0ca46d9c0182cc845daa8f9f8a4654c1e66f"
+    },
+    {
+      "path": "capx-desktop/frontend/dist/style.css",
+      "size": 20077,
+      "sha256": "4837bd52d54c6866a0d89f3c3239b5d2041d3e7fde092b5eecfbaf38eb0a40bb"
+    },
+    {
+      "path": "capx-desktop/frontend/tests/ui-smoke.cjs",
+      "size": 14317,
+      "sha256": "2589221aa42fa74dffa1215eb8ae9070efdaf8aa12a30bf11d27ae56e0d239b5"
+    },
+    {
+      "path": "capx-desktop/frontend/wailsjs/go/main/App.d.ts",
+      "size": 1524,
+      "sha256": "b96d9d88ebb87713f81b9410ce654fb25f7a2737fc1553b8bf4f9fbc3bf67fd6"
+    },
+    {
+      "path": "capx-desktop/frontend/wailsjs/go/main/App.js",
+      "size": 2516,
+      "sha256": "2f8a5ee9847847d64902d8bee0322509b0082f2f53ca3718069f60f28ef47504"
+    },
+    {
+      "path": "capx-desktop/frontend/wailsjs/runtime/package.json",
+      "size": 538,
+      "sha256": "e17998421ed0ff615d8c538fa2d99a0dc46ff974e915a513a6e4f1ac47450d92"
+    },
+    {
+      "path": "capx-desktop/frontend/wailsjs/runtime/runtime.d.ts",
+      "size": 15254,
+      "sha256": "8f4ec03cac22770b665b4071a652fa952a81846c852dd557c4806fea0e4aaa69"
+    },
+    {
+      "path": "capx-desktop/frontend/wailsjs/runtime/runtime.js",
+      "size": 7205,
+      "sha256": "e25fe86d3c590de724b93e008f7637c809e54cfa76bdeff8afaf44ed89aeab0d"
+    },
+    {
+      "path": "capx-desktop/go.mod",
+      "size": 1451,
+      "sha256": "d4e95cb81a2fb15f01d78bd2f6081daaefd455f7924d3f64a9549461acc4a609"
+    },
+    {
+      "path": "capx-desktop/go.sum",
+      "size": 7946,
+      "sha256": "6a9eb0fefa3a32a4d3432018314ff2538a68bb382a09c6b3acc449e4cedd81c2"
+    },
+    {
+      "path": "capx-desktop/main.go",
+      "size": 628,
+      "sha256": "a877a25d5d4b61430f5b444a4968803284eb159f4d792d6bedf4bd40bea141f3"
+    },
+    {
+      "path": "capx-desktop/proc_args.go",
+      "size": 1650,
+      "sha256": "920b9092a65d87a0ccb3b370c61e5e1127a7759a1b2a5f5ba33eac8916db28a4"
+    },
+    {
+      "path": "capx-desktop/proc_args_test.go",
+      "size": 2160,
+      "sha256": "3892910a0bb0630b800b08c8c40c9468ba516a55c5a636da834efc03fa5110ed"
+    },
+    {
+      "path": "capx-desktop/proc_darwin.go",
+      "size": 339,
+      "sha256": "e0fdf34f120ffd86343eb6ec468c46979d5f16e3244885eecb87f531a6b94135"
+    },
+    {
+      "path": "capx-desktop/proc_fallback.go",
+      "size": 219,
+      "sha256": "999d10a5a7f8ae17e020bacd6844517e4746dc04fcc5ce9ef14689c40a0ba2a3"
+    },
+    {
+      "path": "capx-desktop/proc_linux.go",
+      "size": 486,
+      "sha256": "debcb7dc51a58c0f5fb865e7f400ca868e73b04532329ad0175fc94d4d8da606"
+    },
+    {
+      "path": "capx-desktop/proc_other.go",
+      "size": 1223,
+      "sha256": "a3b55577eecdf4d3ab368b1b3d6cfd49ec911f8e06023dadbe3c35ee7dcc4ffd"
+    },
+    {
+      "path": "capx-desktop/proc_unix_test.go",
+      "size": 1745,
+      "sha256": "f29fa08ce9142613a801cd4e02867355a781ab31abf63f07c83659c79faacbb4"
+    },
+    {
+      "path": "capx-desktop/proc_windows.go",
+      "size": 3390,
+      "sha256": "d95311a8aa131ade6d54ecbd0091f99bf36889b57eef30ead90a5f5776a7a798"
+    },
+    {
+      "path": "capx-desktop/runtime_client.go",
+      "size": 9363,
+      "sha256": "5c2e1993f17a84807eaf15239c7bfb03d3d37b8e9a44ac3cfa8def227240dc7d"
+    },
+    {
+      "path": "capx-desktop/wails.json",
+      "size": 384,
+      "sha256": "7c63303fed549de3408f91a544f7a116a323af3ebaf50cf93e975cf76f0efa36"
+    },
+    {
+      "path": "capx-web-manager/README.md",
+      "size": 6915,
+      "sha256": "28262c2054318fe8451cf4beb604f86a888e6eb5199b4e9e216fdbcec77bf7c7"
+    },
+    {
+      "path": "capx-web-manager/config_sessions_test.go",
+      "size": 4029,
+      "sha256": "bf16711b49b623fa25532cb584363e3494f34933d464c6a41332a349869e8961"
+    },
+    {
+      "path": "capx-web-manager/config_store.go",
+      "size": 1891,
+      "sha256": "69ee3f248f0c7643a5957a69af8999f9033cb81a3aff9faee82e9d24cdf2da73"
+    },
+    {
+      "path": "capx-web-manager/directory_picker.go",
+      "size": 4608,
+      "sha256": "c205c1cea22c9574f6778dbd81223f38dacd648a9954fc4c821ad1f46a526f40"
+    },
+    {
+      "path": "capx-web-manager/directory_picker_other.go",
+      "size": 184,
+      "sha256": "9a0d0e0f70618fa3fb20cd530197e4515d5e707d66ffc1fa5018178ba2947cbe"
+    },
+    {
+      "path": "capx-web-manager/directory_picker_test.go",
+      "size": 2680,
+      "sha256": "7410f1f20900429b5d28e81cbf9b4c5d168004ba49c43217aa477cf528abf29d"
+    },
+    {
+      "path": "capx-web-manager/directory_picker_windows.go",
+      "size": 1348,
+      "sha256": "382a31f481ed5dd1302e424462d642b680e8d5f5adbb1fe43d322e7b48b0b521"
+    },
+    {
+      "path": "capx-web-manager/go.mod",
+      "size": 99,
+      "sha256": "76204fc69357306057576cf959d99b1cf170e486aed98ba629b45bea1ce511c6"
+    },
+    {
+      "path": "capx-web-manager/go.sum",
+      "size": 666,
+      "sha256": "97e37e3a8ed6a9f5bfd7d074e4115f56cbea7751d792fd993e0d5682f9dbc6ba"
+    },
+    {
+      "path": "capx-web-manager/instance_lock.go",
+      "size": 103,
+      "sha256": "eec9ce4529d6b889089658cfbb1f29ca4fd9a3b5ec09dc03b6147fb92cfd7524"
+    },
+    {
+      "path": "capx-web-manager/instance_lock_unix.go",
+      "size": 606,
+      "sha256": "e4a94f51f8c8f78d61c90166577e8035e7540faa99ca8b081ab249e8b1fbb9c7"
+    },
+    {
+      "path": "capx-web-manager/instance_lock_windows.go",
+      "size": 737,
+      "sha256": "464e0760f1bb3953aaa6b411b99efb5002fca53f36a4d92f22b538c8f14e3005"
+    },
+    {
+      "path": "capx-web-manager/instance_manifest.go",
+      "size": 20542,
+      "sha256": "98c72d6c049700f7632e3b8b9bc699f0976f4cc5e02325517787aa0720ddbd19"
+    },
+    {
+      "path": "capx-web-manager/instance_manifest_test.go",
+      "size": 12636,
+      "sha256": "c2b955fe0af5aecbee1c859555c6b6aa9a7e95c166c30f6754c7106788602546"
+    },
+    {
+      "path": "capx-web-manager/layout_test.go",
+      "size": 1943,
+      "sha256": "5ee3d72d259225de3bcce7f935c753a43750f75fae950488da44d38503427a57"
+    },
+    {
+      "path": "capx-web-manager/legacy_stop.go",
+      "size": 3703,
+      "sha256": "8b37808ba935a3f15a25abb216268f844413b27431f0b5d95377c72c8d5a048f"
+    },
+    {
+      "path": "capx-web-manager/legacy_stop_test.go",
+      "size": 3658,
+      "sha256": "26c218a1d7f8b12d28257fa5ffc2835f1bf378b290f5efe9fd8f2bf3528badaa"
+    },
+    {
+      "path": "capx-web-manager/main.go",
+      "size": 50327,
+      "sha256": "669e597ad51e06e57d2cedd223ea7d99e58f845152b0140c58b64fff5df3a483"
+    },
+    {
+      "path": "capx-web-manager/managed_browser_query_other.go",
+      "size": 569,
+      "sha256": "6864310cd81527d02b73fd25f09246295e05ae48eefcf45e63c9d9f97cbbfffa"
+    },
+    {
+      "path": "capx-web-manager/managed_browser_query_windows.go",
+      "size": 406,
+      "sha256": "4b8ea2318ad85914afc9152f4b40c0ee2fb5b09f3dedd1641b2dce8881ff6d4c"
+    },
+    {
+      "path": "capx-web-manager/managed_browser_terminate.go",
+      "size": 1561,
+      "sha256": "2fee4a8a5173d097bc2b5f80ad7ceba986b61444bb90355a96f7c06a1e255fa9"
+    },
+    {
+      "path": "capx-web-manager/managed_instance.go",
+      "size": 24759,
+      "sha256": "191737ef385066d51cdbc87412d9a7dab72eee6ea06ed65c510440c1b0081ea0"
+    },
+    {
+      "path": "capx-web-manager/managed_instance_test.go",
+      "size": 14770,
+      "sha256": "2ba82a5931d90413d5a4c5405fa95ff203306d5db3b279033dd256c01ec0bd04"
+    },
+    {
+      "path": "capx-web-manager/managed_ui.go",
+      "size": 897,
+      "sha256": "085a02a71e1e0444d4a1124da845fafed9b3d7cacb412433055bd5b7e8c41f9a"
+    },
+    {
+      "path": "capx-web-manager/managed_ui_test.go",
+      "size": 2610,
+      "sha256": "7c102ccfbc86c278bbc8c4aa57f9ee8c99f007099102596889e6bde2683f7b92"
+    },
+    {
+      "path": "capx-web-manager/manager_security.go",
+      "size": 3313,
+      "sha256": "e38a61d598fcb88f3c593fe5b4b5c501704858a43914da856c4a2cbce1e82cb6"
+    },
+    {
+      "path": "capx-web-manager/manager_security_test.go",
+      "size": 5315,
+      "sha256": "c79615d8a72dc463f7a508a2a7f95e49e5eb3e926f4f95c3247ed7878561f64c"
+    },
+    {
+      "path": "capx-web-manager/open_target_other.go",
+      "size": 366,
+      "sha256": "d025a45aedc0ffab96dffe92010aba8cb8f435645a9736d60dddda6948d9a0e0"
+    },
+    {
+      "path": "capx-web-manager/open_target_test.go",
+      "size": 318,
+      "sha256": "7ff6414d5374ab0591b71b7585c04c54ec6c272205a7e434aaca4c71aa8f92a8"
+    },
+    {
+      "path": "capx-web-manager/open_target_windows.go",
+      "size": 643,
+      "sha256": "494ef5b8542aa14e456472eb2bafc0c6aea5770751be78044c21347e277b28a7"
+    },
+    {
+      "path": "capx-web-manager/port_allocator.go",
+      "size": 4417,
+      "sha256": "85153148f127c9583d95e4b52f58469ab52afeb775bb29c4148784cfed4ecd9f"
+    },
+    {
+      "path": "capx-web-manager/port_allocator_test.go",
+      "size": 5951,
+      "sha256": "cd87eb8e27613196f5f7eb42457996c52b9a7e0a9af5a123208498485b400158"
+    },
+    {
+      "path": "capx-web-manager/proc_attr_other.go",
+      "size": 468,
+      "sha256": "70dad542a2da740257786c922f8c4705fd429c62e8e0dccbc954c721ed7ab564"
+    },
+    {
+      "path": "capx-web-manager/proc_attr_windows.go",
+      "size": 454,
+      "sha256": "040420788e300828a28acf5f4e1ef167adb2bbdaa8c2c8db27d23725c785be27"
+    },
+    {
+      "path": "capx-web-manager/process_discovery_test.go",
+      "size": 8143,
+      "sha256": "deb7f1fa1c06b82ca97a4f27d930366fb2d025cdc5617cb39ed71ffe9942ba07"
+    },
+    {
+      "path": "capx-web-manager/process_enum_other.go",
+      "size": 1086,
+      "sha256": "1327aa9f5ce229ee9277f068241de675294e55dc432baaaa97f7c74814d74ab4"
+    },
+    {
+      "path": "capx-web-manager/process_enum_windows.go",
+      "size": 401,
+      "sha256": "a28c26a3cc702834ff21f4099ddb9fff8a51e66390cde9a56f02ef4820abb375"
+    },
+    {
+      "path": "capx-web-manager/process_image_other.go",
+      "size": 4103,
+      "sha256": "3179c8a3cdf7a72028ade58110ffe1b31474265746b12f118813bbf86b13c2c6"
+    },
+    {
+      "path": "capx-web-manager/process_image_windows.go",
+      "size": 2370,
+      "sha256": "15cf7666be0d79acc7255db3552322201e37f1d2b5ec5c2fb41956958171a720"
+    },
+    {
+      "path": "capx-web-manager/process_listener_proc.go",
+      "size": 4018,
+      "sha256": "2219a3ff767f550af8dde463ac3c45d67cd604b0bb0a862bf8d2b781ed234ebc"
+    },
+    {
+      "path": "capx-web-manager/process_listener_proc_test.go",
+      "size": 3374,
+      "sha256": "4f5bf02e184323567bda717103179633a204c5314e4dbd4aaa297d3a72534e4b"
+    },
+    {
+      "path": "capx-web-manager/process_terminate_other.go",
+      "size": 1581,
+      "sha256": "0bd2e9b1176a3e3746fb3c9ff3c57426390fc8ba3d4131e0c6e942f681b8fe8d"
+    },
+    {
+      "path": "capx-web-manager/process_terminate_windows.go",
+      "size": 1232,
+      "sha256": "ffc4553da2ba895ff2dbb71bcc7b8f75913ff583d83eed406fdb7cc5c5e89654"
+    },
+    {
+      "path": "capx-web-manager/runtime_sessions.go",
+      "size": 7763,
+      "sha256": "de526dc540fa7fea5391a673e2c8975b275459319557b2a7e3865bcce7cb3002"
+    },
+    {
+      "path": "capx-web-manager/src_session_template.md.tmpl",
+      "size": 4091,
+      "sha256": "f7481906e38b18870b964f3317c0729737193f73ac2dcc28466878a6b7de6954"
+    },
+    {
+      "path": "capx-web-manager/src_session_template_unix.md.tmpl",
+      "size": 4691,
+      "sha256": "64c565d265755e9e1fb2f02812242fdaa5083c97709e48d40da1dda154dfc18b"
+    },
+    {
+      "path": "capx-web-manager/src_template.go",
+      "size": 8681,
+      "sha256": "0544a33ad043101aeaaf8366d1eee8fe9053f09af654621775ddacf5abc97b03"
+    },
+    {
+      "path": "capx-web-manager/src_template_other.go",
+      "size": 205,
+      "sha256": "8bece747cb59b005675180107ceb0c720c278fceebac27282a077a9efdfcd7f4"
+    },
+    {
+      "path": "capx-web-manager/src_template_test.go",
+      "size": 7440,
+      "sha256": "3c09c18e977e20af6815a63bc0b1850d0cf325c987e4e376c30a5cc69f05194e"
+    },
+    {
+      "path": "capx-web-manager/src_template_windows.go",
+      "size": 207,
+      "sha256": "5cc1ed5cd2aac5ad5f8341be7565ffee45b9e86a92e84b13383f7a2c6752e5c1"
+    },
+    {
+      "path": "capx-web-manager/ui/index.html",
+      "size": 10383,
+      "sha256": "814f5a38677605a6b4d4a18a092ffa195219335a0aa0e552d66f360b53487bec"
+    },
+    {
+      "path": "capx-web-manager/ui/managed.js",
+      "size": 15377,
+      "sha256": "f3651a4172e2e12b1769eaa7936e11f8b70aecc202dfcc21a131d0c44a9fd9b3"
+    },
+    {
+      "path": "capx-web-manager/ui/manager.css",
+      "size": 18238,
+      "sha256": "2fec6299f2ddfa6cbad5db0a0a9e2316f7c834a3cfc0e70214c7a2b04e6acd03"
+    },
+    {
+      "path": "capx-web-manager/ui/manager.js",
+      "size": 8946,
+      "sha256": "6023cc71029b83d7e4a1d6355a475b1ef967810b3bb0e177bedc7275d167b4b5"
+    },
+    {
       "path": "capx/.tool-versions",
-      "size": 11,
-      "sha256": "8ed0fb848a0c2c7121e9a8a6618494c22b66739ed8d078b662e84532c0678f05"
+      "size": 10,
+      "sha256": "2c4f59c47577150e5dd4af6dd49983ddb35eb47481df0ca11ae1b4636a15230a"
+    },
+    {
+      "path": "capx/README.md",
+      "size": 92,
+      "sha256": "07752b938f730196acf7f8c0d9e5392996232d8a521068561f0af7b11a6eb215"
     },
     {
       "path": "capx/cmd/captured/grpc_off.go",
@@ -90,8 +580,8 @@
     },
     {
       "path": "capx/internal/api/api.go",
-      "size": 53429,
-      "sha256": "e554cff17a484ae39d6a88ef38e3b99dc98d82ee2d7d6a2896a9edbaf6721b27"
+      "size": 53685,
+      "sha256": "7cf7ff15679e9c0c68009fdebbea87c4a6c693ea08a8e089eadf238ab6ee1e43"
     },
     {
       "path": "capx/internal/api/collect_api.go",
@@ -370,13 +860,13 @@
     },
     {
       "path": "capx/internal/api/mobile_api.go",
-      "size": 8618,
-      "sha256": "81a8a83ae882ca665d8833b3981df5fd64a8d85b35c8e86dfbaf0ec00a4f0783"
+      "size": 12226,
+      "sha256": "b59d82ed3776dbf774221302bd2a2a491a189452b605ffd8f2cf1bc17556992f"
     },
     {
       "path": "capx/internal/api/mobile_api_test.go",
-      "size": 2828,
-      "sha256": "16747d88f89ddce16bc19a28d333f511131208245b7761fc52cb75cae9d26187"
+      "size": 6249,
+      "sha256": "5164193a4baa32ba8e5cc1c88b7a76fa04285af79e3adf673c0cfc2a6c7aabd7"
     },
     {
       "path": "capx/internal/api/mobile_vpn_api.go",
@@ -440,8 +930,8 @@
     },
     {
       "path": "capx/internal/api/security.go",
-      "size": 13312,
-      "sha256": "79879671503653c225f83ac795ad7363475ca43d67938d06cb5a7440e2efdce1"
+      "size": 13569,
+      "sha256": "ed84718284765a2072226ba512bc47e927efc81b5041aee1a10ec52f38ee4ee3"
     },
     {
       "path": "capx/internal/api/security_test.go",
@@ -525,8 +1015,8 @@
     },
     {
       "path": "capx/internal/api/wxhook_api.go",
-      "size": 11300,
-      "sha256": "9594dd8ecffd7980b929b882ca05baa5eecda08e110e23fb23045ab15edc714d"
+      "size": 11547,
+      "sha256": "b08da703c83df1e1304dfcf42cd5daf63215c00ea8c7266e0ecc8bcdf4375ca8"
     },
     {
       "path": "capx/internal/backgroundprocess/process.go",
@@ -735,8 +1225,8 @@
     },
     {
       "path": "capx/internal/hae/default_rules.yml",
-      "size": 12274,
-      "sha256": "c8eee32f13e6d5ce3f28f7bbe07b37d39313cf7d93eca1b63e96036ce0b52790"
+      "size": 11821,
+      "sha256": "7d0e2d7e079d127fc23783ce6aac4b84482b8f6a8feb5a22b6d1c6fcfa1c4d5e"
     },
     {
       "path": "capx/internal/hae/hae.go",
@@ -750,13 +1240,13 @@
     },
     {
       "path": "capx/internal/hook/agents/apimon.js",
-      "size": 2177,
-      "sha256": "b31f4bc541a8fb59f5dd399e40b57e31694f10fbef684ad351c38c8f210c8489"
+      "size": 2113,
+      "sha256": "6a33f218fd58b5c8473c3a8599527b1b4d2a463c52330a0db90338dde4fee456"
     },
     {
       "path": "capx/internal/hook/agents/java_tls.js",
-      "size": 2729,
-      "sha256": "75f7e5ea0124ef542321ce16558f1c91648357d38959c80bfaa17c9aa2a9e8c2"
+      "size": 2652,
+      "sha256": "080bc17cc46b2c21dc8523dda654d469dba37003e95bfa9e55e0cffe3f7035d5"
     },
     {
       "path": "capx/internal/hook/agents/tls.js",
@@ -815,8 +1305,8 @@
     },
     {
       "path": "capx/internal/hook/native/capx_hook.c",
-      "size": 5072,
-      "sha256": "ff9843c6952b2bc907ede11ddbbb0b40856d8d667e26e5ed2116d7acef681a91"
+      "size": 4930,
+      "sha256": "4edeafc0c40c204a145b34de54fe9a2cb8b52748216b3db8c24155735c3e5fc0"
     },
     {
       "path": "capx/internal/hook/native/minhook/include/MinHook.h",
@@ -960,23 +1450,23 @@
     },
     {
       "path": "capx/internal/mcp/automation_test.go",
-      "size": 6910,
-      "sha256": "fa351fc3605a105f8103954fd6d7d4389eabb03fd79b76057767cfc3f04d4fa6"
+      "size": 9122,
+      "sha256": "e426f3e9620d3a0d3795ee4e0bc2097ce609b2ee83ee5c5258fb41e5a8ad0b81"
     },
     {
       "path": "capx/internal/mcp/catalog.go",
-      "size": 37870,
-      "sha256": "e63924e4394898c68672d9d0f3c1994fc8f59a95b779f5514e4aba214e9d14ff"
+      "size": 38832,
+      "sha256": "054bdbfc740ee853ab0f912bf332c10dc8f97d4778178a3e27e8fc4cec561c1d"
     },
     {
       "path": "capx/internal/mcp/client.go",
-      "size": 4439,
-      "sha256": "b2434808a220b8eeb008ddb5a33e87c37aa48a39b3b120fcf212c624975b065f"
+      "size": 5252,
+      "sha256": "c858ef90596180e9c68fb8bc1b742971c0be108f273569a97f331a4de4a65ae1"
     },
     {
       "path": "capx/internal/mcp/rpc.go",
-      "size": 3638,
-      "sha256": "2e5e93547f4f5ba62f218e6fd4f0f1485f766539cfd36ee834dbde2c9c785eb9"
+      "size": 3882,
+      "sha256": "bd59cddc9557af39071ca8dc3e825f72821809cce5b7ffd26577db72e21ec340"
     },
     {
       "path": "capx/internal/mcp/runtime_shutdown.go",
@@ -1055,8 +1545,8 @@
     },
     {
       "path": "capx/internal/mobile/adb.go",
-      "size": 6089,
-      "sha256": "a004363ad9d5e300362c026c45246d298b60c99c51b0d487de23d2ba0d89372e"
+      "size": 6140,
+      "sha256": "42260b64db53cc2fa5ce0f3ab7d98d1dd4caff909ae9877ff5d8bcf97191250d"
     },
     {
       "path": "capx/internal/mobile/capture.go",
@@ -1072,6 +1562,21 @@
       "path": "capx/internal/mobile/dumpsys.go",
       "size": 3322,
       "sha256": "5e609f08f8a46fa08c1f58d7dfa69c56479e3352cf87f4d684156588509c425c"
+    },
+    {
+      "path": "capx/internal/mobile/ios.go",
+      "size": 14344,
+      "sha256": "43f29be9d020025bb29a0b5723d9db259f1bc723844620b250671c100a1e1220"
+    },
+    {
+      "path": "capx/internal/mobile/ios_reconnect_test.go",
+      "size": 1429,
+      "sha256": "7dd48cada549abebd1184ea4e70216b491e0a5f37c878b4743bee1a6aa551bf4"
+    },
+    {
+      "path": "capx/internal/mobile/ios_test.go",
+      "size": 7562,
+      "sha256": "912f458fbb611eeb09acff849673f8517a10ab01f22e2b8a41a5a9c82d28fdb8"
     },
     {
       "path": "capx/internal/mobile/mobile_test.go",
@@ -1640,8 +2145,8 @@
     },
     {
       "path": "capx/internal/ui/static/console.css",
-      "size": 45827,
-      "sha256": "b7f004e7f2008acb3f3953f62d270e065aab3e00fe140ea7a003f3e011463b28"
+      "size": 45559,
+      "sha256": "443c899a2b2f4a0b79c1a9bef820acb1cf15649dd4a64143b10250cfea6d4368"
     },
     {
       "path": "capx/internal/ui/static/desktop-bridge.js",
@@ -1650,8 +2155,8 @@
     },
     {
       "path": "capx/internal/ui/static/index.html",
-      "size": 373148,
-      "sha256": "19ba8eb9ecc5601052f577939d5eae72475f001b237f58c9cb273fc980483a05"
+      "size": 369461,
+      "sha256": "34ecc72d6e0e9b63f779c749a12d16f4059a1c75b08f1de7b77b0afcdf76ae01"
     },
     {
       "path": "capx/internal/ui/static/mobile.css",
@@ -1660,8 +2165,8 @@
     },
     {
       "path": "capx/internal/ui/static/mobile.js",
-      "size": 19895,
-      "sha256": "22d589cb38cb1b1531b55cfce6d2a5b740b6750df24ecc58dbfa6dd5677df5ec"
+      "size": 23425,
+      "sha256": "16005e336a8f7187b9c25a199443885b98320c86762a734f9b194d4458691a17"
     },
     {
       "path": "capx/internal/ui/static/wxdesk.css",
@@ -1735,13 +2240,13 @@
     },
     {
       "path": "capx/internal/wxcdp/bridge.go",
-      "size": 4789,
-      "sha256": "4d1e5387d2d4bba59325bc2beb8f107c07ad481379214e7a5ccaf5d694a7aa80"
+      "size": 5216,
+      "sha256": "c278beeb1bfd2cf9ce486982f017ee9464ab18a0192f5357d32681ef3f49a405"
     },
     {
       "path": "capx/internal/wxcdp/bridge_test.go",
-      "size": 2152,
-      "sha256": "912a1f5b228a0e6157158d90d73243419ae9ba1f9a4d98cf7a7dadd052212db7"
+      "size": 3033,
+      "sha256": "cb327522fc6e78a2228f0f74f8c3267ad32f781cafec1580f123554b5e8c28ad"
     },
     {
       "path": "capx/internal/wxdesk/backend_other.go",
@@ -1865,8 +2370,8 @@
     },
     {
       "path": "capx/internal/wxhook/redirect.js",
-      "size": 8369,
-      "sha256": "6932c6417cb870198326a18f3fefa7c8158cfd1c1a2fd961b1cb91654af95eac"
+      "size": 8128,
+      "sha256": "833344a99fa89359e374a3c55f8570566e6e231d6bb621892dc4610822c77f2c"
     },
     {
       "path": "capx/internal/wxhook/redirect_mock.cjs",
@@ -1880,8 +2385,8 @@
     },
     {
       "path": "capx/internal/wxhook/wxhook.go",
-      "size": 5028,
-      "sha256": "dce5cd7c2af1e72921b0b1f5fdca8c724a274b1020a6a2b959f02855efe3beff"
+      "size": 5116,
+      "sha256": "ecf70b27eeab242f61e355febed7934ef5c66ce88dd483c6ab3682729b258e3b"
     },
     {
       "path": "capx/native/memscan-rs/Cargo.lock",
@@ -1894,14 +2399,14 @@
       "sha256": "9a21a41f282fac7a1274a36b558b1ba9f4fc8e860c820e7ae4980802d0783009"
     },
     {
-      "path": "capx/native/memscan-rs/include/memscan.h",
-      "size": 4982,
-      "sha256": "7cffd77986c50f280f48151f84abee75d2b216a38e8822ca0652938d7039c948"
-    },
-    {
       "path": "capx/native/memscan-rs/LICENSE",
       "size": 1074,
       "sha256": "34cdc3ee668e6191777ab5a935a9334173981f9adf262ee706d1640a82a17409"
+    },
+    {
+      "path": "capx/native/memscan-rs/include/memscan.h",
+      "size": 4982,
+      "sha256": "7cffd77986c50f280f48151f84abee75d2b216a38e8822ca0652938d7039c948"
     },
     {
       "path": "capx/native/memscan-rs/src/lib.rs",
@@ -1914,24 +2419,19 @@
       "sha256": "910394736120a11b647161965b2423c3213eb8030b86d2d1bc897c9bd99a0b64"
     },
     {
-      "path": "capx/README.md",
-      "size": 92,
-      "sha256": "07752b938f730196acf7f8c0d9e5392996232d8a521068561f0af7b11a6eb215"
-    },
-    {
       "path": "capx/scripts/build-memscan.sh",
       "size": 1007,
       "sha256": "23a4a595b33dfba3ddfa0ca50d08fd245a1368d1da166d37422caf324d03ba0a"
     },
     {
       "path": "capx/scripts/build-unix.sh",
-      "size": 412,
-      "sha256": "a5f3254f81499c6d13bc37fe3226a35d2aac78c786804f0866392e2af4350b58"
+      "size": 402,
+      "sha256": "38a4bc3952328fc6dc67aa9c658476b36f6878fc027390dc9442db83b7454a59"
     },
     {
       "path": "capx/scripts/build-windows.ps1",
-      "size": 1128,
-      "sha256": "b73a326a4b7c153e98ee362519a9910d709ec5559c462b053d8b4ab58cd4f021"
+      "size": 1110,
+      "sha256": "80f1c592489b440c3d20d699cc8846f79dbec79a44aff66fa519d1e6059e8107"
     },
     {
       "path": "capx/scripts/test-native-windows.ps1",
@@ -1944,466 +2444,6 @@
       "sha256": "7afb58c4ae768e1ebe80395924512d1375a95d050590869c996a9b975bfff866"
     },
     {
-      "path": "capx-desktop/app.go",
-      "size": 26081,
-      "sha256": "b8877d327762227f55dd1cd9a629a9be62a220c018dde716f880ecfec88d5160"
-    },
-    {
-      "path": "capx-desktop/app_runtime_test.go",
-      "size": 8106,
-      "sha256": "5a23e653d3a542ec151031a80410599cf4f74f9e6cbd4a8ad3cb2526a68c103a"
-    },
-    {
-      "path": "capx-desktop/backend_candidates.go",
-      "size": 873,
-      "sha256": "a467588d3338b1b7a0ee73839e66b848d5c9446203007de5f439dde93248ce2b"
-    },
-    {
-      "path": "capx-desktop/backend_candidates_test.go",
-      "size": 822,
-      "sha256": "bd6c8e6fcd070070c5d575f46c5dc5e3a2130e25d04ebf8e417f0006ebfe18fd"
-    },
-    {
-      "path": "capx-desktop/build/windows/icon.ico",
-      "size": 17597,
-      "sha256": "068b8bdacbe170ece1ce63d79c9bac03e0a62b48d4f576337a3f085a41d1ef58"
-    },
-    {
-      "path": "capx-desktop/build/windows/info.json",
-      "size": 356,
-      "sha256": "4de62dae9a86aa4c6048e304ba2a3f22bd2989d270561a92489c1456629661cf"
-    },
-    {
-      "path": "capx-desktop/build/windows/wails.exe.manifest",
-      "size": 1036,
-      "sha256": "c63cb75ce48fb1354c95264f6fc43a7686a9b85a82a71efa9722ae4ce6561dc0"
-    },
-    {
-      "path": "capx-desktop/build.ps1",
-      "size": 585,
-      "sha256": "850441cf20e09fd0755c65728927b394fb65db4b131c77821765ba7e919305cb"
-    },
-    {
-      "path": "capx-desktop/console_bridge.go",
-      "size": 3145,
-      "sha256": "415a1648957d8ae81423fb001c0abc94f211ad9314bedf3f30d61930d667cc5d"
-    },
-    {
-      "path": "capx-desktop/console_bridge_test.go",
-      "size": 2259,
-      "sha256": "23bf8b48e08b4bbe4be2777da28271ef0465cf5d675e303693457057e45c85f9"
-    },
-    {
-      "path": "capx-desktop/frontend/dist/app.js",
-      "size": 32955,
-      "sha256": "eef281c18e80c1f5288630ffe1faba77f9a425883aa9a26762333a6af6793c44"
-    },
-    {
-      "path": "capx-desktop/frontend/dist/crypto-js.min.js",
-      "size": 60819,
-      "sha256": "769a555de553babc35a3338f344dd7aa16260c93cea2c7db290707c90484e7cc"
-    },
-    {
-      "path": "capx-desktop/frontend/dist/desktop.css",
-      "size": 22233,
-      "sha256": "e150c27a6ea511291bd7144982824a694b04a26b0dcb6a2891c44b0b5d3ed86d"
-    },
-    {
-      "path": "capx-desktop/frontend/dist/index.html",
-      "size": 14782,
-      "sha256": "e9b297328daa4743d672e950b14f0ca46d9c0182cc845daa8f9f8a4654c1e66f"
-    },
-    {
-      "path": "capx-desktop/frontend/dist/style.css",
-      "size": 20395,
-      "sha256": "e88eba41ea65d4b479a16a9d5c303c145f98fd68ff81cbaf7fdf53bb9c853123"
-    },
-    {
-      "path": "capx-desktop/frontend/README.md",
-      "size": 2799,
-      "sha256": "850992bf724cbc40e17a67f6c213615d001791b38dbd301ea8903271c7d9588a"
-    },
-    {
-      "path": "capx-desktop/frontend/tests/ui-smoke.cjs",
-      "size": 14317,
-      "sha256": "2589221aa42fa74dffa1215eb8ae9070efdaf8aa12a30bf11d27ae56e0d239b5"
-    },
-    {
-      "path": "capx-desktop/frontend/wailsjs/go/main/App.d.ts",
-      "size": 1524,
-      "sha256": "b96d9d88ebb87713f81b9410ce654fb25f7a2737fc1553b8bf4f9fbc3bf67fd6"
-    },
-    {
-      "path": "capx-desktop/frontend/wailsjs/go/main/App.js",
-      "size": 2516,
-      "sha256": "2f8a5ee9847847d64902d8bee0322509b0082f2f53ca3718069f60f28ef47504"
-    },
-    {
-      "path": "capx-desktop/frontend/wailsjs/runtime/package.json",
-      "size": 538,
-      "sha256": "e17998421ed0ff615d8c538fa2d99a0dc46ff974e915a513a6e4f1ac47450d92"
-    },
-    {
-      "path": "capx-desktop/frontend/wailsjs/runtime/runtime.d.ts",
-      "size": 15254,
-      "sha256": "8f4ec03cac22770b665b4071a652fa952a81846c852dd557c4806fea0e4aaa69"
-    },
-    {
-      "path": "capx-desktop/frontend/wailsjs/runtime/runtime.js",
-      "size": 7205,
-      "sha256": "e25fe86d3c590de724b93e008f7637c809e54cfa76bdeff8afaf44ed89aeab0d"
-    },
-    {
-      "path": "capx-desktop/go.mod",
-      "size": 1451,
-      "sha256": "d4e95cb81a2fb15f01d78bd2f6081daaefd455f7924d3f64a9549461acc4a609"
-    },
-    {
-      "path": "capx-desktop/go.sum",
-      "size": 7946,
-      "sha256": "6a9eb0fefa3a32a4d3432018314ff2538a68bb382a09c6b3acc449e4cedd81c2"
-    },
-    {
-      "path": "capx-desktop/main.go",
-      "size": 654,
-      "sha256": "ca57f033701aca5894586ed2cb62a38cc72c52d55cc85c9231683ec2089f04f4"
-    },
-    {
-      "path": "capx-desktop/proc_args.go",
-      "size": 1650,
-      "sha256": "920b9092a65d87a0ccb3b370c61e5e1127a7759a1b2a5f5ba33eac8916db28a4"
-    },
-    {
-      "path": "capx-desktop/proc_args_test.go",
-      "size": 2160,
-      "sha256": "3892910a0bb0630b800b08c8c40c9468ba516a55c5a636da834efc03fa5110ed"
-    },
-    {
-      "path": "capx-desktop/proc_darwin.go",
-      "size": 339,
-      "sha256": "e0fdf34f120ffd86343eb6ec468c46979d5f16e3244885eecb87f531a6b94135"
-    },
-    {
-      "path": "capx-desktop/proc_fallback.go",
-      "size": 219,
-      "sha256": "999d10a5a7f8ae17e020bacd6844517e4746dc04fcc5ce9ef14689c40a0ba2a3"
-    },
-    {
-      "path": "capx-desktop/proc_linux.go",
-      "size": 486,
-      "sha256": "debcb7dc51a58c0f5fb865e7f400ca868e73b04532329ad0175fc94d4d8da606"
-    },
-    {
-      "path": "capx-desktop/proc_other.go",
-      "size": 1223,
-      "sha256": "a3b55577eecdf4d3ab368b1b3d6cfd49ec911f8e06023dadbe3c35ee7dcc4ffd"
-    },
-    {
-      "path": "capx-desktop/proc_unix_test.go",
-      "size": 1745,
-      "sha256": "f29fa08ce9142613a801cd4e02867355a781ab31abf63f07c83659c79faacbb4"
-    },
-    {
-      "path": "capx-desktop/proc_windows.go",
-      "size": 3390,
-      "sha256": "d95311a8aa131ade6d54ecbd0091f99bf36889b57eef30ead90a5f5776a7a798"
-    },
-    {
-      "path": "capx-desktop/README.md",
-      "size": 109,
-      "sha256": "9a2a244ae9e34d4320b328a939c922782b38ddaba8b96d39b78950a3db09e116"
-    },
-    {
-      "path": "capx-desktop/runtime_client.go",
-      "size": 9363,
-      "sha256": "5c2e1993f17a84807eaf15239c7bfb03d3d37b8e9a44ac3cfa8def227240dc7d"
-    },
-    {
-      "path": "capx-desktop/wails.json",
-      "size": 399,
-      "sha256": "d4751cfa509691c1f935b32ec95b17c5295dd203171d712fa9122b0644e223ba"
-    },
-    {
-      "path": "capx-web-manager/config_sessions_test.go",
-      "size": 4029,
-      "sha256": "bf16711b49b623fa25532cb584363e3494f34933d464c6a41332a349869e8961"
-    },
-    {
-      "path": "capx-web-manager/config_store.go",
-      "size": 1891,
-      "sha256": "69ee3f248f0c7643a5957a69af8999f9033cb81a3aff9faee82e9d24cdf2da73"
-    },
-    {
-      "path": "capx-web-manager/directory_picker.go",
-      "size": 4608,
-      "sha256": "c205c1cea22c9574f6778dbd81223f38dacd648a9954fc4c821ad1f46a526f40"
-    },
-    {
-      "path": "capx-web-manager/directory_picker_other.go",
-      "size": 184,
-      "sha256": "9a0d0e0f70618fa3fb20cd530197e4515d5e707d66ffc1fa5018178ba2947cbe"
-    },
-    {
-      "path": "capx-web-manager/directory_picker_test.go",
-      "size": 2680,
-      "sha256": "7410f1f20900429b5d28e81cbf9b4c5d168004ba49c43217aa477cf528abf29d"
-    },
-    {
-      "path": "capx-web-manager/directory_picker_windows.go",
-      "size": 1348,
-      "sha256": "382a31f481ed5dd1302e424462d642b680e8d5f5adbb1fe43d322e7b48b0b521"
-    },
-    {
-      "path": "capx-web-manager/go.mod",
-      "size": 99,
-      "sha256": "76204fc69357306057576cf959d99b1cf170e486aed98ba629b45bea1ce511c6"
-    },
-    {
-      "path": "capx-web-manager/go.sum",
-      "size": 666,
-      "sha256": "97e37e3a8ed6a9f5bfd7d074e4115f56cbea7751d792fd993e0d5682f9dbc6ba"
-    },
-    {
-      "path": "capx-web-manager/instance_lock.go",
-      "size": 103,
-      "sha256": "eec9ce4529d6b889089658cfbb1f29ca4fd9a3b5ec09dc03b6147fb92cfd7524"
-    },
-    {
-      "path": "capx-web-manager/instance_lock_unix.go",
-      "size": 606,
-      "sha256": "e4a94f51f8c8f78d61c90166577e8035e7540faa99ca8b081ab249e8b1fbb9c7"
-    },
-    {
-      "path": "capx-web-manager/instance_lock_windows.go",
-      "size": 737,
-      "sha256": "464e0760f1bb3953aaa6b411b99efb5002fca53f36a4d92f22b538c8f14e3005"
-    },
-    {
-      "path": "capx-web-manager/instance_manifest.go",
-      "size": 20542,
-      "sha256": "98c72d6c049700f7632e3b8b9bc699f0976f4cc5e02325517787aa0720ddbd19"
-    },
-    {
-      "path": "capx-web-manager/instance_manifest_test.go",
-      "size": 12636,
-      "sha256": "c2b955fe0af5aecbee1c859555c6b6aa9a7e95c166c30f6754c7106788602546"
-    },
-    {
-      "path": "capx-web-manager/layout_test.go",
-      "size": 1943,
-      "sha256": "5ee3d72d259225de3bcce7f935c753a43750f75fae950488da44d38503427a57"
-    },
-    {
-      "path": "capx-web-manager/legacy_stop.go",
-      "size": 3703,
-      "sha256": "8b37808ba935a3f15a25abb216268f844413b27431f0b5d95377c72c8d5a048f"
-    },
-    {
-      "path": "capx-web-manager/legacy_stop_test.go",
-      "size": 3658,
-      "sha256": "26c218a1d7f8b12d28257fa5ffc2835f1bf378b290f5efe9fd8f2bf3528badaa"
-    },
-    {
-      "path": "capx-web-manager/main.go",
-      "size": 50327,
-      "sha256": "669e597ad51e06e57d2cedd223ea7d99e58f845152b0140c58b64fff5df3a483"
-    },
-    {
-      "path": "capx-web-manager/managed_browser_query_other.go",
-      "size": 569,
-      "sha256": "6864310cd81527d02b73fd25f09246295e05ae48eefcf45e63c9d9f97cbbfffa"
-    },
-    {
-      "path": "capx-web-manager/managed_browser_query_windows.go",
-      "size": 406,
-      "sha256": "4b8ea2318ad85914afc9152f4b40c0ee2fb5b09f3dedd1641b2dce8881ff6d4c"
-    },
-    {
-      "path": "capx-web-manager/managed_browser_terminate.go",
-      "size": 1561,
-      "sha256": "2fee4a8a5173d097bc2b5f80ad7ceba986b61444bb90355a96f7c06a1e255fa9"
-    },
-    {
-      "path": "capx-web-manager/managed_instance.go",
-      "size": 24759,
-      "sha256": "191737ef385066d51cdbc87412d9a7dab72eee6ea06ed65c510440c1b0081ea0"
-    },
-    {
-      "path": "capx-web-manager/managed_instance_test.go",
-      "size": 14770,
-      "sha256": "2ba82a5931d90413d5a4c5405fa95ff203306d5db3b279033dd256c01ec0bd04"
-    },
-    {
-      "path": "capx-web-manager/managed_ui.go",
-      "size": 897,
-      "sha256": "085a02a71e1e0444d4a1124da845fafed9b3d7cacb412433055bd5b7e8c41f9a"
-    },
-    {
-      "path": "capx-web-manager/managed_ui_test.go",
-      "size": 2610,
-      "sha256": "7c102ccfbc86c278bbc8c4aa57f9ee8c99f007099102596889e6bde2683f7b92"
-    },
-    {
-      "path": "capx-web-manager/manager_security.go",
-      "size": 3313,
-      "sha256": "e38a61d598fcb88f3c593fe5b4b5c501704858a43914da856c4a2cbce1e82cb6"
-    },
-    {
-      "path": "capx-web-manager/manager_security_test.go",
-      "size": 5315,
-      "sha256": "c79615d8a72dc463f7a508a2a7f95e49e5eb3e926f4f95c3247ed7878561f64c"
-    },
-    {
-      "path": "capx-web-manager/open_target_other.go",
-      "size": 366,
-      "sha256": "d025a45aedc0ffab96dffe92010aba8cb8f435645a9736d60dddda6948d9a0e0"
-    },
-    {
-      "path": "capx-web-manager/open_target_test.go",
-      "size": 318,
-      "sha256": "7ff6414d5374ab0591b71b7585c04c54ec6c272205a7e434aaca4c71aa8f92a8"
-    },
-    {
-      "path": "capx-web-manager/open_target_windows.go",
-      "size": 643,
-      "sha256": "494ef5b8542aa14e456472eb2bafc0c6aea5770751be78044c21347e277b28a7"
-    },
-    {
-      "path": "capx-web-manager/port_allocator.go",
-      "size": 4417,
-      "sha256": "85153148f127c9583d95e4b52f58469ab52afeb775bb29c4148784cfed4ecd9f"
-    },
-    {
-      "path": "capx-web-manager/port_allocator_test.go",
-      "size": 5951,
-      "sha256": "cd87eb8e27613196f5f7eb42457996c52b9a7e0a9af5a123208498485b400158"
-    },
-    {
-      "path": "capx-web-manager/proc_attr_other.go",
-      "size": 468,
-      "sha256": "70dad542a2da740257786c922f8c4705fd429c62e8e0dccbc954c721ed7ab564"
-    },
-    {
-      "path": "capx-web-manager/proc_attr_windows.go",
-      "size": 454,
-      "sha256": "040420788e300828a28acf5f4e1ef167adb2bbdaa8c2c8db27d23725c785be27"
-    },
-    {
-      "path": "capx-web-manager/process_discovery_test.go",
-      "size": 8143,
-      "sha256": "deb7f1fa1c06b82ca97a4f27d930366fb2d025cdc5617cb39ed71ffe9942ba07"
-    },
-    {
-      "path": "capx-web-manager/process_enum_other.go",
-      "size": 1086,
-      "sha256": "1327aa9f5ce229ee9277f068241de675294e55dc432baaaa97f7c74814d74ab4"
-    },
-    {
-      "path": "capx-web-manager/process_enum_windows.go",
-      "size": 401,
-      "sha256": "a28c26a3cc702834ff21f4099ddb9fff8a51e66390cde9a56f02ef4820abb375"
-    },
-    {
-      "path": "capx-web-manager/process_image_other.go",
-      "size": 4103,
-      "sha256": "3179c8a3cdf7a72028ade58110ffe1b31474265746b12f118813bbf86b13c2c6"
-    },
-    {
-      "path": "capx-web-manager/process_image_windows.go",
-      "size": 2370,
-      "sha256": "15cf7666be0d79acc7255db3552322201e37f1d2b5ec5c2fb41956958171a720"
-    },
-    {
-      "path": "capx-web-manager/process_listener_proc.go",
-      "size": 4018,
-      "sha256": "2219a3ff767f550af8dde463ac3c45d67cd604b0bb0a862bf8d2b781ed234ebc"
-    },
-    {
-      "path": "capx-web-manager/process_listener_proc_test.go",
-      "size": 3374,
-      "sha256": "4f5bf02e184323567bda717103179633a204c5314e4dbd4aaa297d3a72534e4b"
-    },
-    {
-      "path": "capx-web-manager/process_terminate_other.go",
-      "size": 1581,
-      "sha256": "0bd2e9b1176a3e3746fb3c9ff3c57426390fc8ba3d4131e0c6e942f681b8fe8d"
-    },
-    {
-      "path": "capx-web-manager/process_terminate_windows.go",
-      "size": 1232,
-      "sha256": "ffc4553da2ba895ff2dbb71bcc7b8f75913ff583d83eed406fdb7cc5c5e89654"
-    },
-    {
-      "path": "capx-web-manager/README.md",
-      "size": 6915,
-      "sha256": "28262c2054318fe8451cf4beb604f86a888e6eb5199b4e9e216fdbcec77bf7c7"
-    },
-    {
-      "path": "capx-web-manager/runtime_sessions.go",
-      "size": 7763,
-      "sha256": "de526dc540fa7fea5391a673e2c8975b275459319557b2a7e3865bcce7cb3002"
-    },
-    {
-      "path": "capx-web-manager/src_session_template.md.tmpl",
-      "size": 4091,
-      "sha256": "f7481906e38b18870b964f3317c0729737193f73ac2dcc28466878a6b7de6954"
-    },
-    {
-      "path": "capx-web-manager/src_session_template_unix.md.tmpl",
-      "size": 4691,
-      "sha256": "64c565d265755e9e1fb2f02812242fdaa5083c97709e48d40da1dda154dfc18b"
-    },
-    {
-      "path": "capx-web-manager/src_template.go",
-      "size": 8681,
-      "sha256": "0544a33ad043101aeaaf8366d1eee8fe9053f09af654621775ddacf5abc97b03"
-    },
-    {
-      "path": "capx-web-manager/src_template_other.go",
-      "size": 205,
-      "sha256": "8bece747cb59b005675180107ceb0c720c278fceebac27282a077a9efdfcd7f4"
-    },
-    {
-      "path": "capx-web-manager/src_template_test.go",
-      "size": 7440,
-      "sha256": "3c09c18e977e20af6815a63bc0b1850d0cf325c987e4e376c30a5cc69f05194e"
-    },
-    {
-      "path": "capx-web-manager/src_template_windows.go",
-      "size": 207,
-      "sha256": "5cc1ed5cd2aac5ad5f8341be7565ffee45b9e86a92e84b13383f7a2c6752e5c1"
-    },
-    {
-      "path": "capx-web-manager/ui/index.html",
-      "size": 10383,
-      "sha256": "814f5a38677605a6b4d4a18a092ffa195219335a0aa0e552d66f360b53487bec"
-    },
-    {
-      "path": "capx-web-manager/ui/managed.js",
-      "size": 15702,
-      "sha256": "2656ad45c87f323fab0a22f25c623176cd54fc2d2d70ba0cbfb4675698456893"
-    },
-    {
-      "path": "capx-web-manager/ui/manager.css",
-      "size": 18238,
-      "sha256": "2fec6299f2ddfa6cbad5db0a0a9e2316f7c834a3cfc0e70214c7a2b04e6acd03"
-    },
-    {
-      "path": "capx-web-manager/ui/manager.js",
-      "size": 8947,
-      "sha256": "2ef9cfc30097afbb79c89b03ea8dfc82ceb989d8a02921e1b533cb5ab040da01"
-    },
-    {
-      "path": "CHANGELOG.md",
-      "size": 2064,
-      "sha256": "e2f828f8eb85b36934857fd7898cc0943dedbafc416f39001ac6c5b9e1a6dd05"
-    },
-    {
-      "path": "CONTRIBUTING.md",
-      "size": 826,
-      "sha256": "120b8e7f64fa95774e655dc87b274d5612393d06e2da332c5413336941fd0c51"
-    },
-    {
       "path": "docs/BUILD.md",
       "size": 3714,
       "sha256": "776e1573a38838a4a475f195a03934e24fcef550c3cdcad5f5f47a2bb82a14b0"
@@ -2412,6 +2452,16 @@
       "path": "docs/GITHUB_BUILD.md",
       "size": 2817,
       "sha256": "ba4de9620fd0dec4360c1e2bf3cedb2639b6bb130c76e1ca4e36cc4dbf36f076"
+    },
+    {
+      "path": "docs/INTRODUCTION.md",
+      "size": 2206,
+      "sha256": "5f03fa5e4ac86c78dc34246f513cf30c033e12ac6dd93c9be70cb090ab3a47f4"
+    },
+    {
+      "path": "docs/MOBILE_AUTOMATION.md",
+      "size": 4854,
+      "sha256": "2e83757e60ea736b11436227f47b6d78168f0898133158222cfd26648d082036"
     },
     {
       "path": "docs/images/01-dashboard.png",
@@ -2427,31 +2477,6 @@
       "path": "docs/images/03-mobile-capture.png",
       "size": 120697,
       "sha256": "599313a339a03e3dfb1fe967ad3cfdcc2a2de5600db73adfd209a3c0a6b8dd59"
-    },
-    {
-      "path": "docs/INTRODUCTION.md",
-      "size": 2018,
-      "sha256": "dcc33cbfd0d8cf3717c66d64e04ccaaadf0a9d5e9bcf7e2ec97e1dbee82f05fc"
-    },
-    {
-      "path": "LICENSE",
-      "size": 1074,
-      "sha256": "34cdc3ee668e6191777ab5a935a9334173981f9adf262ee706d1640a82a17409"
-    },
-    {
-      "path": "NOTICE.md",
-      "size": 2740,
-      "sha256": "a1a9f3f17cb14c735a445ca8bd3b341b3af29bfeaedbabff333f8968c7743947"
-    },
-    {
-      "path": "README.md",
-      "size": 6202,
-      "sha256": "bab0678b88e2ae046ad6c1ec55e04dbef7bf47b5a0ecbc65dea8e0a4651a3d03"
-    },
-    {
-      "path": "RELEASE_VALIDATION.md",
-      "size": 3778,
-      "sha256": "70ec5e14c7d54c240dae3e4e60fe87fe6a4712a24f5a80f0ee63f226628ff171"
     },
     {
       "path": "scripts/build-bundle.py",
@@ -2489,14 +2514,49 @@
       "sha256": "75bb094536ac33dbd40f3bb21a4b438cbcdcb03569adfb1e138c6aef2353a005"
     },
     {
-      "path": "SECURITY.md",
-      "size": 1170,
-      "sha256": "6679c9f7f7995250cb176151fc2f00d497343ec856e121a87bd585330d1300e3"
-    },
-    {
       "path": "third-party/CryptoJS-LICENSE.txt",
       "size": 1169,
       "sha256": "f729d14b7e1bf8adca0dcc38b93b929d14d53fcd5db56c3d1c9b2daa7aa69396"
+    },
+    {
+      "path": "third-party/Go-LICENSE.txt",
+      "size": 1453,
+      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
+    },
+    {
+      "path": "third-party/HDE.txt",
+      "size": 119,
+      "sha256": "40b1c8d264de863f96fef660588667714ffdd4ce9b124d624d810873d10e22f6"
+    },
+    {
+      "path": "third-party/MinHook-LICENSE.txt",
+      "size": 4365,
+      "sha256": "d5c2224982b0b95a16b098a561335fa93f3eaf4d0aa964b7843edb986df78dc8"
+    },
+    {
+      "path": "third-party/MinHook.txt",
+      "size": 1472,
+      "sha256": "6f897a11d74ba4c95d5e0f8080623483070800852cba68eb6bec59d12e96f674"
+    },
+    {
+      "path": "third-party/Rust-COPYRIGHT.txt",
+      "size": 1571,
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af"
+    },
+    {
+      "path": "third-party/Rust-LICENSE-APACHE.txt",
+      "size": 9723,
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+    },
+    {
+      "path": "third-party/Rust-LICENSE-MIT.txt",
+      "size": 1068,
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1"
+    },
+    {
+      "path": "third-party/go-modules.json",
+      "size": 36929,
+      "sha256": "1d74d40c3e4779d5d557c2dfb5feaee7d53f47f8e1e6d43d2386e1eeb1af3bf6"
     },
     {
       "path": "third-party/go/git.sr.ht__~jackmordaunt__go-toast__v2@v2.0.3/LICENSE",
@@ -2877,46 +2937,7 @@
       "path": "third-party/go/modernc.org__token@v1.1.0/LICENSE",
       "size": 1479,
       "sha256": "2d36597f7117c38b006835ae7f537487207d8ec407aa9d9980794b2030cbc067"
-    },
-    {
-      "path": "third-party/Go-LICENSE.txt",
-      "size": 1453,
-      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
-    },
-    {
-      "path": "third-party/go-modules.json",
-      "size": 36929,
-      "sha256": "1d74d40c3e4779d5d557c2dfb5feaee7d53f47f8e1e6d43d2386e1eeb1af3bf6"
-    },
-    {
-      "path": "third-party/HDE.txt",
-      "size": 119,
-      "sha256": "40b1c8d264de863f96fef660588667714ffdd4ce9b124d624d810873d10e22f6"
-    },
-    {
-      "path": "third-party/MinHook-LICENSE.txt",
-      "size": 4365,
-      "sha256": "d5c2224982b0b95a16b098a561335fa93f3eaf4d0aa964b7843edb986df78dc8"
-    },
-    {
-      "path": "third-party/MinHook.txt",
-      "size": 1472,
-      "sha256": "6f897a11d74ba4c95d5e0f8080623483070800852cba68eb6bec59d12e96f674"
-    },
-    {
-      "path": "third-party/Rust-COPYRIGHT.txt",
-      "size": 1571,
-      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af"
-    },
-    {
-      "path": "third-party/Rust-LICENSE-APACHE.txt",
-      "size": 9723,
-      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
-    },
-    {
-      "path": "third-party/Rust-LICENSE-MIT.txt",
-      "size": 1068,
-      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1"
     }
-  ]
+  ],
+  "hash_basis": "Git blobs; text normalized according to .gitattributes"
 }

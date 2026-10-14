@@ -23,9 +23,10 @@ import (
 
 // Device is one entry from `adb devices -l`.
 type Device struct {
-	Serial string `json:"serial"`
-	State  string `json:"state"`
-	Model  string `json:"model,omitempty"`
+	Serial   string `json:"serial"`
+	State    string `json:"state"`
+	Model    string `json:"model,omitempty"`
+	Platform string `json:"platform,omitempty"`
 }
 
 // textRunner runs adb (optionally targeting serial) and returns trimmed
