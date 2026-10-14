@@ -60,8 +60,8 @@
     },
     {
       "path": "capx/cmd/capx-desktop/main_test.go",
-      "size": 5939,
-      "sha256": "9af4d45b0203150afd401b723f0908352e532be922212345c5549209b68daad9"
+      "size": 6686,
+      "sha256": "0824e745ebacc9f3416108585556d0a19bf1f5cc388b09dbca1c12ef739bb792"
     },
     {
       "path": "capx/cmd/capx-mcp/main.go",

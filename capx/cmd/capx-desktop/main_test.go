@@ -51,6 +51,36 @@ func TestDesktopPersistenceLockAndAuthenticatedShutdown(t *testing.T) {
 		}
 		return res
 	}
+	// A client can receive the flushed response before the proxy handler finishes
+	// recording it. Wait for the observable history condition, not a scheduler
+	// assumption; the persistence/restart assertions below remain unchanged.
+	waitHistory := func(base, path string, count int) []model.HTTPTx {
+		t.Helper()
+		deadline := time.Now().Add(3 * time.Second)
+		var history []model.HTTPTx
+		for time.Now().Before(deadline) {
+			resp := request(base, "/api/http")
+			err := json.NewDecoder(resp.Body).Decode(&history)
+			resp.Body.Close()
+			if err != nil {
+				t.Fatal("read captured history:", err)
+			}
+			if len(history) >= count {
+				for _, tx := range history {
+					if tx.Path == path {
+						return history
+					}
+				}
+			}
+			select {
+			case <-ctx.Done():
+				t.Fatal("history wait cancelled:", ctx.Err())
+			case <-time.After(10 * time.Millisecond):
+			}
+		}
+		t.Fatalf("capture did not enter history: path=%s count=%d history=%+v", path, count, history)
+		return nil
+	}
 	firstOpen := func(ctx context.Context, base, profile string) error {
 		if profile != filepath.Join(state, "desktop-profile") {
 			t.Errorf("profile not isolated: %s", profile)
@@ -76,12 +106,7 @@ func TestDesktopPersistenceLockAndAuthenticatedShutdown(t *testing.T) {
 		}
 		io.Copy(io.Discard, response.Body)
 		response.Body.Close()
-		resp = request(base, "/api/http")
-		raw, _ := io.ReadAll(resp.Body)
-		resp.Body.Close()
-		if !strings.Contains(string(raw), "/persist") {
-			t.Errorf("fixture traffic not captured: %s", raw)
-		}
+		_ = waitHistory(base, "/persist", 1)
 		resp = request(base, "/api/runtime/shutdown")
 		resp.Body.Close()
 		if resp.StatusCode != http.StatusAccepted {
@@ -124,10 +149,7 @@ func TestDesktopPersistenceLockAndAuthenticatedShutdown(t *testing.T) {
 		}
 		io.Copy(io.Discard, response.Body)
 		response.Body.Close()
-		resp = request(base, "/api/http")
-		var after []model.HTTPTx
-		json.NewDecoder(resp.Body).Decode(&after)
-		resp.Body.Close()
+		after := waitHistory(base, "/after-restart", 2)
 		if len(after) != 2 {
 			t.Errorf("new capture overwrote old row: %+v", after)
 		}
