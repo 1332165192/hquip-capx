@@ -23,6 +23,7 @@ import (
 const IOSSerial = "ios-wda"
 
 var wdaSessionRE = regexp.MustCompile(`^[A-Za-z0-9_-]{1,128}$`)
+var iosBundleRE = regexp.MustCompile(`^[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*$`)
 
 // IOSController uses an already running, operator-authorized WDA service.
 // It neither installs/signs WDA nor changes the phone's proxy or CA trust.
@@ -352,7 +353,7 @@ func (c *IOSController) Key(code string) error {
 }
 
 func (c *IOSController) LaunchApp(bundle string) error {
-	if !packageRE.MatchString(strings.TrimSpace(bundle)) {
+	if !iosBundleRE.MatchString(strings.TrimSpace(bundle)) {
 		return errors.New("无效的 iOS bundle ID")
 	}
 	c.mu.Lock()
@@ -446,7 +447,7 @@ func (c *IOSController) Click(loc Locator) (Element, error) {
 			want = strings.TrimSpace(want)
 			return want == "" || got == want || (loc.Partial && strings.Contains(got, want))
 		}
-		if match(loc.Text, el.Text) && match(loc.Desc, el.Desc) && (strings.TrimSpace(loc.ResourceID) == "" || loc.ResourceID == el.ResourceID) {
+		if match(loc.Text, el.Text) && match(loc.Desc, el.Desc) && (strings.TrimSpace(loc.ResourceID) == "" || strings.TrimSpace(loc.ResourceID) == el.ResourceID) {
 			return el, c.command("/wda/tap", map[string]int{"x": el.X, "y": el.Y})
 		}
 	}

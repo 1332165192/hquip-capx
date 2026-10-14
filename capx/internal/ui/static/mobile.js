@@ -316,7 +316,8 @@
   el('screenshot').onclick = () => run('正在读取手机屏幕', async serial => { await screenshot(serial); return '截图已更新。'; });
   el('launch').onclick = () => run('正在启动 App', serial => {
     const pkg = el('package').value.trim();
-    if (!/^[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)*$/.test(pkg)) throw new Error('请输入有效的 App 包名，例如 com.tencent.mm');
+    const validPackage = ios() ? /^[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*$/ : /^[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)*$/;
+    if (!validPackage.test(pkg)) throw new Error(ios() ? '请输入有效的 iOS bundle ID，例如 com.tencent.xin' : '请输入有效的 Android 包名，例如 com.tencent.mm');
     return operate(serial, 'launch', { package: pkg });
   });
   el('back').onclick = () => run('正在返回', serial => operate(serial, 'back', {}));

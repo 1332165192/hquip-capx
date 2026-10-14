@@ -98,7 +98,7 @@ func TestIOSExistingSessionScreenAndActions(t *testing.T) {
 	if err := c.Home(); err != nil {
 		t.Fatal(err)
 	}
-	if err := c.LaunchApp("com.example.app"); err != nil {
+	if err := c.LaunchApp("com.example.test-app"); err != nil {
 		t.Fatal(err)
 	}
 	if app, err := c.ForegroundApp(); err != nil || app != "com.example.app" {
@@ -114,6 +114,9 @@ func TestIOSExistingSessionScreenAndActions(t *testing.T) {
 	mu.Lock()
 	if posts["/session/existing/wda/keys"]["value"].([]any)[0] != "小米 capx" {
 		t.Error("Unicode input changed")
+	}
+	if posts["/session/existing/wda/apps/launch"]["bundleId"] != "com.example.test-app" {
+		t.Error("hyphenated bundle ID changed")
 	}
 	if posts["/session/existing/wda/dragfromtoforduration"]["duration"] != .35 {
 		t.Error("swipe duration changed")

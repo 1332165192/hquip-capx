@@ -25,8 +25,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "size": 2911,
-      "sha256": "34f3d1c84662e45be2bbf25bd48f6b6ded41264128b512d0b66ee9468bc13fcc"
+      "size": 3040,
+      "sha256": "ef3d6fae76c7f84ff411b7170fb7b24da13a2505f4b70b0ae14776f944711bee"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -1565,8 +1565,8 @@
     },
     {
       "path": "capx/internal/mobile/ios.go",
-      "size": 14344,
-      "sha256": "43f29be9d020025bb29a0b5723d9db259f1bc723844620b250671c100a1e1220"
+      "size": 14441,
+      "sha256": "81f4f6af3d099017970d59c47c4f2b4167e228beadb291c5deb4d58f0952f836"
     },
     {
       "path": "capx/internal/mobile/ios_reconnect_test.go",
@@ -1575,8 +1575,8 @@
     },
     {
       "path": "capx/internal/mobile/ios_test.go",
-      "size": 7562,
-      "sha256": "912f458fbb611eeb09acff849673f8517a10ab01f22e2b8a41a5a9c82d28fdb8"
+      "size": 7699,
+      "sha256": "53c11f7592fe413728ac6ac036eb884d695f8422e5742932d2bd693c4d0b4bb7"
     },
     {
       "path": "capx/internal/mobile/mobile_test.go",
@@ -2165,8 +2165,8 @@
     },
     {
       "path": "capx/internal/ui/static/mobile.js",
-      "size": 23425,
-      "sha256": "16005e336a8f7187b9c25a199443885b98320c86762a734f9b194d4458691a17"
+      "size": 23586,
+      "sha256": "34ee39d310ff61b0ccd8e905222f8e7ed7b079fe7a7635f605e868664fb62cd5"
     },
     {
       "path": "capx/internal/ui/static/wxdesk.css",
