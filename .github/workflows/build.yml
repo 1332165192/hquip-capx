@@ -134,6 +134,11 @@ jobs:
         with:
           go-version: '1.26.9'
           cache-dependency-path: '**/go.sum'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch pinned Go integration dependencies
+        run: python scripts/prepare-dependencies.py --module capx
       - name: Install native capture headers and Rust
         run: |
           sudo apt-get update

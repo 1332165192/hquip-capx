@@ -10,8 +10,8 @@
     },
     {
       "path": ".github/workflows/build.yml",
-      "size": 5407,
-      "sha256": "d6ecbdc8cec72d2f4d3afc126a2437b804c14d3be01a52fbae0b9e9f7ae8fdb1"
+      "size": 5613,
+      "sha256": "d61f9d49e97508d5c448c75d69f4e90d618451a7d60cb8b03fa681c2d4905cea"
     },
     {
       "path": ".github/workflows/ci.yml",
@@ -2380,8 +2380,8 @@
     },
     {
       "path": "docs/GITHUB_BUILD.md",
-      "size": 2682,
-      "sha256": "324a49bae0d14fe284c8e72878cb2a0cc4a1341fcc0b71f11961e85af4e5a5cb"
+      "size": 2817,
+      "sha256": "ba4de9620fd0dec4360c1e2bf3cedb2639b6bb130c76e1ca4e36cc4dbf36f076"
     },
     {
       "path": "LICENSE",
@@ -2400,13 +2400,13 @@
     },
     {
       "path": "RELEASE_VALIDATION.md",
-      "size": 3653,
-      "sha256": "ecbad532e13b85b013ecb0c6cfaa9cbb336727a4958f89e1ab1018e3af477c95"
+      "size": 3778,
+      "sha256": "70ec5e14c7d54c240dae3e4e60fe87fe6a4712a24f5a80f0ee63f226628ff171"
     },
     {
       "path": "scripts/build-bundle.py",
-      "size": 3494,
-      "sha256": "dace01606649523de3c7296eeeec6822c74b9775d64e3fb82cb96bed9cddf854"
+      "size": 3588,
+      "sha256": "b13573a20cc7b6d3bae5c02deeedaff5a9a515607f3df17891ffff57df9827f4"
     },
     {
       "path": "scripts/build-native.py",
@@ -2427,6 +2427,11 @@
       "path": "scripts/install-wails.py",
       "size": 1501,
       "sha256": "4788fb4022a51d7b76ea1df0ed3d526a70922bee44c1ea92ac78436fc822caa4"
+    },
+    {
+      "path": "scripts/prepare-dependencies.py",
+      "size": 1747,
+      "sha256": "d61cd06e917976da7d70d0df0492a2518361f4f20a1d2294a8ac8ef02547dbb3"
     },
     {
       "path": "SECURITY.md",

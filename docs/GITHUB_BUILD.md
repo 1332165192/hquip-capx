@@ -20,4 +20,4 @@ Go 固定为1.26.9，Wails CLI 为2.12.0，Rust 为1.95.0。Windows 使用托管
 
 编译本公开仓库的源码不包含编译腾讯微信客户端、Npcap/WinDivert 驱动、WDA、第三方 F12 提供方或 iOS 签名包。它们需要由使用者独立安装或提供；GitHub 编译不会新增尚未集成的手机能力。
 
-此工作流已做本地配置和脚本检查；当前没有远程仓库地址，因此尚未在你的 GitHub 仓库执行。首次上传后，以 Actions 的实际结果为准。无需在工作流 Secrets 里填写个人 DNSLog Key、手机密码或锁屏凭据。
+源码仓库为 [hquip/capx](https://github.com/hquip/capx)，构建状态以 [最新 Actions 运行](https://github.com/hquip/capx/actions)为准。依赖下载单独使用经过校验的 HTTPS/HTTP1.1 请求，并仅对临时网络错误进行最多3次重试；应用和协议测试保持正常 HTTP/2 配置。无需在工作流 Secrets 里填写个人 DNSLog Key、手机密码或锁屏凭据。

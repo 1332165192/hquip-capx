@@ -25,6 +25,7 @@ def main():
     env["GOOS"], env["GOARCH"] = system, arch
     env["GOFLAGS"] = "-mod=readonly"
     desktop_tags = ["-tags", "webkit2_41"] if system == "linux" else []
+    run([sys.executable, ROOT / "scripts" / "prepare-dependencies.py"], ROOT, env, args.plan)
     if args.test:
         for module in ("capx", "capx-web-manager", "capx-desktop"):
             tags = desktop_tags if module == "capx-desktop" else []
