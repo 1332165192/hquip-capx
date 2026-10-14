@@ -253,6 +253,14 @@ func runtimeArg(line, name string) string {
 }
 
 func backendIdentityMatches(rt desktopRuntime, exe, line string) bool {
+	values := map[string]string{}
+	for _, name := range []string{"addr", "state-dir", "generation", "instance-id"} {
+		values[name] = runtimeArg(line, name)
+	}
+	return backendIdentityMatchesValues(rt, exe, values)
+}
+
+func backendIdentityMatchesValues(rt desktopRuntime, exe string, values map[string]string) bool {
 	if rt.PID <= 0 || rt.Generation == "" || rt.Exe == "" || rt.StateDir == "" {
 		return false
 	}
@@ -268,11 +276,11 @@ func backendIdentityMatches(rt desktopRuntime, exe, line string) bool {
 	if err != nil {
 		return false
 	}
-	b, err = filepath.Abs(runtimeArg(line, "state-dir"))
+	b, err = filepath.Abs(values["state-dir"])
 	if err != nil {
 		return false
 	}
-	return strings.EqualFold(filepath.Clean(a), filepath.Clean(b)) && runtimeArg(line, "generation") == rt.Generation && runtimeArg(line, "instance-id") == rt.InstanceID && runtimeArg(line, "addr") == baseListenAddr(rt.BaseURL)
+	return strings.EqualFold(filepath.Clean(a), filepath.Clean(b)) && values["generation"] == rt.Generation && values["instance-id"] == rt.InstanceID && values["addr"] == baseListenAddr(rt.BaseURL)
 }
 
 func clearRuntimeIfMatch(expected desktopRuntime) {

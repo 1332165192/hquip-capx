@@ -2069,9 +2069,39 @@
       "sha256": "ca57f033701aca5894586ed2cb62a38cc72c52d55cc85c9231683ec2089f04f4"
     },
     {
+      "path": "capx-desktop/proc_args.go",
+      "size": 1650,
+      "sha256": "920b9092a65d87a0ccb3b370c61e5e1127a7759a1b2a5f5ba33eac8916db28a4"
+    },
+    {
+      "path": "capx-desktop/proc_args_test.go",
+      "size": 2160,
+      "sha256": "3892910a0bb0630b800b08c8c40c9468ba516a55c5a636da834efc03fa5110ed"
+    },
+    {
+      "path": "capx-desktop/proc_darwin.go",
+      "size": 339,
+      "sha256": "e0fdf34f120ffd86343eb6ec468c46979d5f16e3244885eecb87f531a6b94135"
+    },
+    {
+      "path": "capx-desktop/proc_fallback.go",
+      "size": 219,
+      "sha256": "999d10a5a7f8ae17e020bacd6844517e4746dc04fcc5ce9ef14689c40a0ba2a3"
+    },
+    {
+      "path": "capx-desktop/proc_linux.go",
+      "size": 486,
+      "sha256": "debcb7dc51a58c0f5fb865e7f400ca868e73b04532329ad0175fc94d4d8da606"
+    },
+    {
       "path": "capx-desktop/proc_other.go",
-      "size": 1662,
-      "sha256": "be0f22aa48b80aaa2c7764b5f404b20cac0026cbe90406dbf908f1a57df05f40"
+      "size": 1223,
+      "sha256": "a3b55577eecdf4d3ab368b1b3d6cfd49ec911f8e06023dadbe3c35ee7dcc4ffd"
+    },
+    {
+      "path": "capx-desktop/proc_unix_test.go",
+      "size": 1745,
+      "sha256": "f29fa08ce9142613a801cd4e02867355a781ab31abf63f07c83659c79faacbb4"
     },
     {
       "path": "capx-desktop/proc_windows.go",
@@ -2085,8 +2115,8 @@
     },
     {
       "path": "capx-desktop/runtime_client.go",
-      "size": 9091,
-      "sha256": "c46836baac04e51b9691564f90c2e192aa14d07dfee8ab1e40992b02c65559b5"
+      "size": 9363,
+      "sha256": "5c2e1993f17a84807eaf15239c7bfb03d3d37b8e9a44ac3cfa8def227240dc7d"
     },
     {
       "path": "capx-desktop/wails.json",
@@ -2405,8 +2435,8 @@
     },
     {
       "path": "scripts/build-bundle.py",
-      "size": 3588,
-      "sha256": "b13573a20cc7b6d3bae5c02deeedaff5a9a515607f3df17891ffff57df9827f4"
+      "size": 4009,
+      "sha256": "110fdd28167d353a338f56ef2065c250a03284dc07cc022281a249cb74acb0be"
     },
     {
       "path": "scripts/build-native.py",
@@ -2432,6 +2462,11 @@
       "path": "scripts/prepare-dependencies.py",
       "size": 1747,
       "sha256": "d61cd06e917976da7d70d0df0492a2518361f4f20a1d2294a8ac8ef02547dbb3"
+    },
+    {
+      "path": "scripts/smoke-bundle.py",
+      "size": 4889,
+      "sha256": "75bb094536ac33dbd40f3bb21a4b438cbcdcb03569adfb1e138c6aef2353a005"
     },
     {
       "path": "SECURITY.md",

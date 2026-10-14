@@ -51,11 +51,16 @@ def main():
         target = stage / app.name
         shutil.copytree(app, target)
         shutil.copy2(stage / "capx-captured", target / "Contents" / "MacOS" / "capx-captured")
+        # Seal the final bundle after adding the helper, then verify it. This is
+        # ad-hoc signing only and does not use an Apple account or certificate.
+        run(["/usr/bin/codesign", "--force", "--deep", "--sign", "-", target], ROOT, env)
+        run(["/usr/bin/codesign", "--verify", "--deep", "--strict", target], ROOT, env)
     else:
         shutil.copy2(require_file(desktop / ("capx-desktop" + suffix)), stage / ("capx-desktop" + suffix))
     for _, filename in commands:
         require_file(stage / (filename + suffix))
     require_file(stage / ("capx-web-manager" + suffix))
+    run([sys.executable, ROOT / "scripts" / "smoke-bundle.py", stage], ROOT, env)
     (stage / "RUN.md").write_text("# Running the compiled bundle\n\nLaunch capx-desktop for the Wails UI, or capx-launcher for the Chromium window. The capx-captured backend is beside the desktop executable; capx-mcp connects to a running backend. Use your own instance token and phone CA trust settings. WeChat, ADB, WDA, WebView2, Frida and capture drivers are installed separately.\n", encoding="utf-8")
     package(stage, "capx-" + label, output, {"components": ["captured", "mcp", "launcher", "web-manager", "wails-desktop"], "profile": "default", "go": "1.26.9", "wails": "2.12.0"})
 
