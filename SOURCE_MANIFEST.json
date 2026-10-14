@@ -2414,6 +2414,26 @@
       "sha256": "ba4de9620fd0dec4360c1e2bf3cedb2639b6bb130c76e1ca4e36cc4dbf36f076"
     },
     {
+      "path": "docs/images/01-dashboard.png",
+      "size": 129692,
+      "sha256": "5b30c10149fba2e2d512f959248265ac0f11b036bed72d5e28f1e04bc584446a"
+    },
+    {
+      "path": "docs/images/02-http-analysis.png",
+      "size": 151011,
+      "sha256": "22fb1b301c44d5b18427c7633d7ba2122e02035211c64a9c9962fb8ff44325f8"
+    },
+    {
+      "path": "docs/images/03-mobile-capture.png",
+      "size": 120697,
+      "sha256": "599313a339a03e3dfb1fe967ad3cfdcc2a2de5600db73adfd209a3c0a6b8dd59"
+    },
+    {
+      "path": "docs/INTRODUCTION.md",
+      "size": 2018,
+      "sha256": "dcc33cbfd0d8cf3717c66d64e04ccaaadf0a9d5e9bcf7e2ec97e1dbee82f05fc"
+    },
+    {
       "path": "LICENSE",
       "size": 1074,
       "sha256": "34cdc3ee668e6191777ab5a935a9334173981f9adf262ee706d1640a82a17409"
@@ -2425,8 +2445,8 @@
     },
     {
       "path": "README.md",
-      "size": 4734,
-      "sha256": "a69d35601f6a7b3663a81e739c00a373871909445c56a1b85f0a8d78058ae889"
+      "size": 6202,
+      "sha256": "bab0678b88e2ae046ad6c1ec55e04dbef7bf47b5a0ecbc65dea8e0a4651a3d03"
     },
     {
       "path": "RELEASE_VALIDATION.md",
@@ -2450,8 +2470,8 @@
     },
     {
       "path": "scripts/check-source.py",
-      "size": 2008,
-      "sha256": "00e75efa4eb10cff06667a2cffac02a3c478f69ddcab7574e2de60bbb09e6760"
+      "size": 2582,
+      "sha256": "bcd9359e0419d91838262491ddb0a9756cd24aeb5200964c3e5f69a6097369a9"
     },
     {
       "path": "scripts/install-wails.py",

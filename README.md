@@ -2,7 +2,33 @@
 
 本地 HTTP/HTTPS 抓包、接口分析与自动化测试工具。提供 Web 控制台、REST API、MCP、Android 操作和 Windows 微信窗口操作。本仓库是经过筛选的公开源码；MIT 许可证适用于此公开仓库的原创代码，第三方代码保留各自许可证，见 [NOTICE](NOTICE.md)。
 
+capx 将流量查看、请求重放、手机测试入口和 AI 工具接入放在同一工作台中，适用于接口调试、流量分析和已授权的自动化测试。
+
 **仓库只提交源码和必要资源，程序由 GitHub Actions 编译。** 上传解压后的源码到仓库根目录，提交后查看 Actions → `build-artifacts`；Windows、Linux、macOS 应用包及原生库从 Artifacts 下载。详细步骤见 [GitHub 编译说明](docs/GITHUB_BUILD.md)。本地编译仅作为可选开发方式。
+
+## 界面示例
+
+以下图片由公开版页面渲染生成，使用模拟请求和设备状态，不包含真实抓包、手机画面或账号资料。
+
+**流量概览**：集中查看 HTTP/HTTPS 请求、目标站点和最近流量。
+
+![capx 流量概览](docs/images/01-dashboard.png)
+
+**接口分析**：查看请求与响应正文、状态码和参数，并进入重放器调试。
+
+![capx 接口分析](docs/images/02-http-analysis.png)
+
+**手机 App 抓包**：配置电脑代理地址、允许连接的手机 IP，以及 Android USB 设备。
+
+![capx 手机 App 抓包](docs/images/03-mobile-capture.png)
+
+## 使用示例
+
+- **排查接口500错误**：筛选失败请求，查看参数与响应，发送到重放器验证修改后的请求。
+- **测试自己的 Android App**：连接并授权 ADB，选择手机，配置抓包与测试 CA，再结合截图定位界面操作。
+- **用 AI 分析流量**：通过 MCP 请求 AI“筛选失败接口，比较请求参数和响应差异，整理排查步骤”。主动执行操作需显式授权。
+
+更多说明见 [项目介绍](docs/INTRODUCTION.md)。iOS 点击/输入尚未统一集成，小程序调试需要外部 CDP；证书固定、业务层加密需要按具体 App 验证。
 
 ## 快速开始
 
@@ -67,6 +93,6 @@ DNSLog 默认服务地址为 `https://dns.baishax.xyz`，每位使用者需配�
 
 ## 测试与贡献
 
-三个模块分别运行 `go test ./...` 和 `go vet ./...`。CI 检查默认 Go 构建、跨平台核心测试、已知漏洞、Rust 引擎及发布文件边界；CI 尚未在远程运行，实机 iOS/WDA 不属于默认测试。
+三个模块分别运行 `go test ./...` 和 `go vet ./...`。[GitHub Actions](https://github.com/hquip/capx/actions) 已运行跨平台测试、漏洞检查、原生集成、程序启动与打包验证；以最新工作流结果为准。实机 iOS/WDA 不属于默认测试。
 
 [构建说明](docs/BUILD.md) · [贡献指南](CONTRIBUTING.md) · [安全报告](SECURITY.md) · [变更说明](CHANGELOG.md)
