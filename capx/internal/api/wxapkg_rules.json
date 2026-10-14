@@ -1,0 +1,59 @@
+{
+  "api": [
+    "(?i)(?:^|[^\\\\])[\"'](/+[^'\"\\s./?]+/*(?:\\?[^\\s'\\\"]*)?)[\"']",
+    "(?i)(?:^|[^\\\\])[\"'](/+[^'\"\\s/?]+\\.(?:exe|dll|so|dylib|sh|bat|cmd|ps1|py|php|asp|aspx|jsp|do|action|go|rb|pl|pm|tcl|swf|jar|war|ear|class|rpm|deb|msi|apk|ipa|app|bin|elf|com|sys|drv|vxd|ocx|cpl|scr|pif|vb|vbs|wsf|hta|msp|msc|msh|msh1|msh2|mshxml|msh1xml|msh2xml|psc1|psc2|ps1xml|ps2xml|psc1xml|psc2xml|scf|lnk|inf|reg|doc|docx|xls|xlsx|ppt|pptx|pdf|rtf|txt|csv|xml|json|html|htm|ts|jsx|tsx|vue|svelte)/*(?:\\?[^\\s'\\\"]*)?)[\"']",
+    "(?i)(?:^|[^\\\\])[\"']((?:/+[^'\"\\s/?]*)+/+[^'\"\\s./?]+/*(?:\\?[^\\s'\\\"]*)?)[\"']",
+    "(?i)(?:^|[^\\\\])[\"']((?:/+[^'\"\\s/?]*)+/+[^'\"\\s/?]+\\.(?:exe|dll|so|dylib|sh|bat|cmd|ps1|py|php|asp|aspx|jsp|do|action|go|rb|pl|pm|tcl|swf|jar|war|ear|class|rpm|deb|msi|apk|ipa|app|bin|elf|com|sys|drv|vxd|ocx|cpl|scr|pif|vb|vbs|wsf|hta|msp|msc|msh|msh1|msh2|mshxml|msh1xml|msh2xml|psc1|psc2|ps1xml|ps2xml|psc1xml|psc2xml|scf|lnk|inf|reg|doc|docx|xls|xlsx|ppt|pptx|pdf|rtf|txt|csv|xml|json|html|htm|ts|jsx|tsx|vue|svelte)/*(?:\\?[^\\s'\\\"]*)?)[\"']"
+  ],
+  "url": [
+    "(?i)(?:^|[^\\\\])[\"'](https?://[^\\s'\"/?#]+(?::\\d+)?/*[^'\"\\s./?]+/*(?:\\?[^\\s'\\\"]*)?)[\"']",
+    "(?i)(?:^|[^\\\\])[\"'](https?://[^\\s'\"/?#]+(?::\\d+)?/*[^'\"\\s/?]+\\.(?:php|asp|aspx|jsp|do|action|cgi|ashx|asmx|py|pl|go|rb|class|jar|war|ear|phar|html|htm|exe|msi|bat|cmd|sh|bash|zsh|vbs|ps1|psm1|dll|so|dylib|ocx|sys|drv|com|scr|pif|hta)/*(?:\\?[^\\s'\\\"]*)?)[\"']",
+    "(?i)(?:^|[^\\\\])[\"'](https?://[^\\s'\"/?#]+(?::\\d+)?/*(?:/+[^'\"\\s/?]*)+/+[^'\"\\s./?]+/*(?:\\?[^\\s'\\\"]*)?)[\"']",
+    "(?i)(?:^|[^\\\\])[\"'](https?://[^\\s'\"/?#]+(?::\\d+)?/*(?:/+[^'\"\\s/?]*)+/+[^'\"\\s/?]+\\.(?:php|asp|aspx|jsp|do|action|cgi|ashx|asmx|py|pl|go|rb|class|jar|war|ear|phar|html|htm)/*(?:\\?[^\\s'\\\"]*)?)[\"']",
+    "(?i)(https?://[a-zA-Z0-9\\-._~:/?#\\[\\]@!$&()*+,;=%]{8,200})"
+  ],
+  "cred": [
+    "(?i)[\"']?\\b([\\w-]*user(?:name)?\\b[\"']?[^\\S\\r\\n]*[=:][^\\S\\r\\n]*(?:\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'))",
+    "(?i)[\"']?\\b([\\w-]*(pass(word)?|email)\\b[\"']?[^\\S\\n]*[=:][^\\S\\r\\n]*(?:\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'))",
+    "(?i)[\"']?\\b((?:账户|账户名|用户名|账号|测试账户)\\b[\"']?[^\\S\\r\\n]*[=:][^\\S\\r\\n]*(?:\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'))",
+    "(?i)[\"']?\\b((?:默认口令|默认密码|口令|密码|测试密码)\\b[\"']?[^\\S\\r\\n]*[=:][^\\S\\r\\n]*(?:\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'))"
+  ],
+  "key": [
+    "(?i)[\"']?\\b([\\w.-]*(?:secret[_-]?access[-_]?key|access[_-]?key|secret[_-]?key)\\b[\"']?[^\\S\\r\\n]*[=:][^\\S\\r\\n]*(?:\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'))",
+    "(?i)[\"']?\\b([\\w.-]*(?:api|app|session|client|access|auth|secret|token|bucket|account)[_-]?(?:key|secret|token|sid|id)?\\b[\"']?[^\\S\\r\\n]*[=:][^\\S\\r\\n]*(?:\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'))",
+    "(?i)[\"']?\\b([\\w.-]*(?:session[_-]?(?:key|secret|token)|auth[_-]?(key|secret|token))\\b[\"']?[^\\S\\r\\n]*[=:][^\\S\\r\\n]*(?:\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'))",
+    "(?i)[\"']?\\b([\\w.-]*(?:bucket[-_]?name|endpoint|corp[_-]?secret)\\b[\"']?[^\\S\\r\\n]*[=:][^\\S\\r\\n]*(?:\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'))",
+    "(?i)[\"']?\\b(git(?:hub)?[\\w-]*(?:key|secret|token)\\b[\"']?[^\\S\\r\\n]*[=:][^\\S\\r\\n]*(?:\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'))",
+    "LTAI[A-Za-z0-9]{12,24}",
+    "AKIA[0-9A-Z]{16}",
+    "AKID[A-Za-z0-9]{20,40}",
+    "AIza[0-9A-Za-z_\\-]{35}",
+    "eyJ[A-Za-z0-9_\\-]{8,}\\.eyJ[A-Za-z0-9_\\-]{8,}\\.[A-Za-z0-9_\\-]{8,}",
+    "-----BEGIN (?:RSA |EC |DSA |OPENSSH |PGP )?PRIVATE KEY-----"
+  ],
+  "sensitive": [
+    "\\b((?:\\+?86)?1[3-9]\\d{9})\\b",
+    "\\b([1-9]\\d{5}(?:18|19|20)\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{3}[\\dXx])\\b",
+    "[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.(?:com|cn|net|org|edu|gov|io|co|qq|163|vip|top|xyz)",
+    "[^0-9]((?:62|4[0-9]|5[1-5])[0-9]{14,17})[^0-9]"
+  ],
+  "jdbc": [
+    "(?i)((?:jdbc:)?(?:mysql|postgresql|oracle|sqlserver|sqlite|mariadb)://[\\w-.]+(?::\\d+)?/[\\w-]+(?:\\?[\\w-%&=]*)?)",
+    "(?i)[\"']?(jdbc\\.(driver|url|type)[\"']?[^\\S\\r\\n]*[=:][^\\S\\r\\n]*(?:\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'))",
+    "(?i)[\"']?((?:db|database)[_-]?(?:username|user)[\"']?[^\\S\\r\\n]*[=:][^\\S\\r\\n]*(?:\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'))",
+    "(?i)[\"']?((?:db|database)[_-]?password[\"']?[^\\S\\r\\n]*[=:][^\\S\\r\\n]*(?:\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'))",
+    "(?i)[\"']?((?:db|database)[_-]?(?:host|port|name|url|driver|type)[\"']?[^\\S\\r\\n]*[=:][^\\S\\r\\n]*(?:\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'))"
+  ],
+  "appid": [
+    "(wx[0-9a-fA-F]{15,18})"
+  ],
+  "cloud": [
+    "(?i)callFunction\\(\\s*\\{[^}]*?name\\s*:\\s*[\"']([^\"']+)[\"']",
+    "(?i)(wx\\.cloud\\.(?:callFunction|callContainer|database|uploadFile|downloadFile|init)\\b)",
+    "(?i)[\"']?\\b(env)\\b[\"']?[^\\S\\r\\n]*[=:][^\\S\\r\\n]*[\"']([a-zA-Z0-9-]{6,})[\"']"
+  ],
+  "static": [
+    "(?i)(?:^|[^\\\\])[\"'](/+[^'\"\\s/?]+\\.(?:css|js|ts|json|config|xml|vue|jsx|tsx|txt|csv|png|jpg|jpeg|gif|webp|svg|ico|bmp|mp3|wav|ogg|mp4|webm|mov|avi|mkv|pdf|doc|docx|xls|xlsx|ppt|pptx|rtf|woff|woff2|ttf|eot|svelte|zip|rar|7z|tar|gz|bz2|xz|tgz|tbz|lz|lz4|zst|iso)/*(?:\\?[^\\s'\\\"]*)?)[\"']",
+    "(?i)(?:^|[^\\\\])[\"']((?:/+[^'\"\\s/?]*)+/+[^'\"\\s/?]+\\.(?:css|js|ts|json|config|xml|vue|jsx|tsx|txt|csv|png|jpg|jpeg|gif|webp|svg|ico|bmp|mp3|wav|ogg|mp4|webm|mov|avi|mkv|pdf|doc|docx|xls|xlsx|ppt|pptx|rtf|woff|woff2|ttf|eot|svelte|zip|rar|7z|tar|gz|bz2|xz|tgz|tbz|lz|lz4|zst|iso)/*(?:\\?[^\\s'\\\"]*)?)[\"']"
+  ]
+}

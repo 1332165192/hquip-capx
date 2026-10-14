@@ -1,0 +1,128 @@
+# Capx SRC 完整挖掘会话模板
+# 来源：{{.Source}}；模式：{{.Mode}}；阶段：{{.Stage}}
+# 连接参数由实例 manifest 动态解析；模板不保存实际端口、Token、state-dir 或工具安装目录。
+
+## 1. 项目绑定
+
+项目根：{{.ProjectRoot}}
+实例 ID：{{.InstanceID}}
+
+Codex `.codex/config.toml` 的 MCP `.env` 表写 TOML 行；Claude `.mcp.json` 的 MCP `env` 对象写 JSON 项。
+
+```toml
+CAPX_INSTANCE_ID = {{.InstanceIDJSON}}
+```
+
+```json
+"CAPX_INSTANCE_ID": {{.InstanceIDJSON}}
+```
+
+## 2. Shell 动态会话
+
+在需要调用 Capx 的同一个 shell 中执行。脚本从 `$CAPX_INSTANCE_DIR`（默认 `$HOME/.capx/instances`）下的 `<INSTANCE_ID>.json` 读取本轮 API、Proxy、CDP、state-dir 和 token_file，注入当前进程；Token 不打印。保留两条护栏：API/Proxy 必须是 loopback、token_file 必须在 state_dir 内。
+
+{{if eq .Mode "managed"}}```bash
+export CAPX_INSTANCE_ID={{.InstanceIDSh}}
+CAPX_INSTANCE_DIR="${CAPX_INSTANCE_DIR:-$HOME/.capx/instances}"
+CAPX_MANIFEST="$CAPX_INSTANCE_DIR/$CAPX_INSTANCE_ID.json"
+if _capx_env="$(CAPX_MANIFEST="$CAPX_MANIFEST" python3 - <<'PY'
+import json, os, sys, shlex
+from urllib.parse import urlparse
+
+path = os.environ["CAPX_MANIFEST"]
+with open(path, encoding="utf-8") as fh:
+    capx = json.load(fh)
+
+loopback = {"127.0.0.1", "localhost", "::1"}
+api_base = str(capx["api_base"]).rstrip("/")
+proxy = str(capx["proxy"]).rstrip("/")
+if urlparse(api_base).hostname not in loopback:
+    sys.exit("Capx API is not loopback")
+if urlparse(proxy).hostname not in loopback:
+    sys.exit("Capx proxy is not loopback")
+
+state_dir = os.path.realpath(str(capx["state_dir"]))
+token_file = os.path.realpath(str(capx["token_file"]))
+if not token_file.startswith(state_dir + os.sep):
+    sys.exit("Capx token_file is outside state_dir")
+with open(token_file, encoding="utf-8") as fh:
+    token = fh.read().strip()
+
+proxy_url = urlparse(proxy)
+cdp_port = capx.get("cdp_port")
+pairs = [
+    ("CAPX_INSTANCE_FILE", path),
+    ("CAPX_API_BASE", api_base),
+    ("CAPX_PROXY", proxy),
+    ("CAPX_PROXY_HOST", proxy_url.hostname or ""),
+    ("CAPX_PROXY_PORT", str(proxy_url.port or "")),
+    ("CAPX_STATE_DIR", state_dir),
+    ("CAPX_TOKEN_FILE", token_file),
+    ("CAPX_TOKEN", token),
+    ("JS_REVERSE_CDP_PORT", "" if cdp_port is None else str(cdp_port)),
+    ("CAPX_CDP_URL", "" if cdp_port is None else "http://127.0.0.1:%s" % cdp_port),
+]
+for key, value in pairs:
+    print("export %s=%s" % (key, shlex.quote(value)))
+PY
+)"; then
+    eval "$_capx_env"
+    unset _capx_env
+    echo "capx: 已注入实例 $CAPX_INSTANCE_ID 的连接参数（Token 未回显）。"
+else
+    echo "capx: 读取 manifest 失败：$CAPX_MANIFEST" >&2
+fi
+```
+{{else}}legacy 实例没有项目 manifest。先从运行实例取得连接值并 export `CAPX_API_BASE`、`CAPX_PROXY`、`CAPX_TOKEN_FILE`，再从 token_file 读入 `CAPX_TOKEN`（`export CAPX_TOKEN="$(< "$CAPX_TOKEN_FILE")"`）；需要完整项目隔离和独立 CDP 时改用 managed 模式。
+{{end}}
+## 3. 通用客户端 YAML
+
+第 2 段执行后生成，供支持 `capture/capx` 配置的客户端使用；只用于本轮，不提交展开端口。
+
+```bash
+cat <<EOF
+capture:
+  backend: "capx"
+capx:
+  base_url: "$CAPX_API_BASE"
+  proxy_addr: "$CAPX_PROXY_HOST:$CAPX_PROXY_PORT"
+  auto_start_proxy: false
+EOF
+```
+
+## 4. 动态连接 JSON
+
+需要给本机工具传连接信息时生成；不含 Token 内容。
+
+```bash
+python3 - <<'PY'
+import json, os
+print(json.dumps({
+    "mode": "{{.Mode}}",
+    "instance_id": os.environ.get("CAPX_INSTANCE_ID", ""),
+    "api_base": os.environ.get("CAPX_API_BASE", ""),
+    "proxy": os.environ.get("CAPX_PROXY", ""),
+    "cdp_url": os.environ.get("CAPX_CDP_URL", ""),
+    "token_file": os.environ.get("CAPX_TOKEN_FILE", ""),
+}, ensure_ascii=False, indent=2))
+PY
+```
+
+## 5. SRC 规则与任务输入
+
+红线唯一来源：[ByteSRC 公开规则](https://q2a1fk6o03.feishu.cn/docx/WPOHdeVdLoJgPfx25VmcfVJxnde)。会话模板、Skill 和本地提示词不追加平台禁止项。
+
+```text
+目标：<TARGET>
+范围：<SCOPE>
+目标类型：<ANDROID_APP/IOS_APP/WINDOWS_CLIENT/H5/API/COMBINED>
+客户端：<PACKAGE_OR_PROCESS>/<VERSION>/<FILE_SHA256>
+服务端：<HOSTS/APIS/ENVIRONMENT>
+账号：<ANONYMOUS/ACCOUNT_A/ACCOUNT_B/ROLES/TENANTS>
+资源：<A_OWNED/B_OWNED/PUBLIC/DIFFERENT_STATES>
+项目根：{{.ProjectRoot}}
+输出目录：{{.ProjectRoot}}/work-space/<TARGET_SLUG>
+历史进度：<NEW/RESUME_FROM_CHECKPOINT>
+```
+
+填好后加载 `pentest-workflow` 及对应专项 Skill。指纹、攻击面、测试面、取证闭环和验收标准由 Skill 自身提供，本模板只负责连接配置与任务交接。

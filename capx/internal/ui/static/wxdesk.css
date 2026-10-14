@@ -1,0 +1,26 @@
+#v_wxdesk .wxb-layout{display:grid;grid-template-columns:minmax(320px,.8fr) minmax(320px,1.2fr);gap:20px;max-width:1500px;align-items:start}
+#v_wxdesk .wxb-controls{display:grid;gap:18px;min-width:0}
+#v_wxdesk .wxb-card{padding:22px;margin:0;min-width:0}
+#v_wxdesk .wxb-heading{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+#v_wxdesk .wxb-heading h2{margin:0;font-size:15px}
+#v_wxdesk .field-label{display:block;margin:14px 0 8px}
+#v_wxdesk input:not([type=checkbox]),#v_wxdesk select{width:100%;min-width:0;max-width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:7px;background:var(--panel);color:var(--fg)}
+#v_wxdesk .hint{font-size:11px;line-height:1.8;white-space:normal}
+#v_wxdesk .wxb-actions{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+#v_wxdesk .wxb-row{display:flex;gap:8px;min-width:0}
+#v_wxdesk .wxb-row input{flex:1;width:0}
+#v_wxdesk .wxb-row button{flex-shrink:0}
+#v_wxdesk .wxb-notice{padding:12px 14px;line-height:1.8;font-size:12px;background:#f0f7f6;color:#476d69;border-radius:7px;overflow-wrap:anywhere}
+#v_wxdesk .wxb-notice[data-error=true]{color:var(--err);background:#fff1f2}
+#v_wxdesk .wxb-wrap{overflow-wrap:anywhere}
+#v_wxdesk .wxb-image-area{min-height:400px;display:flex;align-items:center;justify-content:center;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px;overflow:hidden}
+#v_wxdesk .wxb-empty{display:flex;flex-direction:column;gap:12px;text-align:center;align-items:center;color:var(--muted);font-size:12px}
+#v_wxdesk .wxb-empty .ui-icon{width:46px;height:46px;color:#9bb9b5;margin-bottom:10px}
+#v_wxdesk #wxb_image_button{border:0;padding:0;background:transparent;line-height:0;max-width:100%}
+#v_wxdesk #wxb_image_button img{max-width:100%;max-height:680px;display:block;width:auto;height:auto}
+#v_wxdesk #wxb_image_button:not(:disabled){cursor:crosshair}
+#v_wxdesk #wxb_image_button:disabled{opacity:1}
+#v_wxdesk button:disabled{opacity:.5;cursor:not-allowed}
+#v_wxdesk .wxb-toggle{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px;margin-top:15px}
+#v_wxdesk .wxb-log{white-space:pre-wrap;overflow:auto;max-height:240px;font-size:11px;background:var(--panel2);padding:12px;border-radius:7px}
+@media(max-width:1100px){#v_wxdesk .wxb-layout{grid-template-columns:minmax(0,1fr)}#v_wxdesk .wxb-card{padding:18px}}

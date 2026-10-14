@@ -1,0 +1,72 @@
+name: source-checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  core:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.9'
+          cache-dependency-path: '**/go.sum'
+      - name: Source boundary
+        run: python scripts/check-source.py
+      - name: Core tests
+        working-directory: capx
+        run: go test ./...
+      - name: Core vet
+        working-directory: capx
+        run: go vet ./...
+      - name: Manager tests
+        working-directory: capx-web-manager
+        run: go test ./...
+      - name: Manager vet
+        working-directory: capx-web-manager
+        run: go vet ./...
+      - name: Build core commands
+        working-directory: capx
+        run: go build -mod=readonly ./cmd/...
+  desktop:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.9'
+          cache-dependency-path: '**/go.sum'
+      - run: go test ./...
+        working-directory: capx-desktop
+      - run: go vet ./...
+        working-directory: capx-desktop
+  vulnerabilities:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        module: [capx, capx-desktop, capx-web-manager]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.9'
+          cache-dependency-path: '**/go.sum'
+      - run: go run golang.org/x/vuln/cmd/govulncheck@v1.9.0 ./...
+        working-directory: ${{ matrix.module }}
+  rust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup toolchain install 1.95.0 --profile minimal
+      - run: cargo +1.95.0 test --locked
+        working-directory: capx/native/memscan-rs
+  rust-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup toolchain install 1.95.0-x86_64-pc-windows-gnu --profile minimal
+      - run: ./capx/scripts/test-native-windows.ps1

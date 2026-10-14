@@ -1,0 +1,453 @@
+# capx 内置 HaE 规则（默认加载，可被 /api/hae/rules 上传覆盖）
+# 兼容 github.com/gh0stkey/HaE 的 Rules.yml 格式；正则均为 RE2 安全（无反向引用/环视）。
+rules:
+- group: 基础信息
+  rule:
+  - name: Email
+    loaded: true
+    f_regex: '([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.(?:com|cn|net|org|edu|gov|io|co|me|info|biz|top|xyz|vip|cc|tv|app|dev|pro|club|shop|email|qq|outlook|gmail|hotmail|foxmail|aliyun|sina|com\.cn|net\.cn|edu\.cn|gov\.cn))'
+    s_regex: ''
+    format: '{0}'
+    color: yellow
+    scope: any
+    engine: nfa
+    sensitive: false
+  - name: 中国手机号
+    loaded: true
+    f_regex: '[^0-9]((?:13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])[0-9]{8})[^0-9]'
+    s_regex: ''
+    format: '{1}'
+    color: yellow
+    scope: any
+    engine: nfa
+    sensitive: false
+  - name: 身份证号
+    loaded: true
+    f_regex: '[^0-9Xx]((?:[1-6][0-9]|50)[0-9]{4}(?:19|20)[0-9]{2}(?:0[1-9]|1[012])(?:0[1-9]|[12][0-9]|3[01])[0-9]{3}[0-9Xx])[^0-9Xx]'
+    s_regex: ''
+    format: '{1}'
+    color: orange
+    scope: any
+    engine: nfa
+    sensitive: false
+  - name: 银行卡号
+    loaded: true
+    f_regex: '[^0-9]((?:62|4|5[1-5])[0-9]{14,17})[^0-9]'
+    s_regex: ''
+    format: '{1}'
+    color: orange
+    scope: any
+    engine: nfa
+    sensitive: false
+- group: 认证凭据
+  rule:
+  - name: JWT Token
+    loaded: true
+    f_regex: '(eyJ[A-Za-z0-9_\-]{8,}\.eyJ[A-Za-z0-9_\-]{8,}\.[A-Za-z0-9_\-]{8,})'
+    s_regex: ''
+    format: '{0}'
+    color: red
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: Authorization 头
+    loaded: true
+    f_regex: '((?:Authorization|authorization)\s*[:=]\s*(?:Bearer|Basic|Token|JWT)\s+[A-Za-z0-9._\-+/=]{8,})'
+    s_regex: ''
+    format: '{0}'
+    color: red
+    scope: any
+    engine: nfa
+    sensitive: false
+  - name: 密码字段
+    loaded: true
+    f_regex: '((?:password|passwd|pwd|pass|admin_pass)["\x27]?\s*[:=]\s*["\x27]?[^"\x27&\s]{3,40})'
+    s_regex: ''
+    format: '{0}'
+    color: red
+    scope: any
+    engine: nfa
+    sensitive: false
+  - name: 密钥/Token 字段
+    loaded: true
+    f_regex: '((?:secret|api[_\-]?key|access[_\-]?token|app[_\-]?secret|client[_\-]?secret|private[_\-]?key|token)["\x27]?\s*[:=]\s*["\x27]?[A-Za-z0-9._\-]{8,64})'
+    s_regex: ''
+    format: '{0}'
+    color: red
+    scope: any
+    engine: nfa
+    sensitive: false
+- group: 云密钥
+  rule:
+  - name: 阿里云 AccessKey
+    loaded: true
+    f_regex: '(LTAI[A-Za-z0-9]{12,24})'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: AWS AccessKey
+    loaded: true
+    f_regex: '((?:AKIA|ASIA|AGPA|AIDA|AROA|ANPA|ANVA)[0-9A-Z]{16})'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: 腾讯云 SecretId
+    loaded: true
+    f_regex: '(AKID[A-Za-z0-9]{20,40})'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: 京东云 AccessKey
+    loaded: true
+    f_regex: '(JDC_[0-9A-Z]{25,40})'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: 华为云/百度云 AK
+    loaded: true
+    f_regex: '((?:bce-|HUAWEI)[A-Za-z0-9_\-]{20,60})'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: Google API Key
+    loaded: true
+    f_regex: '(AIza[0-9A-Za-z_\-]{35})'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: GitHub Token
+    loaded: true
+    f_regex: '((?:ghp|gho|ghu|ghs|ghr)_[0-9a-zA-Z]{36})'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: Slack Token
+    loaded: true
+    f_regex: '(xox[baprs]-[0-9a-zA-Z\-]{10,48})'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: 私钥 PrivateKey
+    loaded: true
+    f_regex: '(-----BEGIN (?:RSA |EC |DSA |OPENSSH |PGP )?PRIVATE KEY-----)'
+    s_regex: ''
+    format: '{0}'
+    color: red
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: 微信 AppID
+    loaded: true
+    f_regex: '[^a-zA-Z0-9](wx[a-z0-9]{15,18})[^a-zA-Z0-9]'
+    s_regex: ''
+    format: '{1}'
+    color: cyan
+    scope: any
+    engine: nfa
+    sensitive: true
+- group: 网络信息
+  rule:
+  - name: 内网 IP
+    loaded: true
+    f_regex: '[^0-9]((?:127\.0\.0\.1|10\.(?:[0-9]{1,3}\.){2}[0-9]{1,3}|172\.(?:1[6-9]|2[0-9]|3[01])\.[0-9]{1,3}\.[0-9]{1,3}|192\.168\.[0-9]{1,3}\.[0-9]{1,3}))[^0-9]'
+    s_regex: ''
+    format: '{1}'
+    color: green
+    scope: any
+    engine: nfa
+    sensitive: false
+  - name: IPv4 地址
+    loaded: true
+    f_regex: '[^0-9.]((?:[0-9]{1,3}\.){3}[0-9]{1,3})[^0-9.]'
+    s_regex: ''
+    format: '{1}'
+    color: green
+    scope: any body
+    engine: nfa
+    sensitive: false
+  - name: All URL
+    loaded: true
+    f_regex: '(https?://[a-zA-Z0-9\-._~:/?#\[\]@!$&()*+,;=%]{6,200})'
+    s_regex: ''
+    format: '{0}'
+    color: blue
+    scope: any
+    engine: nfa
+    sensitive: false
+  - name: 云存储 URL
+    loaded: true
+    f_regex: '([a-zA-Z0-9\-.]+\.(?:oss[a-zA-Z0-9\-.]*\.aliyuncs\.com|cos\.[a-z0-9\-]+\.myqcloud\.com|s3[a-z0-9\-.]*\.amazonaws\.com|obs\.[a-z0-9\-.]+\.myhuaweicloud\.com|bcebos\.com))'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: false
+- group: 接口路径
+  rule:
+  - name: JS 中的路径
+    loaded: true
+    f_regex: '["\x27](/[a-zA-Z0-9_\-/.]{2,60})["\x27]'
+    s_regex: ''
+    format: '{1}'
+    color: gray
+    scope: response body
+    engine: nfa
+    sensitive: false
+  - name: 接口关键词
+    loaded: true
+    f_regex: '(/(?:api|admin|actuator|swagger|graphql|debug|console|upload|download|export|backup|test|internal|v[0-9])(?:/[a-zA-Z0-9_\-/.]{0,40})?)'
+    s_regex: ''
+    format: '{0}'
+    color: pink
+    scope: any
+    engine: nfa
+    sensitive: false
+  - name: Linkfinder
+    loaded: true
+    f_regex: '["\x27]((?:https?:|//)[a-zA-Z0-9_.\-]+/[^"\x27\s]{0,120}|/[a-zA-Z0-9_\-][a-zA-Z0-9_/.\-]{1,120}|[a-zA-Z0-9_\-/]{1,60}\.(?:php|asp|aspx|jsp|json|do|action|html|htm|js))["\x27]'
+    s_regex: ''
+    format: '{1}'
+    color: gray
+    scope: response body
+    engine: nfa
+    sensitive: false
+- group: 第三方密钥
+  rule:
+  - name: Stripe Key
+    loaded: true
+    f_regex: '((?:sk|pk|rk)_(?:live|test)_[0-9a-zA-Z]{20,99})'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: Telegram Bot Token
+    loaded: true
+    f_regex: '([0-9]{8,10}:[A-Za-z0-9_\-]{35})'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: Slack Webhook
+    loaded: true
+    f_regex: '(https://hooks\.slack\.com/services/[A-Za-z0-9/_\-]{20,})'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: 字节火山 AccessKey
+    loaded: true
+    f_regex: '(AKLT[A-Za-z0-9\-_]{16,40})'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: npm Token
+    loaded: true
+    f_regex: '(npm_[0-9a-zA-Z]{36})'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: PyPI Token
+    loaded: true
+    f_regex: '(pypi-[A-Za-z0-9_\-]{16,})'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: Mailgun Key
+    loaded: true
+    f_regex: '(key-[0-9a-f]{32})'
+    s_regex: ''
+    format: '{0}'
+    color: magenta
+    scope: any
+    engine: nfa
+    sensitive: true
+  - name: 钉钉/企微 Secret
+    loaded: true
+    f_regex: '((?:corpsecret|corpid|appsecret|agentid)["\x27]?\s*[:=]\s*["\x27]?[A-Za-z0-9_\-]{12,64})'
+    s_regex: ''
+    format: '{0}'
+    color: red
+    scope: any
+    engine: nfa
+    sensitive: false
+- group: 数据库与连接
+  rule:
+  - name: JDBC 连接串
+    loaded: true
+    f_regex: '(jdbc:[a-z0-9]+://[^\s"\x27<>]{4,160})'
+    s_regex: ''
+    format: '{0}'
+    color: red
+    scope: any
+    engine: nfa
+    sensitive: false
+  - name: MongoDB URI
+    loaded: true
+    f_regex: '(mongodb(?:\+srv)?://[^\s"\x27<>]{6,160})'
+    s_regex: ''
+    format: '{0}'
+    color: red
+    scope: any
+    engine: nfa
+    sensitive: false
+  - name: Redis URI
+    loaded: true
+    f_regex: '(redis://[^\s"\x27<>]{4,160})'
+    s_regex: ''
+    format: '{0}'
+    color: red
+    scope: any
+    engine: nfa
+    sensitive: false
+  - name: 带口令的 URL
+    loaded: true
+    f_regex: '([a-z]+://[a-zA-Z0-9._%\-]+:[^@\s/"\x27]{3,40}@[a-zA-Z0-9.\-]+)'
+    s_regex: ''
+    format: '{0}'
+    color: red
+    scope: any
+    engine: nfa
+    sensitive: false
+  - name: URL 中的密钥参数
+    loaded: true
+    f_regex: '([?&](?:api[_\-]?key|access[_\-]?token|token|app[_\-]?key|app[_\-]?secret|secret|password|passwd|pwd|sign|signature|sessionid|sid)=[^&\s"\x27#]{4,})'
+    s_regex: ''
+    format: '{0}'
+    color: orange
+    scope: any
+    engine: nfa
+    sensitive: false
+- group: 接口与泄露
+  rule:
+  - name: Swagger/OpenAPI
+    loaded: true
+    f_regex: '(/(?:swagger-ui|swagger/|v2/api-docs|v3/api-docs|openapi\.json|api-docs))'
+    s_regex: ''
+    format: '{0}'
+    color: pink
+    scope: any
+    engine: nfa
+    sensitive: false
+  - name: Spring Actuator
+    loaded: true
+    f_regex: '(/actuator/(?:health|env|beans|mappings|httptrace|heapdump|threaddump|metrics|loggers|configprops|gateway|refresh|shutdown))'
+    s_regex: ''
+    format: '{0}'
+    color: pink
+    scope: any
+    engine: nfa
+    sensitive: false
+  - name: SourceMap 泄露
+    loaded: true
+    f_regex: '([a-zA-Z0-9_\-./]+\.(?:js|css)\.map)'
+    s_regex: ''
+    format: '{0}'
+    color: gray
+    scope: response body
+    engine: nfa
+    sensitive: false
+  - name: 内部域名
+    loaded: true
+    f_regex: '([a-zA-Z0-9\-]+\.(?:local|internal|intra|corp|lan|staging)\b)'
+    s_regex: ''
+    format: '{0}'
+    color: cyan
+    scope: any
+    engine: nfa
+    sensitive: false
+  - name: MAC 地址
+    loaded: true
+    f_regex: '[^0-9a-fA-F:]([0-9a-fA-F]{2}(?::[0-9a-fA-F]{2}){5})[^0-9a-fA-F:]'
+    s_regex: ''
+    format: '{1}'
+    color: green
+    scope: any
+    engine: nfa
+    sensitive: false
+- group: 错误与路径
+  rule:
+  - name: SQL 报错
+    loaded: true
+    f_regex: '(SQL syntax|mysql_fetch|ORA-[0-9]{4,5}|Microsoft OLE DB Provider|SQLite3::|Unclosed quotation mark|You have an error in your SQL)'
+    s_regex: ''
+    format: '{0}'
+    color: red
+    scope: response body
+    engine: nfa
+    sensitive: false
+  - name: 堆栈/调试信息
+    loaded: true
+    f_regex: '(Traceback \(most recent call last\)|\.java:[0-9]+\)|\.php on line [0-9]+|Fatal error:|Whitelabel Error Page|DEBUG = True)'
+    s_regex: ''
+    format: '{0}'
+    color: orange
+    scope: response body
+    engine: nfa
+    sensitive: false
+  - name: 系统敏感路径
+    loaded: true
+    f_regex: '(/etc/passwd|/etc/shadow|/proc/self/(?:environ|cmdline)|/var/www/html/[a-zA-Z0-9_/.\-]{1,40}|/usr/local/(?:nginx|tomcat|apache|jdk|java)[a-zA-Z0-9_/.\-]{0,30}|/root/[a-z.][a-zA-Z0-9_/.\-]{0,30}|C:\\(?:Windows\\System32|inetpub\\wwwroot|Users\\[A-Za-z0-9_]+)\\)'
+    s_regex: ''
+    format: '{0}'
+    color: orange
+    scope: response body
+    engine: nfa
+    sensitive: false
+  - name: MD5 哈希
+    loaded: false
+    f_regex: '[^0-9a-fA-F]([0-9a-fA-F]{32})[^0-9a-fA-F]'
+    s_regex: ''
+    format: '{1}'
+    color: gray
+    scope: any body
+    engine: nfa
+    sensitive: false
+  - name: SHA1 哈希
+    loaded: false
+    f_regex: '[^0-9a-fA-F]([0-9a-fA-F]{40})[^0-9a-fA-F]'
+    s_regex: ''
+    format: '{1}'
+    color: gray
+    scope: any body
+    engine: nfa
+    sensitive: false

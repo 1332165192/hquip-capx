@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#142a30">
+  <title>CAPX · 实例管理</title>
+  <style>/* manager styles */</style>
+</head>
+<body>
+  <a class="skip-link" href="#launchConfig">跳到启动配置</a>
+  <header class="top">
+    <div class="top-inner">
+      <a class="brand" href="#" aria-label="CAPX 实例工作台">
+        <span class="logo" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none"><path d="M4 14h5l3-8 5 16 3-8h4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span>CAPX<span class="brand-divider"></span><span class="brand-label">实例管理</span></span>
+      </a>
+      <nav class="top-nav" aria-label="工作台导航">
+        <a class="active" href="#launchConfig">工作台</a>
+        <a href="#instancesPanel">运行实例</a>
+        <a href="#usageGuide">使用指南</a>
+      </nav>
+      <span class="pill" id="clock" aria-label="当前时间"></span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="page-heading">
+      <div class="title">
+        <p class="eyebrow">CAPTURE WORKSPACE</p>
+        <h1>每个项目，独立的抓包空间</h1>
+        <p>集中管理 Capx 实例、代理浏览器与移动端连接。</p>
+      </div>
+      <button class="btn green heading-action" type="button" onclick="start()">
+        <svg class="icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        启动实例
+      </button>
+    </div>
+
+    <section class="metric" aria-label="实例概览">
+      <div class="m">
+        <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg></span>
+        <div><span>当前实例</span><b id="mCount">0</b></div>
+        <span class="metric-note">独立工作区</span>
+      </div>
+      <div class="m">
+        <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m9 9-3 3 3 3m6-6 3 3-3 3"/></svg></span>
+        <div><span>API 配置端口</span><b id="mApi">—</b></div>
+        <span class="metric-note">服务连接</span>
+      </div>
+      <div class="m">
+        <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 8h16m-4-4 4 4-4 4M20 16H4m4-4-4 4 4 4"/></svg></span>
+        <div><span>Proxy 配置端口</span><b id="mProxy">—</b></div>
+        <span class="metric-note">流量入口</span>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card config-card" id="launchConfig" aria-labelledby="configTitle">
+        <div class="section-heading">
+          <div><h2 id="configTitle">启动配置</h2><p>绑定项目，配置你的独立抓包实例。</p></div>
+          <span class="section-badge">WORKSPACE</span>
+        </div>
+        <div class="form">
+          <label class="label" for="apiPort">API 端口</label>
+          <input id="apiPort" type="number" min="0" max="65535" placeholder="自动分配">
+          <button class="btn" type="button" onclick="findFree()">找空闲</button>
+          <button class="btn green" type="button" onclick="start()">启动实例</button>
+          <label class="label" for="proxyPort">代理端口</label>
+          <input id="proxyPort" type="number" min="0" max="65535" placeholder="自动分配">
+          <label class="label count-label" for="count">实例数量</label>
+          <input id="count" type="number" min="1" max="50">
+        </div>
+
+        <div class="checks">
+          <label class="check" style="display:none"><input id="autoProxy" type="checkbox"> legacy</label>
+          <label class="check" title="允许实例使用主动测试能力"><input id="allowActive" type="checkbox"> allow-active</label>
+          <label class="check"><input id="openAfterStart" type="checkbox"> 启动后打开 Web</label>
+          <label class="check"><input id="showOnlyPath" type="checkbox"> 只显示当前路径实例</label>
+        </div>
+
+        <details class="integrations">
+          <summary><span><svg class="icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 5h12M4 10h12M4 15h12M7 3v4m6 1v4m-5 1v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>工具路径与设备</span><span class="summary-hint">Capx · Ghost · ADB</span></summary>
+          <div class="form tools-form">
+            <label class="label" for="capturedPath">Capx 路径</label>
+            <input id="capturedPath" placeholder="capx-captured 可执行文件路径" spellcheck="false">
+            <button class="btn" type="button" onclick="useDefault()">默认</button>
+            <button class="btn" type="button" onclick="saveConfig()">保存</button>
+            <label class="label" for="ghostPath">Ghost 路径</label>
+            <input id="ghostPath" placeholder="Ghost 可执行文件路径" spellcheck="false">
+            <button class="btn" type="button" onclick="useDefaultGhost()">默认</button>
+            <button class="btn" type="button" onclick="saveConfig()">保存</button>
+            <label class="label" for="adbPath">ADB 路径</label>
+            <input id="adbPath" placeholder="ADB 可执行文件路径" spellcheck="false">
+            <button class="btn" type="button" onclick="useDefaultADB()">默认</button>
+            <button class="btn" type="button" onclick="listADBDevices()">检测设备</button>
+            <label class="label" for="adbSerial">ADB 设备</label>
+            <input id="adbSerial" placeholder="留空自动选择设备" spellcheck="false">
+            <button class="btn" type="button" onclick="saveConfig()">保存</button>
+            <button class="btn" type="button" onclick="clearADBSerial()">清空</button>
+          </div>
+        </details>
+        <div class="config-footer"><span class="small">配置仅保存在当前设备</span><button class="btn save-button" type="button" onclick="saveConfig()">保存配置</button></div>
+      </section>
+
+      <aside class="side" aria-label="使用说明">
+        <section class="hintbox guide" id="usageGuide">
+          <div class="guide-heading"><span class="guide-mark" aria-hidden="true"><svg class="icon" viewBox="0 0 20 20" fill="none"><path d="M6 3h8a2 2 0 0 1 2 2v12l-6-3-6 3V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span><h2>开始你的抓包工作流</h2></div>
+          <ol class="steps">
+            <li><span class="step-number">1</span><div><b>选择项目</b><p>绑定项目目录与实例 ID。每个项目独立保存 token、scope 和 history。</p></div></li>
+            <li><span class="step-number">2</span><div><b>分配连接端口</b><p>推荐自动分配 API、Proxy、CDP；也可点击「找空闲」指定可用端口。</p></div></li>
+            <li><span class="step-number">3</span><div><b>启动并连接</b><p>从实例列表打开独立代理浏览器，或使用 ADB 连接 Android 设备。</p></div></li>
+          </ol>
+          <div class="guide-note">受管端口由运行时 manifest 发布，不使用固定偏移。</div>
+        </section>
+        <section class="hintbox mapping-box">
+          <span class="mapping-label"><span class="connection-dot" aria-hidden="true"></span>当前端口映射</span>
+          <code id="mapHint">读取配置中…</code>
+          <p>独立浏览器 profile 与固定代理，让不同项目的流量互不干扰。</p>
+        </section>
+      </aside>
+    </div>
+
+    <section class="card instances-card" id="instancesPanel" aria-labelledby="instancesTitle">
+      <div class="section-heading instance-heading">
+        <div><h2 id="instancesTitle">运行实例</h2><p>浏览器、Web、ADB 与信息收集，在这里统一连接。</p></div>
+        <div class="refresh-note"><span class="connection-dot" aria-hidden="true"></span>每 5 秒自动刷新</div>
+      </div>
+      <div class="instance-toolbar">
+        <div class="actions">
+          <button class="btn" type="button" onclick="refresh()"><svg class="icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 8a6 6 0 1 0 0 4M16 3v5h-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>刷新列表</button>
+          <button class="btn" type="button" id="btnOpenAll" onclick="openAll()">打开全部 Web</button>
+          <button class="btn" type="button" id="btnOpenAllBrowsers" onclick="openAllBrowsers()">打开全部浏览器</button>
+        </div>
+        <button class="btn danger stop-all" type="button" onclick="stopAll()">停止全部服务</button>
+      </div>
+      <div class="table" tabindex="0" role="region" aria-label="实例列表，可横向滚动">
+        <table>
+          <thead><tr><th scope="col">实例 / 状态</th><th scope="col">API</th><th scope="col">Proxy</th><th scope="col">PID</th><th scope="col">StateDir</th><th scope="col">Token</th><th scope="col">操作</th></tr></thead>
+          <tbody id="tbody"><tr><td class="empty-cell" colspan="7"><div class="empty-state"><span class="loading-mark" aria-hidden="true"></span><strong>正在读取实例</strong><span>连接本地管理服务…</span></div></td></tr></tbody>
+        </table>
+      </div>
+      <div class="table-footer"><div class="status" id="status" role="status" aria-live="polite">就绪</div><span>仅连接本地服务 · 127.0.0.1</span></div>
+    </section>
+
+    <footer class="page-footer"><span>CAPX <span class="footer-separator">/</span> Capture with clarity.</span><button class="text-button" type="button" onclick="exitMgr()">退出管理器<svg class="icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M8 4H4v12h4m4-10 4 4-4 4m-5-4h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></footer>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>/* manager script */</script>
+</body>
+</html>

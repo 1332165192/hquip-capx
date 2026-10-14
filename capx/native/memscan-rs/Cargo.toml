@@ -1,0 +1,21 @@
+[package]
+name = "memscan"
+version = "0.1.0"
+edition = "2021"
+description = "capx memory-scan engine (CE-style): process memory enumeration, value/AOB/next scanning. Exposes a C ABI consumed by the Go core via cgo."
+license = "MIT"
+
+[lib]
+name = "memscan"
+# cdylib: dynamic lib for runtime loading; staticlib: for cgo static linking.
+crate-type = ["cdylib", "staticlib"]
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+# No external crates on purpose: platform memory access is done via raw OS
+# bindings (kernel32 on Windows, /proc on Linux) so the engine builds offline.
+[dependencies]

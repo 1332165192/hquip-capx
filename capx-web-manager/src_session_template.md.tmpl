@@ -1,0 +1,103 @@
+# Capx SRC 完整挖掘会话模板
+# 来源：{{.Source}}；模式：{{.Mode}}；阶段：{{.Stage}}
+# 连接参数由实例 manifest 动态解析；模板不保存实际端口、Token、state-dir 或工具安装目录。
+
+## 1. 项目绑定
+
+项目根：{{.ProjectRoot}}
+实例 ID：{{.InstanceID}}
+
+Codex `.codex/config.toml` 的 MCP `.env` 表写 TOML 行；Claude `.mcp.json` 的 MCP `env` 对象写 JSON 项。
+
+```toml
+CAPX_INSTANCE_ID = {{.InstanceIDJSON}}
+```
+
+```json
+"CAPX_INSTANCE_ID": {{.InstanceIDJSON}}
+```
+
+## 2. PowerShell 动态会话
+
+在需要调用 Capx 的同一个 PowerShell 中执行。脚本从 `%LOCALAPPDATA%\capx\instances\<INSTANCE_ID>.json` 读取本轮 API、Proxy、CDP、state-dir 和 token_file，注入当前进程；Token 不打印。保留两条护栏：API/Proxy 必须是 loopback、token_file 必须在 state_dir 内。
+
+{{if eq .Mode "managed"}}```powershell
+$ErrorActionPreference = 'Stop'
+$env:CAPX_INSTANCE_ID = {{.InstanceIDPS}}
+$ManifestPath = Join-Path (Join-Path $env:LOCALAPPDATA 'capx\instances') "$env:CAPX_INSTANCE_ID.json"
+$Capx = Get-Content -LiteralPath $ManifestPath -Raw | ConvertFrom-Json
+
+$ApiUri = [Uri][string]$Capx.api_base
+$ProxyUri = [Uri][string]$Capx.proxy
+$Loopback = @('127.0.0.1', 'localhost', '::1')
+if ($Loopback -notcontains $ApiUri.Host.Trim([char[]]'[]')) { throw 'Capx API is not loopback' }
+if ($Loopback -notcontains $ProxyUri.Host.Trim([char[]]'[]')) { throw 'Capx proxy is not loopback' }
+
+$StateRoot = [IO.Path]::GetFullPath([string]$Capx.state_dir).TrimEnd([char[]]'\/')
+$TokenPath = [IO.Path]::GetFullPath([string]$Capx.token_file)
+if (-not $TokenPath.StartsWith($StateRoot + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) {
+    throw 'Capx token_file is outside state_dir'
+}
+$Token = (Get-Content -LiteralPath $TokenPath -Raw).Trim()
+
+$env:CAPX_INSTANCE_FILE = $ManifestPath
+$env:CAPX_API_BASE = $ApiUri.OriginalString.TrimEnd('/')
+$env:CAPX_PROXY = $ProxyUri.OriginalString.TrimEnd('/')
+$env:CAPX_PROXY_HOST = $ProxyUri.Host.Trim([char[]]'[]')
+$env:CAPX_PROXY_PORT = [string]$ProxyUri.Port
+$env:CAPX_STATE_DIR = $StateRoot
+$env:CAPX_TOKEN_FILE = $TokenPath
+$env:CAPX_TOKEN = $Token
+$env:JS_REVERSE_CDP_PORT = [string]$Capx.cdp_port
+$env:CAPX_CDP_URL = "http://127.0.0.1:$($Capx.cdp_port)"
+```
+{{else}}legacy 实例没有项目 manifest。先从运行实例取得连接值并设置当前 PowerShell 的 `CAPX_API_BASE`、`CAPX_PROXY`、`CAPX_TOKEN_FILE`，再从 token_file 注入 `CAPX_TOKEN`；完整的项目隔离和独立 CDP 用 managed 模式。
+{{end}}
+## 3. 通用客户端 YAML
+
+第 2 段执行后生成，供支持 `capture/capx` 配置的客户端使用；只用于本轮，不提交展开端口。
+
+```powershell
+@"
+capture:
+  backend: "capx"
+capx:
+  base_url: "$env:CAPX_API_BASE"
+  proxy_addr: "$env:CAPX_PROXY_HOST`:$env:CAPX_PROXY_PORT"
+  auto_start_proxy: false
+"@
+```
+
+## 4. 动态连接 JSON
+
+需要给本机工具传连接信息时生成；不含 Token 内容。
+
+```powershell
+[ordered]@{
+    mode = '{{.Mode}}'
+    instance_id = $env:CAPX_INSTANCE_ID
+    api_base = $env:CAPX_API_BASE
+    proxy = $env:CAPX_PROXY
+    cdp_url = $env:CAPX_CDP_URL
+    token_file = $env:CAPX_TOKEN_FILE
+} | ConvertTo-Json
+```
+
+## 5. SRC 规则与任务输入
+
+红线唯一来源：[ByteSRC 公开规则](https://q2a1fk6o03.feishu.cn/docx/WPOHdeVdLoJgPfx25VmcfVJxnde)。会话模板、Skill 和本地提示词不追加平台禁止项。
+
+```text
+目标：<TARGET>
+范围：<SCOPE>
+目标类型：<ANDROID_APP/IOS_APP/WINDOWS_CLIENT/H5/API/COMBINED>
+客户端：<PACKAGE_OR_PROCESS>/<VERSION>/<FILE_SHA256>
+服务端：<HOSTS/APIS/ENVIRONMENT>
+账号：<ANONYMOUS/ACCOUNT_A/ACCOUNT_B/ROLES/TENANTS>
+资源：<A_OWNED/B_OWNED/PUBLIC/DIFFERENT_STATES>
+项目根：{{.ProjectRoot}}
+输出目录：{{.ProjectRoot}}\work-space\<TARGET_SLUG>
+历史进度：<NEW/RESUME_FROM_CHECKPOINT>
+```
+
+填好后加载 `pentest-workflow` 及对应专项 Skill。指纹、攻击面、测试面、取证闭环和验收标准由 Skill 自身提供，本模板只负责连接配置与任务交接。

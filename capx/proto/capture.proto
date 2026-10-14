@@ -1,0 +1,130 @@
+// capx gRPC API specification.
+//
+// This file documents the intended gRPC surface for the capx capture daemon.
+// The M1 daemon currently serves the equivalent endpoints over REST + SSE
+// (see capx/internal/api). gRPC codegen is wired in a later milestone
+// (it needs protoc); the REST surface is kept 1:1 with the RPCs below so the
+// transport can be swapped without changing callers.
+syntax = "proto3";
+
+package capx.v1;
+
+option go_package = "github.com/hquip/capx/gen/capxv1";
+
+import "google/protobuf/timestamp.proto";
+
+// ----------------------------- capture (L3/L4/L7) -------------------------
+
+enum L4 {
+  L4_UNSPECIFIED = 0;
+  L4_TCP = 1;
+  L4_UDP = 2;
+}
+
+enum CaptureMode {
+  MODE_PASSIVE = 0; // observe only
+  MODE_ACTIVE = 1;  // allow inline match&replace / inject (policy-gated)
+}
+
+message StartCaptureRequest {
+  string iface = 1;        // empty = backend default
+  string filter = 2;       // BPF filter, e.g. "tcp or udp"
+  CaptureMode mode = 3;
+  int32 max_raw = 4;       // max raw bytes attached per packet (0 = none)
+}
+
+message Capture {
+  string id = 1;
+  string iface = 2;
+  string filter = 3;
+  CaptureMode mode = 4;
+  google.protobuf.Timestamp started = 5;
+  bool running = 6;
+  uint64 packet_cnt = 7;
+  uint64 flow_cnt = 8;
+  string backend = 9; // "gopacket" | "stub"
+}
+
+message Flow {
+  string id = 1;
+  L4 l4 = 2;
+  string src_ip = 3;
+  uint32 src_port = 4;
+  string dst_ip = 5;
+  uint32 dst_port = 6;
+  uint64 bytes = 7;
+  uint64 packets = 8;
+  bool closed = 9;
+}
+
+message Packet {
+  string flow_id = 1;
+  google.protobuf.Timestamp ts = 2;
+  string dir = 3; // "in" | "out"
+  int32 length = 4;
+  repeated string layers = 5;
+  bytes raw = 6;
+}
+
+message Event {
+  uint64 id = 1;
+  google.protobuf.Timestamp ts = 2;
+  string source = 3; // sniffer | proxy | hook | mem
+  string corr_id = 4;
+  string kind = 5;
+  bytes data_json = 6; // payload as JSON for forward-compat
+}
+
+message StopCaptureRequest { string id = 1; }
+message StreamRequest { string capture_id = 1; }
+message ListFlowsRequest { string capture_id = 1; }
+message ListFlowsResponse { repeated Flow flows = 1; }
+message Empty {}
+
+// ------------------------------- memory scan ------------------------------
+
+enum ValueType {
+  VT_I32 = 0;
+  VT_I64 = 1;
+  VT_F32 = 2;
+  VT_F64 = 3;
+  VT_U32 = 4;
+  VT_U64 = 5;
+}
+
+enum ScanOp {
+  OP_EQ = 0;
+  OP_CHANGED = 1;
+  OP_UNCHANGED = 2;
+  OP_INCREASED = 3;
+  OP_DECREASED = 4;
+  OP_GT = 5;
+  OP_LT = 6;
+}
+
+message MemOpenRequest { uint32 pid = 1; }
+message MemSession { string session = 1; }
+message FirstScanRequest { string session = 1; ValueType type = 2; bytes value = 3; }
+message NextScanRequest { string session = 1; ScanOp op = 2; bytes value = 3; }
+message AOBScanRequest { string session = 1; string pattern = 2; }
+message ScanResult { int64 hits = 1; }
+message ResultsRequest { string session = 1; uint32 max = 2; }
+message ResultsResponse { repeated uint64 addrs = 1; }
+
+// --------------------------------- service --------------------------------
+
+service Capx {
+  // Capture control + streaming.
+  rpc StartCapture(StartCaptureRequest) returns (Capture);
+  rpc StopCapture(StopCaptureRequest) returns (Empty);
+  rpc StreamEvents(StreamRequest) returns (stream Event);
+  rpc ListFlows(ListFlowsRequest) returns (ListFlowsResponse);
+
+  // CE-style memory scanning (backed by the Rust engine over cgo).
+  rpc MemOpen(MemOpenRequest) returns (MemSession);
+  rpc MemFirstScan(FirstScanRequest) returns (ScanResult);
+  rpc MemNextScan(NextScanRequest) returns (ScanResult);
+  rpc MemAOBScan(AOBScanRequest) returns (ScanResult);
+  rpc MemResults(ResultsRequest) returns (ResultsResponse);
+  rpc MemClose(MemSession) returns (Empty);
+}

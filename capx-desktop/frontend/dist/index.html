@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>capx · 抓包工作台</title>
+  <link rel="stylesheet" href="./desktop.css" />
+</head>
+<body>
+  <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <symbol id="icon-activity" viewBox="0 0 24 24"><path d="M3 12h4l3-7 4 14 3-7h4" /></symbol>
+      <symbol id="icon-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7z" /></symbol>
+      <symbol id="icon-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2" /></symbol>
+      <symbol id="icon-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M6 6a8 8 0 0 1 13 2M18 18a8 8 0 0 1-13-2" /></symbol>
+      <symbol id="icon-settings" viewBox="0 0 24 24"><path d="M4 7h4m4 0h8M4 17h10m4 0h2M8 4v6m6 4v6" /><circle cx="10" cy="7" r="2" /><circle cx="16" cy="17" r="2" /></symbol>
+      <symbol id="icon-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1" /><rect x="14" y="4" width="6" height="6" rx="1" /><rect x="4" y="14" width="6" height="6" rx="1" /><rect x="14" y="14" width="6" height="6" rx="1" /></symbol>
+      <symbol id="icon-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" /><circle cx="12" cy="12" r="3" /><path d="M12 2v3m0 14v3M2 12h3m14 0h3" /></symbol>
+      <symbol id="icon-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5M14 4l-4 16" /></symbol>
+      <symbol id="icon-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2" /></symbol>
+      <symbol id="icon-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5zm-9 9 9 5 9-5M3 16l9 5 9-5" /></symbol>
+      <symbol id="icon-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18" /></symbol>
+    </defs>
+  </svg>
+
+  <header class="top">
+    <div class="brand" aria-label="capx 抓包桌面端">
+      <span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#icon-activity" /></svg></span>
+      <div><div class="brand-name">capx</div><div class="sub">DESKTOP WORKSPACE</div></div>
+    </div>
+    <div class="service-info">
+      <div id="state" class="badge bad" role="status" aria-live="polite">未连接</div>
+      <div class="runtime-info">
+        <div class="url">自动分配端口</div>
+        <div class="url engine-info">sniffer:stub hook:frida inline:stub</div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <label class="check"><input id="auto-refresh" type="checkbox" /> 自动刷新</label>
+      <button id="ports" class="btn"><svg class="icon" aria-hidden="true"><use href="#icon-settings" /></svg>端口设置</button>
+      <button id="start" class="btn primary"><svg class="icon" aria-hidden="true"><use href="#icon-play" /></svg>启动 capx</button>
+      <button id="stop" class="btn stop-btn"><svg class="icon" aria-hidden="true"><use href="#icon-stop" /></svg>停止</button>
+      <button id="reload" class="btn"><svg class="icon" aria-hidden="true"><use href="#icon-refresh" /></svg>刷新</button>
+    </div>
+  </header>
+
+  <div class="desktop-layout">
+  <aside class="desktop-sidebar" aria-label="主导航">
+    <div class="desktop-nav-brand"><span class="brand-mark"><svg class="icon"><use href="#icon-activity"/></svg></span><span class="desktop-brand-text">capx<small>CAPTURE STUDIO</small></span></div>
+    <input id="desktop-nav-search" type="search" placeholder="搜索工具…" aria-label="搜索工具" autocomplete="off"/>
+  <nav class="tabs" id="tabs-main" aria-label="抓包工作台">
+    <span class="nav-caption">工作台</span>
+    <button class="tab on" data-kind="web" data-view="dashboard" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-grid" /></svg>仪表盘</button>
+    <button class="tab" data-kind="web" data-view="target"><svg class="icon" aria-hidden="true"><use href="#icon-target" /></svg>目标</button>
+    <button class="tab" data-kind="web" data-view="proxy"><svg class="icon" aria-hidden="true"><use href="#icon-activity" /></svg>代理</button>
+    <button class="tab" data-kind="web" data-view="client">客户端抓包</button>
+    <button class="tab" data-kind="web" data-view="mobile">App 抓包</button>
+    <button class="tab" data-kind="web" data-view="wxdesk">隔离微信测试</button>
+    <button class="tab" data-kind="web" data-view="repeater">Repeater</button>
+    <button class="tab" data-kind="web" data-view="intruder">Intruder</button>
+    <button class="tab" data-kind="panel" data-view="turbo">Turbo</button>
+    <button class="tab" data-kind="web" data-view="enhance">内容发现</button>
+    <button class="tab" data-kind="web" data-view="rules">改包规则</button>
+    <button class="tab" data-kind="web" data-view="decoder">编码/解码</button>
+    <button class="tab" data-kind="web" data-view="comparer">对比</button>
+    <button class="tab" data-kind="web" data-view="logger">日志</button>
+  </nav>
+  <nav class="tabs2" id="tabs-extra" aria-label="分析工具箱">
+    <span class="nav-caption">工具箱</span>
+    <button class="tab" data-kind="panel" data-view="sequencer">Sequencer</button>
+    <button class="tab" data-kind="web" data-view="dnslog">OOB</button>
+    <button class="tab" data-kind="panel" data-view="wx">小程序</button>
+    <button class="tab" data-kind="web" data-view="wxhook">小程序 F12</button>
+    <button class="tab" data-kind="web" data-view="wxapkg">小程序包</button>
+    <button class="tab" data-kind="web" data-view="enhance">提取/侦察</button>
+    <button class="tab" data-kind="web" data-view="hook">明文/OOB</button>
+    <button class="tab" data-kind="web" data-view="memory">内存</button>
+    <button class="tab" data-kind="web" data-view="correlate">关联</button>
+    <button class="tab" data-kind="web" data-view="script">脚本</button>
+    <button class="tab" data-kind="web" data-view="enhance">被动扫描</button>
+    <button class="tab" data-kind="web" data-view="settings">设置</button>
+  </nav>
+
+  </aside>
+  <main class="main">
+    <iframe id="capx-frame" class="web" title="capx 抓包控制台"></iframe>
+    <section id="offline" class="offline" aria-labelledby="overview-title">
+      <div class="page-heading">
+        <div><div class="eyebrow">CAPTURE OVERVIEW</div><h1 id="overview-title">准备开始捕获</h1><p>连接本地服务，让每一次请求清晰可见。</p></div>
+        <span class="page-tag"><svg class="icon" aria-hidden="true"><use href="#icon-lock" /></svg>LOCAL WORKSPACE</span>
+      </div>
+      <div class="offline-grid">
+        <div class="offline-stat"><div class="metric-label"><span class="hint">HTTP / HTTPS 事务</span><svg class="icon" aria-hidden="true"><use href="#icon-activity" /></svg></div><b>0</b><small>等待服务连接</small></div>
+        <div class="offline-stat"><div class="metric-label"><span class="hint">HTTPS 解密</span><svg class="icon" aria-hidden="true"><use href="#icon-lock" /></svg></div><b>0</b><small>加密流量分析</small></div>
+        <div class="offline-stat"><div class="metric-label"><span class="hint">WebSocket 帧</span><svg class="icon" aria-hidden="true"><use href="#icon-code" /></svg></div><b>0</b><small>实时双向通信</small></div>
+        <div class="offline-stat"><div class="metric-label"><span class="hint">站点 / Host</span><svg class="icon" aria-hidden="true"><use href="#icon-globe" /></svg></div><b>0</b><small>捕获的目标站点</small></div>
+        <div class="offline-stat"><div class="metric-label"><span class="hint">事件</span><svg class="icon" aria-hidden="true"><use href="#icon-layers" /></svg></div><b>0</b><small>工作区活动记录</small></div>
+      </div>
+      <div class="quick">
+        <div class="card-heading"><div><h2>连接配置</h2><p class="card-description">设置本地 API 与代理监听地址，留空即可自动分配端口。</p></div><span class="section-num">L7 MITM</span></div>
+        <div class="connection-grid">
+          <label><span class="field-label">REST API</span><input id="cfg-api" placeholder="自动 / 19091 / 127.0.0.1:19091" /></label>
+          <label><span class="field-label">代理监听</span><input id="cfg-proxy" placeholder="自动 / 18080 / 127.0.0.1:18080" /></label>
+          <div class="connection-actions"><button id="save-ports" class="btn">保存端口</button><button id="offline-start" class="btn primary"><svg class="icon" aria-hidden="true"><use href="#icon-play" /></svg>启动代理</button></div>
+        </div>
+        <div class="connection-status"><svg class="icon" aria-hidden="true"><use href="#icon-activity" /></svg><span id="offline-state" role="status" aria-live="polite">capx 未连接，启动后会自动进入工作台。</span></div>
+      </div>
+      <div class="quick">
+        <div class="card-heading"><h2>快速上手</h2><span class="section-num">GET STARTED</span></div>
+        <ol>
+          <li>启动代理，然后安装并信任 CA 证书。</li>
+          <li>浏览器或系统代理指向 127.0.0.1:18080。</li>
+          <li>在 HTTP 流量里查看请求，右键发送到 Repeater / Intruder / 对比器。</li>
+          <li>关闭窗口会保留后台服务；停止服务请点击「停止」或运行 stop-web.ps1。</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="panel-wx" class="panel" aria-label="小程序包分析">
+      <div class="card">
+        <h2>小程序包分析</h2>
+        <div class="row">
+          <input id="wx-root" style="min-width:420px" aria-label="小程序包目录" placeholder="留空自动检测，或填 .wxapkg 文件/目录路径" />
+          <button id="wx-scan" class="btn primary">扫描</button>
+          <button id="wx-open" class="btn">打开输出目录</button>
+          <label class="check"><input id="wx-reconstruct" type="checkbox" checked /> 还原源码</label>
+          <span id="wx-state" class="hint">等待扫描</span>
+        </div>
+      </div>
+      <div class="card"><div id="wx-list" class="wx-list"></div></div>
+      <div class="card"><h3>输出</h3><pre id="wx-out">等待解包。</pre></div>
+    </section>
+
+    <section id="panel-sequencer" class="panel" aria-labelledby="sequencer-title">
+      <div class="page-heading"><div><div class="eyebrow">TOKEN ANALYSIS</div><h1 id="sequencer-title">Sequencer</h1><p>分析令牌、随机数与会话标识的分布，发现可预测的模式。</p></div><span class="page-tag">LOCAL ANALYSIS</span></div>
+      <div class="card">
+        <div class="card-heading"><h2>样本输入</h2><span class="section-num">01 / INPUT</span></div>
+        <label class="field-label" for="seq-in">每行一个 token / nonce / session id</label>
+        <textarea id="seq-in" spellcheck="false" placeholder="粘贴随机值样本，每行一条..."></textarea>
+        <div class="row">
+          <button id="seq-run" class="btn primary"><svg class="icon" aria-hidden="true"><use href="#icon-play" /></svg>开始分析</button>
+          <button id="seq-load-values" class="btn">从抓包值导入</button>
+          <button id="seq-clear" class="btn">清空</button>
+          <span id="seq-summary" class="hint" role="status"></span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-heading"><h2>分布概览</h2><span class="section-num">02 / DISTRIBUTION</span></div>
+        <div class="stats">
+          <div class="stat"><b id="seq-m-count">0</b><span class="hint">样本数</span></div>
+          <div class="stat"><b id="seq-m-uniq">0</b><span class="hint">唯一值</span></div>
+          <div class="stat"><b id="seq-m-entropy">0</b><span class="hint">平均位置熵 / bits</span></div>
+        </div>
+        <div id="seq-bars" class="seq-bars" aria-label="字符位置熵分布"></div>
+      </div>
+      <div class="card"><div class="card-heading"><h3>分析结果</h3><span class="section-num">03 / RESULTS</span></div><pre id="seq-out">等待分析。</pre></div>
+    </section>
+
+    <section id="panel-turbo" class="panel" aria-labelledby="turbo-title">
+      <div class="page-heading"><div><div class="eyebrow">CONCURRENT REQUESTS</div><h1 id="turbo-title">Turbo / 竞争门</h1><p>配置并发与释放时机，在同一工作区检查每一条响应。</p></div><span class="page-tag">REQUEST ENGINE</span></div>
+      <div class="card">
+        <div class="card-heading"><h2>请求配置</h2><span class="section-num">01 / CONFIGURATION</span></div>
+        <div class="row">
+          <select id="tb-scheme" aria-label="协议"><option>https</option><option>http</option></select>
+          <input id="tb-host" style="width:280px" aria-label="目标主机" placeholder="主机，如 www.example.com" />
+          <select id="tb-mode" aria-label="请求模式"><option value="race">竞争门 (race)</option><option value="burst">高并发 (burst)</option></select>
+          <button id="tb-run" class="btn primary"><svg class="icon" aria-hidden="true"><use href="#icon-play" /></svg>发起请求</button>
+        </div>
+        <div class="row">
+          <label class="hint">请求数 <input id="tb-count" value="20" style="width:80px" /></label>
+          <label class="hint">并发 <input id="tb-concurrency" value="30" style="width:90px" /></label>
+          <label class="hint">门释放延时 / ms <input id="tb-delay" value="60" style="width:100px" /></label>
+        </div>
+        <div class="editor-grid">
+          <div><label class="field-label" for="tb-raw">原始请求</label><textarea id="tb-raw" spellcheck="false">POST /api/coupon/redeem HTTP/1.1
+Host: www.example.com
+Cookie: session=...
+Content-Type: application/json
+Content-Length: 16
+
+{"code":"§ONCE§"}</textarea></div>
+          <div><label class="field-label" for="tb-payloads">Payloads <span class="hint">/ 可选</span></label><textarea id="tb-payloads" spellcheck="false" placeholder="每行一个 payload，替换请求中的 §...§ 标记。&#10;&#10;填写后，请求数将以 payload 条数为准。"></textarea></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-heading"><h3>请求结果</h3><span class="section-num">02 / RESPONSES</span></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>#</th><th>Payload</th><th>状态</th><th>长度</th><th>耗时 / ms</th><th>错误</th></tr></thead>
+          <tbody id="tb-results"><tr><td colspan="6" class="hint">发起请求后，结果会显示在这里。</td></tr></tbody>
+        </table></div>
+        <pre id="tb-detail">选择上方结果行，查看完整响应。</pre>
+      </div>
+    </section>
+  </main>
+  </div>
+  <script src="./app.js"></script>
+</body>
+</html>

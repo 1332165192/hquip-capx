@@ -1,0 +1,15 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "capx-desktop",
+  "outputfilename": "capx-desktop",
+  "frontend:install": "",
+  "frontend:build": "",
+  "frontend:dev:watcher": "",
+  "frontend:dev:serverUrl": "auto",
+  "wailsjsdir": "./frontend",
+  "info": {
+    "companyName": "capx",
+    "productName": "capx 抓包桌面端",
+    "productVersion": "0.1.0"
+  }
+}

@@ -1,0 +1,156 @@
+name: build-artifacts
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GOTOOLCHAIN: go1.26.9
+  GOFLAGS: -mod=readonly
+
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/check-source.py
+
+  applications:
+    needs: source
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: windows-2022
+            name: windows-amd64
+          - runner: ubuntu-24.04
+            name: linux-amd64
+          - runner: macos-15
+            name: macos-arm64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.9'
+          cache-dependency-path: '**/go.sum'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Linux desktop libraries
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y build-essential pkg-config libgtk-3-dev libwebkit2gtk-4.1-dev
+      - name: Install matching Wails CLI
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.12.0
+      - name: Test and build all application modules
+        run: python scripts/build-bundle.py --test
+      - name: Upload executable archive and checksums
+        uses: actions/upload-artifact@v4
+        with:
+          name: capx-${{ matrix.name }}
+          path: |
+            dist/ci/*.zip
+            dist/ci/*.sha256
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+
+  native:
+    needs: source
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [windows-2022, ubuntu-24.04, macos-15]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.9'
+          cache-dependency-path: '**/go.sum'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare Visual C++ compiler for the Windows hook
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+      - name: Install pinned Windows Rust toolchain
+        if: runner.os == 'Windows'
+        run: rustup toolchain install 1.95.0-x86_64-pc-windows-gnu --profile minimal
+      - name: Install pinned Unix Rust toolchain
+        if: runner.os != 'Windows'
+        run: rustup toolchain install 1.95.0 --profile minimal
+      - name: Test and compile Rust and platform hook sources
+        run: python scripts/build-native.py
+      - name: Compile Windows Go native capture and hook integration
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force capx/native/memscan-rs/lib, capx/internal/api/native | Out-Null
+          Copy-Item capx/native/memscan-rs/target/x86_64-pc-windows-gnu/release/libmemscan.a capx/native/memscan-rs/lib/libmemscan.a
+          Copy-Item dist/native/capx-native-windows-amd64/capx_hook.dll capx/internal/api/native/capx_hook.dll
+          $taskRustRoot = & rustup run 1.95.0-x86_64-pc-windows-gnu rustc --print sysroot
+          if ($LASTEXITCODE -ne 0) { throw 'Rust runtime path lookup failed' }
+          $taskRustLibraries = Join-Path $taskRustRoot 'lib/rustlib/x86_64-pc-windows-gnu/lib/self-contained'
+          $env:CGO_ENABLED = '1'
+          $env:CGO_LDFLAGS = "-L$taskRustLibraries -lpthread -lgcc_eh -lmingwex -lmsvcrt"
+          Set-Location capx
+          go build -tags 'pcap memscan_ffi windivert native_hook grpc' ./cmd/...
+          if ($LASTEXITCODE -ne 0) { throw 'Windows native Go integration failed' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: capx-native-${{ runner.os }}-${{ runner.arch }}
+          path: |
+            dist/native/*.zip
+            dist/native/*.sha256
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+
+  native-go:
+    needs: source
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.9'
+          cache-dependency-path: '**/go.sum'
+      - name: Install native capture headers and Rust
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y build-essential libpcap-dev
+          rustup toolchain install 1.95.0 --profile minimal
+      - name: Build memory scanner static library
+        working-directory: capx/native/memscan-rs
+        run: |
+          cargo +1.95.0 build --locked --release
+          mkdir -p lib
+          cp target/release/libmemscan.a lib/libmemscan.a
+      - name: Verify Go native integration
+        working-directory: capx
+        env:
+          CGO_ENABLED: '1'
+        run: |
+          go test -tags 'pcap memscan_ffi nfqueue grpc' ./...
+          go build -tags 'pcap memscan_ffi nfqueue grpc' ./cmd/...
+# Artifacts are generated on runners only. This workflow never commits binaries
+# back to the repository and does not automatically publish a GitHub Release.
