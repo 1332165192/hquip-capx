@@ -52,5 +52,5 @@ require (
 	gvisor.dev/gvisor v0.0.0-20250503011706-39ed1f5ac29c
 	howett.net/plist v1.0.1
 	modernc.org/sqlite v1.34.5
-	software.sslmate.com/src/go-pkcs12 v0.6.0
+	software.sslmate.com/src/go-pkcs12 v0.7.2
 )

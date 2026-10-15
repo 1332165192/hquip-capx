@@ -25,8 +25,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "size": 3899,
-      "sha256": "db8fd99cb83dd62ef963a4fec098c7ae43ea925f9f1a977ed3d13883f7969fa9"
+      "size": 4152,
+      "sha256": "aa0509f24b0ed8529ef3684ff7bf519e6daef31556003ccf3219c0e4b3dded00"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -46,7 +46,7 @@
     {
       "path": "NOTICE.md",
       "size": 3364,
-      "sha256": "252e27afc787cd4c7644eb52fe90309534e11ef297ca3958851bd4144bde0366"
+      "sha256": "3c0c9294d071c0856682e15497a309f0e1affb1dcb43207f0fe6aab835859360"
     },
     {
       "path": "README.md",
@@ -576,12 +576,12 @@
     {
       "path": "capx/go.mod",
       "size": 1797,
-      "sha256": "a980cdf9a7a4ea76ec69c09e53f6c951102066afbc73573821f72e9a5dd1d644"
+      "sha256": "b292ad80289ee9e5c5021a2d7d7b660ea1f02eafd9137dec44340b0d4e1b3f60"
     },
     {
       "path": "capx/go.sum",
-      "size": 13101,
-      "sha256": "ffc856563787cf72e5c0467ab1489c2fc6c833d18e2e66148aca46a83ccda6ef"
+      "size": 13288,
+      "sha256": "f30c943cbe35981873d104b503dab0ac88234785581c62a67d8388c5799fb3eb"
     },
     {
       "path": "capx/internal/api/api.go",

@@ -1,3 +1,7 @@
+# Signing dependency security follow-up (2026-10-15)
+
+Upgrade go-pkcs12 to v0.7.2 to address [GO-2026-5052](https://pkg.go.dev/vuln/GO-2026-5052), detected by the unchanged GitHub vulnerability check. Retest protected P12 decoding and WDA preparation.
+
 # WDA preparation, captured-body decryption and usage disclaimer (2026-10-15)
 
 - Add asynchronous WDA preparation with device selection, pinned go-ios downloads, profile/certificate checks, local signing/install, iOS 17+ tunnel, developer image, XCTest and USB forwarding. Keep pairing and signing material outside the source tree. Stop only owned helper processes.
