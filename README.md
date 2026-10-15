@@ -4,10 +4,6 @@
 
 capx 将流量查看、请求重放、手机测试入口和 AI 工具接入放在同一工作台中，适用于接口调试、流量分析和已授权的自动化测试。
 
-**仓库只提交源码和必要资源，程序由 GitHub Actions 编译。** 上传解压后的源码到仓库根目录，提交后查看 Actions → `build-artifacts`；Windows、Linux、macOS 应用包及原生库从 Artifacts 下载。详细步骤见 [GitHub 编译说明](docs/GITHUB_BUILD.md)。本地编译仅作为可选开发方式。
-
-使用前请阅读 [使用声明与免责声明](DISCLAIMER.md)。仅在自己拥有或取得明确授权的环境中测试，公开数据前请脱敏。
-
 ## 界面示例
 
 以下图片由公开版页面渲染生成，使用模拟请求和设备状态，不包含真实抓包、手机画面或账号资料。
@@ -35,7 +31,9 @@ capx 将流量查看、请求重放、手机测试入口和 AI 工具接入放�
 
 ## 快速开始
 
-需要 Go 1.26.9 或更新版本。默认构建不需要 Python、Rust、微信或抓包驱动。
+从 [GitHub Actions](https://github.com/hquip/capx/actions/workflows/build.yml) 的成功构建中下载对应平台的程序包，步骤见 [下载与构建说明](docs/GITHUB_BUILD.md)。
+
+如需本地编译，需要 Go 1.26.9 或更新版本。默认构建不需要 Python、Rust、微信或抓包驱动。
 
 ```powershell
 cd capx
@@ -102,3 +100,7 @@ iOS 操作设置和 MCP 示例见 [手机自动化说明](docs/MOBILE_AUTOMATION
 三个模块分别运行 `go test ./...` 和 `go vet ./...`。[GitHub Actions](https://github.com/hquip/capx/actions) 已运行跨平台测试、漏洞检查、原生集成、程序启动与打包验证；以最新工作流结果为准。实机 iOS/WDA 不属于默认测试。
 
 [构建说明](docs/BUILD.md) · [贡献指南](CONTRIBUTING.md) · [安全报告](SECURITY.md) · [变更说明](CHANGELOG.md)
+
+## 使用声明
+
+仅在自己拥有或取得明确授权的环境中测试，公开日志、截图或抓包数据前请脱敏。完整内容见 [使用声明与免责声明](DISCLAIMER.md)。
