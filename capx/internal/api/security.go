@@ -390,7 +390,7 @@ func isActiveOp(method, path string) bool {
 		return true
 	}
 	switch path {
-	case "/api/mobile/capture/start", "/api/mobile/ca", "/api/mobile/tap", "/api/mobile/input", "/api/mobile/swipe", "/api/mobile/key", "/api/mobile/back", "/api/mobile/home", "/api/mobile/launch", "/api/mobile/ios/connect":
+	case "/api/mobile/ios/prepare", "/api/mobile/capture/start", "/api/mobile/ca", "/api/mobile/tap", "/api/mobile/input", "/api/mobile/swipe", "/api/mobile/key", "/api/mobile/back", "/api/mobile/home", "/api/mobile/launch", "/api/mobile/ios/connect":
 		return method == http.MethodPost
 	case "/api/wxapkg/unpack", "/api/proxy/lan/start":
 		return method == http.MethodPost

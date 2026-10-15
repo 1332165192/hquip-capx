@@ -2,6 +2,7 @@ package mobile
 
 import (
 	"bytes"
+	"context"
 	"encoding/base64"
 	"encoding/json"
 	"encoding/xml"
@@ -70,6 +71,9 @@ type wdaEnvelope struct {
 }
 
 func (c *IOSController) call(endpoint, method, route string, body any, dst any) (string, error) {
+	return c.callContext(context.Background(), endpoint, method, route, body, dst)
+}
+func (c *IOSController) callContext(ctx context.Context, endpoint, method, route string, body any, dst any) (string, error) {
 	var data io.Reader
 	if body != nil {
 		raw, err := json.Marshal(body)
@@ -78,7 +82,7 @@ func (c *IOSController) call(endpoint, method, route string, body any, dst any) 
 		}
 		data = bytes.NewReader(raw)
 	}
-	req, err := http.NewRequest(method, endpoint+route, data)
+	req, err := http.NewRequestWithContext(ctx, method, endpoint+route, data)
 	if err != nil {
 		return "", errors.New("invalid WDA request")
 	}
@@ -112,6 +116,9 @@ func (c *IOSController) call(endpoint, method, route string, body any, dst any) 
 // Connect first reuses the active WDA session. A new session is created only
 // when none exists; connecting does not launch an app or terminate an existing one.
 func (c *IOSController) Connect(raw, session string) (map[string]any, error) {
+	return c.ConnectContext(context.Background(), raw, session)
+}
+func (c *IOSController) ConnectContext(ctx context.Context, raw, session string) (map[string]any, error) {
 	endpoint, err := normalizeWDAEndpoint(raw)
 	if err != nil {
 		return nil, err
@@ -128,7 +135,7 @@ func (c *IOSController) Connect(raw, session string) (map[string]any, error) {
 	var status struct {
 		Ready bool `json:"ready"`
 	}
-	if _, err := c.call(endpoint, "GET", "/status", nil, &status); err != nil {
+	if _, err := c.callContext(ctx, endpoint, "GET", "/status", nil, &status); err != nil {
 		return nil, err
 	}
 	if !status.Ready {
@@ -138,7 +145,7 @@ func (c *IOSController) Connect(raw, session string) (map[string]any, error) {
 		var active struct {
 			SessionID string `json:"sessionId"`
 		}
-		topID, err := c.call(endpoint, "GET", "/session", nil, &active)
+		topID, err := c.callContext(ctx, endpoint, "GET", "/session", nil, &active)
 		if err != nil {
 			return nil, err
 		}
@@ -151,7 +158,7 @@ func (c *IOSController) Connect(raw, session string) (map[string]any, error) {
 		var created struct {
 			SessionID string `json:"sessionId"`
 		}
-		topID, err := c.call(endpoint, "POST", "/session", map[string]any{"capabilities": map[string]any{"alwaysMatch": map[string]any{"shouldTerminateApp": false, "defaultActiveApplication": "auto", "waitForIdleTimeout": 0}}}, &created)
+		topID, err := c.callContext(ctx, endpoint, "POST", "/session", map[string]any{"capabilities": map[string]any{"alwaysMatch": map[string]any{"shouldTerminateApp": false, "defaultActiveApplication": "auto", "waitForIdleTimeout": 0}}}, &created)
 		if err != nil {
 			return nil, err
 		}
@@ -163,14 +170,21 @@ func (c *IOSController) Connect(raw, session string) (map[string]any, error) {
 	if !wdaSessionRE.MatchString(session) {
 		return nil, errors.New("WDA 没有返回可用会话")
 	}
-	if _, err := c.size(endpoint, session); err != nil {
+	if _, err := c.sizeContext(ctx, endpoint, session); err != nil {
 		return nil, err
 	}
-	if _, err := c.call(endpoint, "POST", "/session/"+url.PathEscape(session)+"/appium/settings", map[string]any{"settings": map[string]any{"defaultActiveApplication": "auto", "waitForIdleTimeout": 0}}, nil); err != nil {
+	if _, err := c.callContext(ctx, endpoint, "POST", "/session/"+url.PathEscape(session)+"/appium/settings", map[string]any{"settings": map[string]any{"defaultActiveApplication": "auto", "waitForIdleTimeout": 0}}, nil); err != nil {
 		return nil, err
+	}
+	size, err := c.sizeContext(ctx, endpoint, session)
+	if err != nil {
+		return nil, err
+	}
+	if ctx.Err() != nil {
+		return nil, ctx.Err()
 	}
 	c.endpoint, c.session = endpoint, session
-	return c.statusLocked()
+	return c.statusMapLocked(size), nil
 }
 
 // Disconnect relinquishes Capx's connection without terminating XCTest or apps.
@@ -192,8 +206,11 @@ func (c *IOSController) route(path string) string {
 }
 
 func (c *IOSController) size(endpoint, session string) (ScreenSize, error) {
+	return c.sizeContext(context.Background(), endpoint, session)
+}
+func (c *IOSController) sizeContext(ctx context.Context, endpoint, session string) (ScreenSize, error) {
 	var size ScreenSize
-	_, err := c.call(endpoint, "GET", "/session/"+url.PathEscape(session)+"/window/size", nil, &size)
+	_, err := c.callContext(ctx, endpoint, "GET", "/session/"+url.PathEscape(session)+"/window/size", nil, &size)
 	if err != nil {
 		return size, err
 	}
@@ -211,8 +228,11 @@ func (c *IOSController) statusLocked() (map[string]any, error) {
 	if err != nil {
 		return nil, err
 	}
+	return c.statusMapLocked(size), nil
+}
+func (c *IOSController) statusMapLocked(size ScreenSize) map[string]any {
 	return map[string]any{"serial": IOSSerial, "platform": "ios", "wda_connected": true, "wda_endpoint": c.endpoint, "screen": size, "coordinate_space": "points", "supports_unicode": true, "supports_back": false, "managed": false, "wired": false,
-		"ca_note": "iPhone 抓包使用 Wi-Fi 代理，并在系统设置中安装 CA、开启完全信任；WDA 操作授权不包含证书信任"}, nil
+		"ca_note": "iPhone 抓包使用 Wi-Fi 代理，并在系统设置中安装 CA、开启完全信任；WDA 操作授权不包含证书信任"}
 }
 
 func (c *IOSController) Status() (map[string]any, error) {

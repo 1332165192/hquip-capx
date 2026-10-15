@@ -43,26 +43,27 @@ import (
 
 // Server is the capx HTTP API.
 type Server struct {
-	st        *store.Store
-	snif      sniffer.Sniffer
-	scanner   memscan.Scanner
-	proxy     *proxy.Proxy
-	hook      *hook.Manager
-	inline    *inline.Manager
-	corr      *correlate.Engine
-	script    *script.Engine
-	dnslog    *dnslog.Client
-	spoof     *spoof.Manager
-	wxhook    *wxhook.Manager
-	wxauto    *wxauto.Automation
-	wxctrl    *wxauto.Controller
-	wxdesk    wxDesktop
-	mobile    *mobile.Controller
-	ios       *mobile.IOSController
-	mobileVPN *mobilevpn.Gateway
-	hae       *hae.Engine
-	guard     *guard
-	oob       *oobCatcher
+	st         *store.Store
+	snif       sniffer.Sniffer
+	scanner    memscan.Scanner
+	proxy      *proxy.Proxy
+	hook       *hook.Manager
+	inline     *inline.Manager
+	corr       *correlate.Engine
+	script     *script.Engine
+	dnslog     *dnslog.Client
+	spoof      *spoof.Manager
+	wxhook     *wxhook.Manager
+	wxauto     *wxauto.Automation
+	wxctrl     *wxauto.Controller
+	wxdesk     wxDesktop
+	mobile     *mobile.Controller
+	ios        *mobile.IOSController
+	iosPrepare *mobile.IOSPrepare
+	mobileVPN  *mobilevpn.Gateway
+	hae        *hae.Engine
+	guard      *guard
+	oob        *oobCatcher
 
 	mu       sync.Mutex
 	captures map[string]context.CancelFunc
@@ -146,6 +147,7 @@ func (s *Server) SetWxhook(m *wxhook.Manager) {
 func (s *Server) SetMobile(m *mobile.Controller) {
 	s.mobile = m
 	s.ios = mobile.NewIOS()
+	s.iosPrepare = mobile.NewIOSPrepare(s.ios)
 }
 
 func (s *Server) SetMobileVPN(v *mobilevpn.Gateway) {
@@ -192,6 +194,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("DELETE /api/history", s.clearHistory)
 	mux.HandleFunc("GET /api/http/export", s.exportHTTPHar)
 	mux.HandleFunc("GET /api/http/{id}", s.getHTTP)
+	mux.HandleFunc("POST /api/http/{id}/decrypt", s.httpDecrypt)
 	mux.HandleFunc("GET /api/http/{id}/curl", s.exportHTTPCurl)
 	mux.HandleFunc("GET /api/ws", s.listWS)
 	mux.HandleFunc("GET /api/ws/page", s.wsPage)
@@ -371,6 +374,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /api/wxhook/capture/start", s.wxhookCaptureStart)
 	mux.HandleFunc("POST /api/wxhook/capture/stop", s.wxhookCaptureStop)
 	mux.HandleFunc("GET /api/wxhook/cdp/status", s.wxhookCDPStatus)
+	mux.HandleFunc("GET /api/wxhook/cdp/targets", s.wxhookCDPTargets)
 	mux.HandleFunc("POST /api/wxhook/cdp/start", s.wxhookCDPStart)
 	mux.HandleFunc("POST /api/wxhook/cdp/stop", s.wxhookCDPStop)
 	mux.HandleFunc("POST /api/wxhook/cdp/eval", s.wxhookCDPEval)
@@ -394,6 +398,10 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/mobile/devices", s.mobileDevices)
 	mux.HandleFunc("POST /api/mobile/ios/connect", s.mobileIOSConnect)
 	mux.HandleFunc("POST /api/mobile/ios/disconnect", s.mobileIOSDisconnect)
+	mux.HandleFunc("GET /api/mobile/ios/setup", s.mobileIOSSetup)
+	mux.HandleFunc("GET /api/mobile/ios/setup/status", s.mobileIOSPrepareStatus)
+	mux.HandleFunc("POST /api/mobile/ios/prepare", s.mobileIOSPrepare)
+	mux.HandleFunc("POST /api/mobile/ios/prepare/stop", s.mobileIOSPrepareStop)
 	mux.HandleFunc("GET /api/mobile/status", s.mobileStatus)
 	mux.HandleFunc("POST /api/mobile/use", s.mobileUse)
 	mux.HandleFunc("POST /api/mobile/capture/start", s.mobileCaptureStart)

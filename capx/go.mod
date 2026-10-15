@@ -27,15 +27,13 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/google/btree v1.1.2 // indirect
 	github.com/google/uuid v1.6.0 // indirect
+	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/ncruces/go-strftime v0.1.9 // indirect
 	github.com/quic-go/qpack v0.6.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
-	go.uber.org/mock v0.5.2 // indirect
-	golang.org/x/mod v0.41.0 // indirect
 	golang.org/x/sync v0.23.0 // indirect
 	golang.org/x/time v0.7.0 // indirect
-	golang.org/x/tools v0.49.0 // indirect
 	golang.zx2c4.com/wintun v0.0.0-20230126152724-0fa3db229ce2 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240318140521-94a12d6c2237 // indirect
 	modernc.org/libc v1.55.3 // indirect
@@ -45,9 +43,14 @@ require (
 
 require (
 	github.com/quic-go/quic-go v0.59.1
+	go.uber.org/mock v0.5.2
+	golang.org/x/mod v0.41.0
 	golang.org/x/net v0.60.0
 	golang.org/x/text v0.42.0
+	golang.org/x/tools v0.49.0
 	golang.zx2c4.com/wireguard v0.0.0-20260522210424-ecfc5a8d5446
 	gvisor.dev/gvisor v0.0.0-20250503011706-39ed1f5ac29c
+	howett.net/plist v1.0.1
 	modernc.org/sqlite v1.34.5
+	software.sslmate.com/src/go-pkcs12 v0.6.0
 )

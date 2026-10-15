@@ -12,3 +12,7 @@ The private workspace's F12 Frida agent, WeChat version-offset tables and privat
 No WeChat installer/client, Npcap runtime/driver, Frida executable, Python runtime, iOS agent/signing material, device support image, real phone screenshot or pairing identity is included. [Npcap redistribution terms](https://npcap.com/oem/redist) must be checked before any separate binary packaging.
 
 Compatibility with HaE rule formats and DNSLog APIs does not bundle those applications. The internal default rules and integration code remain capx source; third-party rule uploads keep their original terms. The old optional Node miniprogram-automator sidecar is excluded from this release.
+
+The optional iOS preparation flow uses independently downloaded go-ios v1.3.2 (danielpaulus/go-ios) and operator-provided Apple signing material. Binary assets and signing identities are not distributed as project source. Apple property lists are parsed with howett.net/plist v1.0.1; its BSD license is retained in third-party/Go-plist-LICENSE.txt.
+
+P12 decoding and short-lived local identity conversion use software.sslmate.com/src/go-pkcs12 v0.6.0; its license is retained in third-party/Go-pkcs12-LICENSE.txt. Original P12 passwords are read from local environment variables and are not placed in subprocess arguments.

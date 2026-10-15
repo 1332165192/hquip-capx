@@ -173,6 +173,7 @@ func (c *Components) Close() {
 			}
 		}
 		if c.Server != nil {
+			c.Server.CloseMobileTools()
 			if err := c.Server.CloseCaptureTools(); err != nil {
 				log.Printf("capx: close mini-program capture: %v", err)
 			}

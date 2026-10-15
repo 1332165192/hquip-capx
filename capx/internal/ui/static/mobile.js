@@ -93,7 +93,7 @@
 
   function controls() {
     const ready = online() && !state.busy && !state.error;
-    el('platform').disabled = state.busy;
+    el('platform').disabled = state.busy || preparing;
     el('ios_controls').classList.toggle('hidden', !ios());
     el('android_capture').classList.toggle('hidden', ios());
     el('wda_connect').disabled = state.busy;
@@ -255,6 +255,60 @@
     return '操作已完成。';
   }
 
+  let preparing = false, prepareGeneration = 0;
+  function setupControls() {
+    for (const id of ['ios_check','ios_prepare']) el(id).disabled = preparing || state.busy;
+  }
+  async function checkIOSSetup() {
+    el('ios_check').disabled = true;
+    try {
+      const info = await request('/api/mobile/ios/setup');
+      const selected = el('ios_usb').value;
+      const options = [new Option('自动选择唯一设备',''), ...(info.devices || []).map(d => new Option(d.udid,d.udid))];
+      el('ios_usb').replaceChildren(...options);
+      if (options.some(o=>o.value===selected)) el('ios_usb').value = selected;
+      const note = info.profile_expired ? '；配置的 WDA 描述文件已过期，需要重新签名' : '';
+      el('ios_job').textContent = (info.message || ('工具已就绪，检测到 '+(info.devices || []).length+' 台 iPhone')) + note;
+    } catch (error) { el('ios_job').textContent = error.message; }
+    finally { setupControls(); }
+  }
+  async function pollIOSSetup(generation, backendGeneration) {
+    while (preparing && generation === prepareGeneration) {
+      try {
+        const job = await request('/api/mobile/ios/setup/status');
+        if (generation !== prepareGeneration) return;
+        if (job.generation !== backendGeneration) { preparing = false; setupControls(); el('ios_job').textContent = '准备任务已更新，请重新检测环境'; return; }
+        el('ios_job').textContent = job.phase + ' · ' + job.message;
+        if (!job.running) {
+          preparing = false; setupControls();
+          if (job.state === 'ready') {
+            el('wda_endpoint').value = job.endpoint;
+            if (ios()) { state.serial = ''; changedDevice(); await refresh(); }
+          }
+          return;
+        }
+      } catch (error) { el('ios_job').textContent = error.message; preparing = false; setupControls(); return; }
+      await new Promise(resolve => setTimeout(resolve,1500));
+    }
+  }
+  el('ios_check').onclick = checkIOSSetup;
+  el('ios_prepare').onclick = async () => {
+    if (preparing || state.busy) return;
+    preparing = true; setupControls();
+    try {
+      const raw = new URL(el('wda_endpoint').value);
+      if (!['127.0.0.1','localhost','[::1]'].includes(raw.hostname) || raw.protocol !== 'http:' || !raw.port) throw new Error('WDA 请使用有效的本机转发端口');
+      const body = { udid:el('ios_usb').value, ipa_path:el('ios_ipa').value.trim(), bundle_id:el('ios_bundle').value.trim(), p12_path:el('ios_p12').value.trim(), profile_path:el('ios_profile').value.trim(), port:Number(raw.port) };
+      const job = await request('/api/mobile/ios/prepare', body);
+      el('ios_job').textContent = job.message;
+      pollIOSSetup(++prepareGeneration, job.generation);
+    } catch (error) { preparing = false; setupControls(); el('ios_job').textContent = error.message; }
+  };
+  el('ios_prepare_stop').onclick = async () => {
+    try { const job = await request('/api/mobile/ios/prepare/stop', {}); ++prepareGeneration; preparing = false; setupControls(); el('ios_job').textContent = job.message; }
+    catch (error) { el('ios_job').textContent = error.message; }
+  };
+
   el('platform').onchange = () => {
     state.platform = el('platform').value; state.serial = ''; state.devices = [];
     changedDevice(); el('package').value = ios() ? 'com.tencent.xin' : 'com.tencent.mm';
@@ -380,6 +434,19 @@
     el('elements').replaceChildren(...rows);
     return snapshot.degraded ? '已读取基础视图，文字定位不可用，请结合截图操作。' : '页面元素已更新。';
   });
+
+  el('decrypt_run').onclick = async () => {
+    const id = el('decrypt_id').value, key = el('decrypt_key').value, keyEnv = el('decrypt_key_env').value.trim();
+    const output = el('decrypt_result');
+    if (!/^[1-9][0-9]*$/.test(id)) { output.textContent = '请选择 HTTP 历史中的有效交易 ID'; return; }
+    if (key && keyEnv) { output.textContent = '直接密钥和环境变量引用只能选择一种'; return; }
+    el('decrypt_run').disabled = true; output.textContent = '正在解密所选交易…';
+    try {
+      const result = await request('/api/http/' + id + '/decrypt', { algorithm:'aes', mode:el('decrypt_mode').value, side:el('decrypt_side').value, json_pointer:el('decrypt_pointer').value, input_enc:el('decrypt_encoding').value, key, key_env:keyEnv, iv:el('decrypt_iv').value });
+      output.textContent = (result.integrity_verified ? 'AES-GCM 认证标签已验证\n' : '解密运算完成；此模式不提供消息认证\n') + (result.json !== undefined ? JSON.stringify(result.json,null,2) : result.output);
+    } catch (error) { output.textContent = error.message; }
+    finally { el('decrypt_key').value = ''; el('decrypt_run').disabled = false; }
+  };
 
   el('lan_host').onchange=renderLAN;
   el('lan_clients').oninput=renderLAN;

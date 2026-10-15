@@ -17,6 +17,7 @@ func TestWorkspaceAssetsAreEmbedded(t *testing.T) {
 		{"/console-shell.js", "javascript", "capx:viewchange"},
 		{"/mobile.js", "javascript", "/api/mobile/capture/start"},
 		{"/mobile.css", "text/css", ".mobile-grid"},
+		{"/disclaimer.html", "text/html", "仅用于获得授权的环境"},
 		{"/wxdesk.js", "javascript", "/api/wxdesk/"},
 		{"/wxdesk.css", "text/css", ".wxb-layout"},
 		{"/desktop-bridge.js", "javascript", "capx:api-request"},

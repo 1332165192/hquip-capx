@@ -25,13 +25,18 @@
     },
     {
       "path": "CHANGELOG.md",
-      "size": 3040,
-      "sha256": "ef3d6fae76c7f84ff411b7170fb7b24da13a2505f4b70b0ae14776f944711bee"
+      "size": 3899,
+      "sha256": "db8fd99cb83dd62ef963a4fec098c7ae43ea925f9f1a977ed3d13883f7969fa9"
     },
     {
       "path": "CONTRIBUTING.md",
       "size": 826,
       "sha256": "120b8e7f64fa95774e655dc87b274d5612393d06e2da332c5413336941fd0c51"
+    },
+    {
+      "path": "DISCLAIMER.md",
+      "size": 2445,
+      "sha256": "afbb3cfde12cbd6006298a017456c023ca000f1d7a31909fbd3b4884da6619a5"
     },
     {
       "path": "LICENSE",
@@ -40,13 +45,13 @@
     },
     {
       "path": "NOTICE.md",
-      "size": 2740,
-      "sha256": "a1a9f3f17cb14c735a445ca8bd3b341b3af29bfeaedbabff333f8968c7743947"
+      "size": 3364,
+      "sha256": "252e27afc787cd4c7644eb52fe90309534e11ef297ca3958851bd4144bde0366"
     },
     {
       "path": "README.md",
-      "size": 6761,
-      "sha256": "3d91b23f543bbe14f27861343b98ff79341db33305daedaeef3f7a95f8275582"
+      "size": 7259,
+      "sha256": "a77df40d90641af7a87fa86feb46cac7e4f00460b853b524e0b461c99b897dec"
     },
     {
       "path": "RELEASE_VALIDATION.md",
@@ -570,18 +575,18 @@
     },
     {
       "path": "capx/go.mod",
-      "size": 1726,
-      "sha256": "a2d016e7eb73a11cebc9cc9e3a687ab38a7966dbb52b890882b8e5b2325f2488"
+      "size": 1797,
+      "sha256": "a980cdf9a7a4ea76ec69c09e53f6c951102066afbc73573821f72e9a5dd1d644"
     },
     {
       "path": "capx/go.sum",
-      "size": 11785,
-      "sha256": "e77cd99d6d94d594fb472e0efc6ea124235697978fb9d68d7e73e0e126cc8e09"
+      "size": 13101,
+      "sha256": "ffc856563787cf72e5c0467ab1489c2fc6c833d18e2e66148aca46a83ccda6ef"
     },
     {
       "path": "capx/internal/api/api.go",
-      "size": 53685,
-      "sha256": "7cf7ff15679e9c0c68009fdebbea87c4a6c693ea08a8e089eadf238ab6ee1e43"
+      "size": 54195,
+      "sha256": "1eef6d1e2fd6ec7e30f70e2be9c7559139e1d9fbfe2d12db95468a1de61ec7e0"
     },
     {
       "path": "capx/internal/api/collect_api.go",
@@ -642,6 +647,16 @@
       "path": "capx/internal/api/hook_native_windows.go",
       "size": 5343,
       "sha256": "5b77eddf6865016bc8a955f554ed2b3a2b430fd67b99696653c38946d8a662d2"
+    },
+    {
+      "path": "capx/internal/api/http_decrypt.go",
+      "size": 6516,
+      "sha256": "c82cb0bd645c5cd68ec0043311a336373cfc9676bb49cc7a30c1ee233b5b4ec7"
+    },
+    {
+      "path": "capx/internal/api/http_decrypt_test.go",
+      "size": 4016,
+      "sha256": "945cbc5bf3ec2b441db8db4dc8a81cf97c900dc85ae06202c4e4f8c617a6d12d"
     },
     {
       "path": "capx/internal/api/http_provenance_summary_test.go",
@@ -860,13 +875,13 @@
     },
     {
       "path": "capx/internal/api/mobile_api.go",
-      "size": 12226,
-      "sha256": "b59d82ed3776dbf774221302bd2a2a491a189452b605ffd8f2cf1bc17556992f"
+      "size": 13544,
+      "sha256": "bfbcbc49ea1be4ddea98ff4ea2e7db83e667f53ed4556f9537d5a99651c6c998"
     },
     {
       "path": "capx/internal/api/mobile_api_test.go",
-      "size": 6249,
-      "sha256": "5164193a4baa32ba8e5cc1c88b7a76fa04285af79e3adf673c0cfc2a6c7aabd7"
+      "size": 6264,
+      "sha256": "05f50a05990ee71edb939c9044b33269c7d4ab303612f6fb80537f5ecc5f63ba"
     },
     {
       "path": "capx/internal/api/mobile_vpn_api.go",
@@ -930,8 +945,8 @@
     },
     {
       "path": "capx/internal/api/security.go",
-      "size": 13569,
-      "sha256": "ed84718284765a2072226ba512bc47e927efc81b5041aee1a10ec52f38ee4ee3"
+      "size": 13596,
+      "sha256": "c1a91b395a9b041454a4f626d1f54ac9ad022ad9a668b24fe19ca7a6b2e72356"
     },
     {
       "path": "capx/internal/api/security_test.go",
@@ -1015,8 +1030,8 @@
     },
     {
       "path": "capx/internal/api/wxhook_api.go",
-      "size": 11547,
-      "sha256": "b08da703c83df1e1304dfcf42cd5daf63215c00ea8c7266e0ecc8bcdf4375ca8"
+      "size": 11884,
+      "sha256": "8596d8bbd3b35ac9afb5dcf69daaac8981bf903688c4ee2098f7b0af056abaf8"
     },
     {
       "path": "capx/internal/backgroundprocess/process.go",
@@ -1065,8 +1080,8 @@
     },
     {
       "path": "capx/internal/daemon/daemon.go",
-      "size": 5844,
-      "sha256": "ec21cefb776333afbd383912385c92fb4df54ffaf47333ce18834aaffff24d6e"
+      "size": 5875,
+      "sha256": "9f59059bc430e4510c7fccc4990748f28eb93de40127b8984ba837f53241208c"
     },
     {
       "path": "capx/internal/decode/bounds_test.go",
@@ -1455,8 +1470,8 @@
     },
     {
       "path": "capx/internal/mcp/catalog.go",
-      "size": 38832,
-      "sha256": "054bdbfc740ee853ab0f912bf332c10dc8f97d4778178a3e27e8fc4cec561c1d"
+      "size": 40302,
+      "sha256": "907015342c1ca4a7c583a41ce7da13e6abba03021219207306c4154985db75d0"
     },
     {
       "path": "capx/internal/mcp/client.go",
@@ -1565,8 +1580,18 @@
     },
     {
       "path": "capx/internal/mobile/ios.go",
-      "size": 14441,
-      "sha256": "81f4f6af3d099017970d59c47c4f2b4167e228beadb291c5deb4d58f0952f836"
+      "size": 15348,
+      "sha256": "c765113875d042c37fa55801e04f6c0deca90ceb77c1d9bd6f8b3623f89da3b2"
+    },
+    {
+      "path": "capx/internal/mobile/ios_prepare.go",
+      "size": 30078,
+      "sha256": "6a4054cc8b67189210b03892df58fa3ced165669b13eddf0f55f97f224bcdfea"
+    },
+    {
+      "path": "capx/internal/mobile/ios_prepare_test.go",
+      "size": 11733,
+      "sha256": "62316d0c31d285d4f74faa358faf98f7ced9021e8ad0795bae050a02a6b22edb"
     },
     {
       "path": "capx/internal/mobile/ios_reconnect_test.go",
@@ -1577,6 +1602,16 @@
       "path": "capx/internal/mobile/ios_test.go",
       "size": 7699,
       "sha256": "53c11f7592fe413728ac6ac036eb884d695f8422e5742932d2bd693c4d0b4bb7"
+    },
+    {
+      "path": "capx/internal/mobile/ios_tool_install.go",
+      "size": 4357,
+      "sha256": "9e43b3adc6ec15ff5b7a750cac18caae4ccdea97ced04da868ccd06d7cca1e36"
+    },
+    {
+      "path": "capx/internal/mobile/ios_tool_license.txt",
+      "size": 1069,
+      "sha256": "d368be6f632f8f928369c6f1923cf2f884a1ae42a5f0dd218acd96f9bcfa75b4"
     },
     {
       "path": "capx/internal/mobile/mobile_test.go",
@@ -1690,8 +1725,8 @@
     },
     {
       "path": "capx/internal/proxy/compress.go",
-      "size": 3879,
-      "sha256": "2ef45bd6c4f8e60a5b1f9d7e9eb1f37a2dbb8ab63187de8a0569bd4312cfc074"
+      "size": 4520,
+      "sha256": "4757acac780038566ef44141aff6b7fb9cf5c3c864e83dc62dbb22ef620016e3"
     },
     {
       "path": "capx/internal/proxy/compress_test.go",
@@ -2154,9 +2189,14 @@
       "sha256": "0bcab2f84df9a7a2a36a04c69c7f0b7d0bcefb278856d13cc0c8f172df5b9915"
     },
     {
+      "path": "capx/internal/ui/static/disclaimer.html",
+      "size": 2533,
+      "sha256": "0a76d235461110cfeb287e238955edab76b9aeeb4b3528eee24e31ead15e6225"
+    },
+    {
       "path": "capx/internal/ui/static/index.html",
-      "size": 369461,
-      "sha256": "34ecc72d6e0e9b63f779c749a12d16f4059a1c75b08f1de7b77b0afcdf76ae01"
+      "size": 374643,
+      "sha256": "c7dec16ecda333490492512bf5bde5b5c96af3460f0ce8051e066c0284f18a4b"
     },
     {
       "path": "capx/internal/ui/static/mobile.css",
@@ -2165,8 +2205,8 @@
     },
     {
       "path": "capx/internal/ui/static/mobile.js",
-      "size": 23586,
-      "sha256": "34ee39d310ff61b0ccd8e905222f8e7ed7b079fe7a7635f605e868664fb62cd5"
+      "size": 27927,
+      "sha256": "5c4b38dd107f8b3191e281f9647e79877188b968772228d7e51a515ca64e113e"
     },
     {
       "path": "capx/internal/ui/static/wxdesk.css",
@@ -2185,8 +2225,8 @@
     },
     {
       "path": "capx/internal/ui/ui_test.go",
-      "size": 2696,
-      "sha256": "b4c9cd611f65bc199a3dcba1b6a30d73e78df7bb276e9d001d0057d494f4a37c"
+      "size": 2767,
+      "sha256": "60afb492a14e6b7967fbaeb67b9c6be4036e0b3c3b04f486e2b5a53ec9b33af5"
     },
     {
       "path": "capx/internal/wxapkg/reconstruct.go",
@@ -2247,6 +2287,16 @@
       "path": "capx/internal/wxcdp/bridge_test.go",
       "size": 3033,
       "sha256": "cb327522fc6e78a2228f0f74f8c3267ad32f781cafec1580f123554b5e8c28ad"
+    },
+    {
+      "path": "capx/internal/wxcdp/discovery.go",
+      "size": 2744,
+      "sha256": "3d5ea23573d05b670b7793804f0c1488ef385b2688063f7159e36bc769f1f8c0"
+    },
+    {
+      "path": "capx/internal/wxcdp/discovery_test.go",
+      "size": 1661,
+      "sha256": "bfa9b6045384ac0dd61b0774644210e0b4a9925b603976a83909ae7f69038528"
     },
     {
       "path": "capx/internal/wxdesk/backend_other.go",
@@ -2455,13 +2505,13 @@
     },
     {
       "path": "docs/INTRODUCTION.md",
-      "size": 2206,
-      "sha256": "5f03fa5e4ac86c78dc34246f513cf30c033e12ac6dd93c9be70cb090ab3a47f4"
+      "size": 2421,
+      "sha256": "8f5508b2f8d68e2f388c1d732535ac369fe5d6ed3d69164ec3217b62652a28f2"
     },
     {
       "path": "docs/MOBILE_AUTOMATION.md",
-      "size": 4854,
-      "sha256": "2e83757e60ea736b11436227f47b6d78168f0898133158222cfd26648d082036"
+      "size": 7275,
+      "sha256": "a309dbc1c48faddc875927b03d2a5d1a74092c4a6b007bbca7e9e2b7f20b97fd"
     },
     {
       "path": "docs/images/01-dashboard.png",
@@ -2522,6 +2572,21 @@
       "path": "third-party/Go-LICENSE.txt",
       "size": 1453,
       "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
+    },
+    {
+      "path": "third-party/Go-ios-LICENSE.txt",
+      "size": 1069,
+      "sha256": "d368be6f632f8f928369c6f1923cf2f884a1ae42a5f0dd218acd96f9bcfa75b4"
+    },
+    {
+      "path": "third-party/Go-pkcs12-LICENSE.txt",
+      "size": 1545,
+      "sha256": "05c9cf1167d0584c9192f73a550a2089547e8366114da257f51279ec6a3fc568"
+    },
+    {
+      "path": "third-party/Go-plist-LICENSE.txt",
+      "size": 3300,
+      "sha256": "cf6faa1af902823f1e1718d2c467ded1d9c301972ebda3867d15a7673342a844"
     },
     {
       "path": "third-party/HDE.txt",

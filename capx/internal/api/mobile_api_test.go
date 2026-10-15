@@ -58,7 +58,7 @@ func TestMobilePlatformsNeverFallBackToADB(t *testing.T) {
 }
 
 func TestMobileWritesRequireBackendActivePolicy(t *testing.T) {
-	for _, route := range []string{"tap", "input", "swipe", "key", "back", "home", "launch", "ca", "capture/start", "ios/connect"} {
+	for _, route := range []string{"tap", "input", "swipe", "key", "back", "home", "launch", "ca", "capture/start", "ios/connect", "ios/prepare"} {
 		t.Run(route, func(t *testing.T) {
 			g := newTestGuard()
 			calls := 0

@@ -1,3 +1,10 @@
+# WDA preparation, captured-body decryption and usage disclaimer (2026-10-15)
+
+- Add asynchronous WDA preparation with device selection, pinned go-ios downloads, profile/certificate checks, local signing/install, iOS 17+ tunnel, developer image, XCTest and USB forwarding. Keep pairing and signing material outside the source tree. Stop only owned helper processes.
+- Decode captured request/response ciphertext with JSON Pointer selection, bounded HTTP decompression, AES/DES/3DES/RC4/RSA parameters and optional scoped environment-key references. Preserve original history and verify GCM authentication.
+- Discover standard loopback CDP targets via /json/list with explicit selection and strict endpoint/redirect checks.
+- Add a Chinese usage disclaimer to the README, About view and mobile page. Keep live-device verification distinct from fixture tests.
+
 # Mobile automation fixes (2026-10-15)
 
 - Connect an existing operator-authorized WDA session from the App capture page and MCP. Add iOS screenshots, element lookup, tap, Unicode input, swipe, app launch, foreground lookup and home to the shared mobile API.

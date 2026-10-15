@@ -792,7 +792,7 @@ Content-Length: 16
       <div id="set_health" class="hint">加载中…</div>
     </div>
     <div class="card">
-      <h3>关于 capx</h3>
+      <h3>关于 capx</h3><p><a href="/disclaimer.html" target="_blank" rel="noopener noreferrer">使用声明与免责声明</a> · 仅用于本人拥有或取得明确授权的测试环境。</p>
       <p class="hint" style="margin:0;line-height:1.8">
         capx 是一个四层一体抓包工具：L7 HTTP/HTTPS/WebSocket（自研 MITM 代理 + 自签 CA）、L3/L4 TCP/UDP（gopacket，<code>-tags pcap</code>）、进程内存扫描（Rust 引擎，<code>-tags memscan_ffi</code>）。
         它对外暴露 REST API，可被本机工具和 MCP 客户端调用，也可像 Burp 一样在桌面浏览器直接使用。
@@ -1218,7 +1218,7 @@ Content-Length: 16
   <!-- ================= WX MINI-PROGRAM DEVTOOLS (F12) ================= -->
   <section class="view pad" id="v_mobile" aria-labelledby="mob_title">
     <div class="dashboard-heading">
-      <div><div class="eyebrow">MOBILE CAPTURE</div><h1 id="mob_title">App 抓包<span class="heading-dot">.</span></h1><p>通过 Wi-Fi 代理连接 Android / iPhone，或通过 USB 转发连接 Android。</p></div>
+      <div><div class="eyebrow">MOBILE CAPTURE</div><h1 id="mob_title">App 抓包<span class="heading-dot">.</span></h1><p>通过 Wi-Fi 代理连接 Android / iPhone，或通过 USB 转发连接 Android。 <a href="/disclaimer.html" target="_blank" rel="noopener noreferrer">使用声明与免责声明</a></p></div>
       <button class="btn sec" data-open-view="proxy" data-open-sub="httphist">查看 HTTP 流量 <svg class="ui-icon"><use href="#i-arrow"/></svg></button>
     </div>
     <div class="mobile-grid">
@@ -1242,6 +1242,22 @@ Content-Length: 16
           <label class="field-label" for="mob_platform">手机平台</label>
           <select id="mob_platform"><option value="android">Android · ADB</option><option value="ios">iOS · WDA</option></select>
           <div id="mob_ios_controls" class="hidden">
+            <div class="mobile-actions"><button class="btn sec" id="mob_ios_check">检测 iPhone 环境</button><button class="btn" id="mob_ios_prepare">自动准备并连接</button><button class="btn sec" id="mob_ios_prepare_stop">停止自有任务</button></div>
+            <label class="field-label" for="mob_ios_usb">USB iPhone（单台时自动选择）</label>
+            <select id="mob_ios_usb"><option value="">自动选择唯一设备</option></select>
+            <details><summary>WDA 安装与签名</summary>
+              <label class="field-label" for="mob_ios_ipa">WDA IPA 路径（留空启动已安装的 WDA）</label>
+              <input id="mob_ios_ipa" autocomplete="off" spellcheck="false" placeholder="本机 .ipa 文件；配置开发身份后可自动下载并安装"/>
+              <label class="field-label" for="mob_ios_bundle">WDA bundle ID（留空从 IPA 读取）</label>
+              <input id="mob_ios_bundle" autocomplete="off" spellcheck="false" placeholder="com.facebook.WebDriverAgentRunner.xctrunner"/>
+              <label class="field-label" for="mob_ios_p12">开发证书 P12 路径（重新签名时填写）</label>
+              <input id="mob_ios_p12" autocomplete="off" spellcheck="false"/>
+              <label class="field-label" for="mob_ios_profile">开发描述文件路径</label>
+              <input id="mob_ios_profile" autocomplete="off" spellcheck="false" placeholder=".mobileprovision"/>
+              <p class="hint">签名口令从电脑环境变量 CAPX_WDA_P12_PASSWORD 读取。配对、开发者模式与 XCTest 的手机系统授权仍需在手机上确认。</p>
+            </details>
+            <div id="mob_ios_job" class="mobile-notice" role="status" aria-live="polite">可检测环境，或连接已有 WDA。</div>
+
             <label class="field-label" for="mob_wda_endpoint">WDA 电脑转发地址</label>
             <input id="mob_wda_endpoint" value="http://127.0.0.1:8100" spellcheck="false" autocomplete="off"/>
             <label class="field-label" for="mob_wda_session">已有会话 ID（可选）</label>
@@ -1288,6 +1304,18 @@ Content-Length: 16
         <label class="field-label" for="mob_text">输入到手机当前光标处</label>
         <div class="mobile-field-row"><input id="mob_text" placeholder="英文字母、数字和符号" autocomplete="off" spellcheck="false"/><button class="btn sec" id="mob_input" disabled>输入文字</button></div>
         <p id="mob_input_note" class="hint">Android 需先切到英文输入模式，仅支持 ASCII；iOS WDA 支持中文。请先点击手机输入框。</p>
+      </div>
+      <div class="card mobile-card mobile-elements-card">
+        <div class="mobile-card-heading"><h2>接口业务密文解密</h2><span class="tag">使用已知密钥</span></div>
+        <p class="hint">从 HTTP 历史读取交易，选择密文字段并解密。结果单独显示，保留原始抓包。证书固定和未知业务密钥需针对目标应用处理。</p>
+        <div class="mobile-field-row"><input id="mob_decrypt_id" type="number" min="1" placeholder="HTTP 历史的交易 ID" aria-label="交易 ID"/><select id="mob_decrypt_side" aria-label="请求或响应"><option value="response">响应正文</option><option value="request">请求正文</option></select></div>
+        <label class="field-label" for="mob_decrypt_pointer">JSON 密文字段路径（留空使用整个正文）</label><input id="mob_decrypt_pointer" placeholder="/data/ciphertext" spellcheck="false"/>
+        <div class="mobile-field-row"><select id="mob_decrypt_mode" aria-label="AES 模式"><option value="gcm">AES-GCM</option><option value="cbc">AES-CBC</option><option value="ecb">AES-ECB</option><option value="ctr">AES-CTR</option></select><select id="mob_decrypt_encoding" aria-label="密文编码"><option value="base64">Base64 密文</option><option value="hex">Hex 密文</option></select></div>
+        <label class="field-label" for="mob_decrypt_key">AES 密钥（仅本次请求）</label><input id="mob_decrypt_key" type="password" autocomplete="off"/>
+        <label class="field-label" for="mob_decrypt_key_env">或使用后台密钥环境变量名</label><input id="mob_decrypt_key_env" placeholder="CAPX_APP_TEST_KEY" autocomplete="off" spellcheck="false"/>
+        <label class="field-label" for="mob_decrypt_iv">IV / nonce</label><input id="mob_decrypt_iv" autocomplete="off" spellcheck="false"/>
+        <button class="btn" id="mob_decrypt_run">解密所选交易</button>
+        <pre id="mob_decrypt_result" class="mobile-wrap" style="max-height:320px;overflow:auto;white-space:pre-wrap" role="status">等待选择交易</pre>
       </div>
       <div class="card mobile-card mobile-elements-card">
         <div class="mobile-card-heading"><div><h2>页面元素</h2><p id="mob_elements_note" class="hint">按需读取当前页面，可按元素定位操作。</p></div><button class="btn sec" id="mob_snapshot" disabled>读取元素</button></div>
@@ -1405,6 +1433,7 @@ Content-Length: 16
     <div class="card">
       <h3>完整 DevTools(CDP 桥) <span class="tag">浏览器 F12</span></h3>
       <div class="hint" style="margin:-2px 0 12px">连接自行安装的标准 CDP 调试服务；目标需要先支持调试。连接成功后，可使用下面的 DevTools 链接或自动化操作。</div>
+      <div class="row" style="margin-bottom:10px"><input id="wxc_http" value="http://127.0.0.1:9222" aria-label="本机 CDP 服务地址" spellcheck="false"/><button id="wxc_discover" class="btn sm sec">发现调试目标</button><select id="wxc_targets" aria-label="CDP 调试目标"><option value="">选择目标后连接</option></select></div>
       <div class="row" style="margin-bottom:10px">
         <input id="wxc_endpoint" placeholder="ws://127.0.0.1:9222/devtools/page/目标ID" aria-label="外部 CDP WebSocket 地址" style="flex:1" spellcheck="false"/><span class="pill" id="wxc_state">未启动</span>
         <span style="flex:1"></span>
@@ -2339,6 +2368,17 @@ async function loadWxCDP(){
   }catch(e){if(st){st.className='pill warn';st.textContent='状态失败：'+(e.message||e);}}
 }
 function bindWxCDP(){
+  const discover=$('#wxc_discover');if(discover)discover.onclick=async()=>{
+    discover.disabled=true;
+    try {
+      const result=await jget('/api/wxhook/cdp/targets?endpoint='+encodeURIComponent($('#wxc_http').value.trim()));
+      if(result.error)throw new Error(result.error);
+      const targets=result.targets||[];
+      $('#wxc_targets').replaceChildren(new Option(targets.length?'选择目标后连接':'没有可用目标',''),...targets.map(t=>new Option(t.title||t.id||t.url,t.webSocketDebuggerUrl)));
+    }catch(error){alert(error.message);}finally{discover.disabled=false;}
+  };
+  const targets=$('#wxc_targets');if(targets)targets.onchange=()=>{$('#wxc_endpoint').value=targets.value;};
+
   const s=$('#wxc_start'); if(s)s.onclick=async()=>{const r=await jpost('/api/wxhook/cdp/start',{endpoint:$('#wxc_endpoint').value.trim()});if(r&&r.error)alert('启动失败: '+r.error);loadWxCDP();};
   const sp=$('#wxc_stop'); if(sp)sp.onclick=async()=>{await jpost('/api/wxhook/cdp/stop',{});loadWxCDP();};
   const rf2=$('#wxc_refresh'); if(rf2)rf2.onclick=loadWxCDP;

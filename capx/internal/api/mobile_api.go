@@ -49,7 +49,7 @@ func (s *Server) mobileIOSConnect(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, http.StatusBadRequest, "invalid body")
 		return
 	}
-	status, err := s.ios.Connect(req.Endpoint, req.Session)
+	status, err := s.ios.ConnectContext(r.Context(), req.Endpoint, req.Session)
 	if err != nil {
 		writeErr(w, http.StatusConflict, err.Error())
 		return
@@ -72,6 +72,50 @@ func mobileAndroidOnly(w http.ResponseWriter, r *http.Request) bool {
 		return false
 	}
 	return true
+}
+
+func (s *Server) mobileIOSSetup(w http.ResponseWriter, r *http.Request) {
+	if s.iosPrepare == nil {
+		writeErr(w, http.StatusNotImplemented, "iOS setup unavailable")
+		return
+	}
+	writeJSON(w, http.StatusOK, s.iosPrepare.Inspect(r.Context()))
+}
+func (s *Server) mobileIOSPrepareStatus(w http.ResponseWriter, r *http.Request) {
+	if s.iosPrepare == nil {
+		writeErr(w, http.StatusNotImplemented, "iOS setup unavailable")
+		return
+	}
+	writeJSON(w, http.StatusOK, s.iosPrepare.Status())
+}
+func (s *Server) mobileIOSPrepare(w http.ResponseWriter, r *http.Request) {
+	if s.iosPrepare == nil {
+		writeErr(w, http.StatusNotImplemented, "iOS setup unavailable")
+		return
+	}
+	var req mobile.IOSPrepareRequest
+	if json.NewDecoder(r.Body).Decode(&req) != nil {
+		writeErr(w, http.StatusBadRequest, "invalid body")
+		return
+	}
+	job, err := s.iosPrepare.Begin(req)
+	if err != nil {
+		writeErr(w, http.StatusConflict, err.Error())
+		return
+	}
+	writeJSON(w, http.StatusAccepted, job)
+}
+func (s *Server) mobileIOSPrepareStop(w http.ResponseWriter, r *http.Request) {
+	if s.iosPrepare == nil {
+		writeErr(w, http.StatusNotImplemented, "iOS setup unavailable")
+		return
+	}
+	writeJSON(w, http.StatusOK, s.iosPrepare.Stop())
+}
+func (s *Server) CloseMobileTools() {
+	if s.iosPrepare != nil {
+		s.iosPrepare.Close()
+	}
 }
 
 func (s *Server) mobileCA(w http.ResponseWriter, r *http.Request) {

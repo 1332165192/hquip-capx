@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/hquip/capx/internal/setup"
+	"github.com/hquip/capx/internal/wxcdp"
 	"github.com/hquip/capx/internal/wxhook"
 )
 
@@ -345,4 +346,13 @@ func (s *Server) wxhookCDPEval(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	_, _ = w.Write([]byte(res))
+}
+
+func (s *Server) wxhookCDPTargets(w http.ResponseWriter, r *http.Request) {
+	targets, err := wxcdp.Discover(r.Context(), r.URL.Query().Get("endpoint"))
+	if err != nil {
+		writeErr(w, http.StatusConflict, err.Error())
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"targets": targets})
 }

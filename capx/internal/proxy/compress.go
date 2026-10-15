@@ -5,6 +5,7 @@ import (
 	"compress/flate"
 	"compress/gzip"
 	"compress/zlib"
+	"errors"
 	"io"
 	"net/http"
 	"strconv"
@@ -17,6 +18,24 @@ import (
 // maxDecompressed caps the size of a transparently-decompressed body so a
 // malicious or broken upstream cannot exhaust memory ("zip bomb").
 const maxDecompressed = 64 << 20 // 64 MiB
+
+// DecodeCapturedBody decodes supported HTTP content encodings with the same
+// bounded decompressor used by the proxy. It does not perform business crypto.
+func DecodeCapturedBody(header http.Header, body []byte) ([]byte, error) {
+	encoding := strings.ToLower(strings.TrimSpace(header.Get("Content-Encoding")))
+	if encoding == "" || encoding == "identity" {
+		return body, nil
+	}
+	enc := decodableEncoding(header)
+	if enc == "" {
+		return nil, errors.New("unsupported content encoding")
+	}
+	decoded, ok := decompress(enc, body)
+	if !ok {
+		return nil, errors.New("invalid or oversized compressed body")
+	}
+	return decoded, nil
+}
 
 // decodableEncoding returns the normalized Content-Encoding token capx can
 // transparently decode (gzip, deflate, br), or "" when the body is identity or
