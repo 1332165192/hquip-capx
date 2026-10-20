@@ -1,0 +1,30 @@
+#在fork的项目中添加github工作流然后填写复制以下代码
+name: 调用同步 Release 工作流
+
+on:
+  workflow_dispatch:  # 也可以按需添加其他触发条件
+    inputs:
+      upstream_repo:
+        description: '上游仓库 (格式: owner/repo)'
+        required: false
+        default: ''
+        type: string
+      tags:
+        description: '要同步的上游 Release Tag，多个用英文逗号分隔 (例如: v6.0.0, v6.1.0)'
+        required: false
+        type: string
+      target_branch:
+        description: '目标分支 (留空则自动检测默认分支)'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  call-sync:
+    uses: dxin1688/Github-Release-Workflows/.github/workflows/smart_manual-sync-release.yml@main
+    with:
+      upstream_repo: ''
+      tags: ''
+      target_branch: ''          # 留空则自动检测
+    permissions:
+      contents: write            # 必须，因为需要创建 Release 和 Tag
